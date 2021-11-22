@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="class_starts_in">ZA %s</string>
+    <string name="class_ends_in">TRWA JESZCZE %s</string>
+    <string name="class_ended">MINĘŁO</string>
+</resources>

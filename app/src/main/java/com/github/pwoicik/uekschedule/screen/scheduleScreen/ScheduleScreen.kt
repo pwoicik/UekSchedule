@@ -4,36 +4,48 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.model.Class
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
+import kotlinx.coroutines.delay
+import java.time.LocalDate
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleScreen() {
     val viewModel = viewModel(modelClass = ScheduleScreenVieModel::class.java)
-    val schedule = viewModel.getSchedule("184261")
+    val schedule by viewModel.getSchedule("184261")
 
-    val classes = schedule.value.classes
+    val classes = schedule.classes
     if (!classes.isNullOrEmpty()) {
+        var timeNow by remember { mutableStateOf(ZonedDateTime.now()) }
+
+        LaunchedEffect(key1 = timeNow) {
+            delay(15_000)
+            timeNow = ZonedDateTime.now()
+        }
+
         LazyColumn {
             stickyHeader {
-                ScheduleColumnStickyHeader(classes[0].date)
+                ScheduleColumnStickyHeader(classes[0].startDate)
             }
             item {
-                ScheduleColumnItem(clazz = classes[0])
+                ScheduleColumnItem(clazz = classes[0], timeNow)
                 Divider(modifier = Modifier.height(1.dp))
             }
 
@@ -41,14 +53,14 @@ fun ScheduleScreen() {
                 val prevClass = classes[i - 1]
                 val nextClass = classes[i]
 
-                if (prevClass.date != nextClass.date) {
+                if (prevClass.startDate != nextClass.startDate) {
                     stickyHeader {
-                        ScheduleColumnStickyHeader(nextClass.date)
+                        ScheduleColumnStickyHeader(nextClass.startDate)
                     }
                 }
 
                 item {
-                    ScheduleColumnItem(clazz = nextClass)
+                    ScheduleColumnItem(clazz = nextClass, timeNow)
                     Divider(modifier = Modifier.height(1.dp))
                 }
             }
@@ -57,7 +69,7 @@ fun ScheduleScreen() {
 }
 
 @Composable
-fun ScheduleColumnStickyHeader(date: String) {
+fun ScheduleColumnStickyHeader(date: LocalDate) {
     Surface(
         color = Color.LightGray,
         elevation = 6.dp,
@@ -65,7 +77,7 @@ fun ScheduleColumnStickyHeader(date: String) {
             .fillMaxWidth()
     ) {
         Text(
-            date,
+            date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)
         )
     }
@@ -117,12 +129,11 @@ fun ScheduleColumnItemLayout(
 }
 
 @Composable
-fun ScheduleColumnItem(clazz: Class) {
-    val timeNow = ZonedDateTime.now()
-    val timeDifference = timeNow.until(clazz.startDate, ChronoUnit.MINUTES)
+fun ScheduleColumnItem(clazz: Class, timeNow: ZonedDateTime) {
+    val timeDifference = timeNow.until(clazz.startZonedDateTime, ChronoUnit.MINUTES)
     val status = when {
-        timeNow.isBefore(clazz.startDate) -> ClassStatus.NOT_STARTED
-        timeNow.isBefore(clazz.endDate) -> ClassStatus.IN_PROGRESS
+        timeNow.isBefore(clazz.startZonedDateTime) -> ClassStatus.NOT_STARTED
+        timeNow.isBefore(clazz.endZonedDateTime) -> ClassStatus.IN_PROGRESS
         else -> ClassStatus.ENDED
     }
 
@@ -132,58 +143,102 @@ fun ScheduleColumnItem(clazz: Class) {
             .fillMaxWidth()
             .alpha(if (status == ClassStatus.ENDED) ContentAlpha.medium else ContentAlpha.high)
     ) {
-        Column {
-            Text(clazz.startTime, modifier = Modifier.padding(bottom = 4.dp))
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(clazz.endTime)
-            }
-        }
+        ClassTimeColumn(clazz)
+        ClassDetailsColumn(clazz)
+        ClassStatusColumn(status, timeDifference, timeNow, clazz)
+    }
+}
 
-        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-            Text(clazz.subject, modifier = Modifier.padding(bottom = 8.dp))
+@Composable
+private fun ClassTimeColumn(clazz: Class) {
+    val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
 
-            CompositionLocalProvider(
-                LocalTextStyle provides MaterialTheme.typography.body2,
-                LocalContentAlpha provides ContentAlpha.medium,
-            ) {
-                Text(clazz.teacher, modifier = Modifier.padding(bottom = 4.dp))
-                if (clazz.details == null) {
-                    Text(clazz.type, modifier = Modifier.padding(bottom = 4.dp))
-                } else {
-                    CompositionLocalProvider(LocalContentColor provides Color.Red) {
-                        Text(clazz.type)
-                        Text(clazz.details!!, modifier = Modifier.padding(bottom = 4.dp))
-                    }
-                }
-                if (clazz.location != null) {
-                    Text(
-                        clazz.location!!,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        }
-
-        Column {
-            val text = when(status) {
-                ClassStatus.NOT_STARTED -> "ZA " +
-                        if (timeDifference < 60) "${timeDifference}min"
-                        else "${timeDifference / 60}h"
-                ClassStatus.IN_PROGRESS ->
-                    "TRWA JESZCZE ${timeNow.until(clazz.endDate, ChronoUnit.MINUTES)}min"
-                ClassStatus.ENDED ->
-                    "MINĘŁO"
-            }
-
-            Text(
-                text,
-                textAlign = TextAlign.Right,
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.width(IntrinsicSize.Min)
-            )
+    Column {
+        Text(
+            clazz.startTime.format(formatter),
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(clazz.endTime.format(formatter))
         }
     }
+}
+
+@Composable
+private fun ClassDetailsColumn(clazz: Class) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Text(clazz.subject, modifier = Modifier.padding(bottom = 8.dp))
+
+        CompositionLocalProvider(
+            LocalTextStyle provides MaterialTheme.typography.body2,
+            LocalContentAlpha provides ContentAlpha.medium,
+        ) {
+            Text(clazz.teacher, modifier = Modifier.padding(bottom = 4.dp))
+            if (clazz.details == null) {
+                Text(clazz.type, modifier = Modifier.padding(bottom = 4.dp))
+            } else {
+                CompositionLocalProvider(LocalContentColor provides Color.Red) {
+                    Text(clazz.type)
+                    Text(clazz.details!!, modifier = Modifier.padding(bottom = 4.dp))
+                }
+            }
+            if (clazz.location != null) {
+                Text(
+                    clazz.location!!,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ClassStatusColumn(
+    status: ClassStatus,
+    timeDifference: Long,
+    timeNow: ZonedDateTime,
+    clazz: Class
+) {
+    Column {
+        val text = when (status) {
+            ClassStatus.NOT_STARTED -> stringResource(
+                R.string.class_starts_in,
+                when {
+                    timeDifference < 1 -> "<1min"
+                    timeDifference < 60 -> "${timeDifference}min"
+                    timeDifference > 1440 -> "${timeDifference / 1440}d"
+                    else -> "${timeDifference / 60}h"
+                }
+            )
+
+            ClassStatus.IN_PROGRESS -> {
+                val timeDifference = timeNow.until(clazz.endZonedDateTime, ChronoUnit.MINUTES)
+                stringResource(
+                    R.string.class_ends_in,
+                    if (timeDifference < 1)
+                        "<1min"
+                    else
+                        "${timeDifference}min"
+                )
+            }
+
+            ClassStatus.ENDED -> stringResource(R.string.class_ended)
+        }
+
+        Text(
+            text,
+            textAlign = TextAlign.Right,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.width(IntrinsicSize.Min)
+        )
+    }
+}
+
+enum class ClassStatus {
+    NOT_STARTED,
+    IN_PROGRESS,
+    ENDED,
 }
 
 @Preview(showBackground = true)
@@ -193,18 +248,12 @@ fun ScheduleColumnItemPreview() {
         val c = Class(
             subject = "Administrowanie sieciami komputerowymi",
             teacher = "mgr Jakub Kanclerz",
-            date = "2021-11-17",
-            startTime = "09:45",
-            endTime = "11:15",
+            _date = "2021-11-17",
+            _startTime = "09:45",
+            _endTime = "11:15",
             location = "Paw. A 014 lab. Win 8.1, Office16",
             type = "ćwiczenia"
         )
-        ScheduleColumnItem(clazz = c)
+        ScheduleColumnItem(clazz = c, ZonedDateTime.now())
     }
-}
-
-enum class ClassStatus {
-    NOT_STARTED,
-    IN_PROGRESS,
-    ENDED,
 }

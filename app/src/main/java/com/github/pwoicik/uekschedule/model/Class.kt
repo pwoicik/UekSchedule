@@ -2,7 +2,7 @@ package com.github.pwoicik.uekschedule.model
 
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
-import java.time.ZonedDateTime
+import java.time.*
 
 @Root(name = "zajecia", strict = false)
 data class Class @JvmOverloads constructor(
@@ -11,13 +11,13 @@ data class Class @JvmOverloads constructor(
     var subject: String = "",
 
     @field:Element(name = "termin")
-    var date: String = "",
+    var _date: String = "",
 
     @field:Element(name = "od-godz")
-    var startTime: String = "",
+    var _startTime: String = "",
 
     @field:Element(name = "do-godz")
-    var endTime: String = "",
+    var _endTime: String = "",
 
     @field:Element(name = "typ")
     var type: String = "",
@@ -31,9 +31,38 @@ data class Class @JvmOverloads constructor(
     @field:Element(name = "sala", required = false)
     var location: String? = null,
 ) {
-    val startDate: ZonedDateTime
-        get() = ZonedDateTime.parse("${date}T${startTime}:00+01:00[Europe/Warsaw]")
+    val startZonedDateTime: ZonedDateTime by lazy {
+        convertDateTime(_date, _startTime)
+    }
 
-    val endDate: ZonedDateTime
-        get() = ZonedDateTime.parse("${date}T${endTime}:00+01:00[Europe/Warsaw]")
+    val startDate: LocalDate by lazy {
+        startZonedDateTime.toLocalDate()
+    }
+
+    val startTime: LocalTime by lazy {
+        startZonedDateTime.toLocalTime()
+    }
+
+    val endZonedDateTime: ZonedDateTime by lazy {
+        convertDateTime(_date, _endTime)
+    }
+
+    val endDate: LocalDate by lazy {
+        endZonedDateTime.toLocalDate()
+    }
+
+    val endTime: LocalTime by lazy {
+        endZonedDateTime.toLocalTime()
+    }
+}
+
+private fun convertDateTime(
+    date: String,
+    time: String,
+    zone: ZoneId = ZoneId.of("Europe/Warsaw"),
+    toZone: ZoneId = ZoneId.systemDefault()
+): ZonedDateTime {
+    val ldt = LocalDateTime.parse("${date}T${time}")
+    val zdt = ZonedDateTime.of(ldt, zone)
+    return zdt.withZoneSameInstant(toZone)
 }
