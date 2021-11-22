@@ -1,6 +1,6 @@
 package com.github.pwoicik.uekschedule.api
 
-import com.github.pwoicik.uekschedule.model.Schedule
+import com.github.pwoicik.uekschedule.api.model.Schedule
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import retrofit2.http.GET
@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("index.php?typ=G&okres=1&xml")
-    suspend fun getSchedule(@Query("id") id: String): Schedule
+    suspend fun getSchedule(@Query("id") id: Long): Schedule
 
     companion object {
         private var apiService: ApiService? = null

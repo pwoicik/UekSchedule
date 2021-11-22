@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.model
+package com.github.pwoicik.uekschedule.api.model
 
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.ElementList
