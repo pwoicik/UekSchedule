@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,8 +20,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.model.Class
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.delay
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -32,14 +37,21 @@ fun ScheduleScreen() {
     val schedule by viewModel.getSchedule("184261")
 
     val classes = schedule.classes
-    if (!classes.isNullOrEmpty()) {
-        var timeNow by remember { mutableStateOf(ZonedDateTime.now()) }
+    if (classes.isNullOrEmpty()) return
 
-        LaunchedEffect(key1 = timeNow) {
-            delay(15_000)
-            timeNow = ZonedDateTime.now()
-        }
+    var timeNow by remember { mutableStateOf(ZonedDateTime.now()) }
 
+    LaunchedEffect(key1 = timeNow) {
+        delay(15_000)
+        timeNow = ZonedDateTime.now()
+    }
+
+    val swipeRefreshState by viewModel.isRefreshing
+
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(swipeRefreshState),
+        onRefresh = { viewModel.refresh() }
+    ) {
         LazyColumn {
             stickyHeader {
                 ScheduleColumnStickyHeader(classes[0].startDate)
@@ -69,7 +81,7 @@ fun ScheduleScreen() {
 }
 
 @Composable
-fun ScheduleColumnStickyHeader(date: LocalDate) {
+private fun ScheduleColumnStickyHeader(date: LocalDate) {
     Surface(
         color = Color.LightGray,
         elevation = 6.dp,
@@ -84,7 +96,7 @@ fun ScheduleColumnStickyHeader(date: LocalDate) {
 }
 
 @Composable
-fun ScheduleColumnItemLayout(
+private fun ScheduleColumnItemLayout(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -92,9 +104,9 @@ fun ScheduleColumnItemLayout(
         modifier = modifier,
         content = content
     ) { measurables, constraints ->
-        val leftCol = measurables[0].run {
-            val width = minIntrinsicWidth(Int.MAX_VALUE)
-            measure(
+        fun measureMinIntrinsicWidth(m: Measurable): Placeable {
+            val width = m.minIntrinsicWidth(Int.MAX_VALUE)
+            return m.measure(
                 constraints.copy(
                     minWidth = width,
                     maxWidth = width
@@ -102,15 +114,8 @@ fun ScheduleColumnItemLayout(
             )
         }
 
-        val rightCol = measurables[2].run {
-            val width = minIntrinsicWidth(Int.MAX_VALUE)
-            measure(
-                constraints.copy(
-                    minWidth = width,
-                    maxWidth = width
-                )
-            )
-        }
+        val leftCol = measurables[0].measure(constraints.copy(minWidth = 0))
+        val rightCol = measureMinIntrinsicWidth(measurables[2])
 
         val midColWidth = constraints.maxWidth - leftCol.width - rightCol.width
         val midCol = measurables[1].measure(
@@ -129,7 +134,7 @@ fun ScheduleColumnItemLayout(
 }
 
 @Composable
-fun ScheduleColumnItem(clazz: Class, timeNow: ZonedDateTime) {
+private fun ScheduleColumnItem(clazz: Class, timeNow: ZonedDateTime) {
     val timeDifference = timeNow.until(clazz.startZonedDateTime, ChronoUnit.MINUTES)
     val status = when {
         timeNow.isBefore(clazz.startZonedDateTime) -> ClassStatus.NOT_STARTED
@@ -153,13 +158,17 @@ fun ScheduleColumnItem(clazz: Class, timeNow: ZonedDateTime) {
 private fun ClassTimeColumn(clazz: Class) {
     val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
 
-    Column {
+    Column(modifier = Modifier.wrapContentSize()) {
         Text(
             clazz.startTime.format(formatter),
+            maxLines = 1,
             modifier = Modifier.padding(bottom = 4.dp)
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Text(clazz.endTime.format(formatter))
+            Text(
+                clazz.endTime.format(formatter),
+                maxLines = 1
+            )
         }
     }
 }
@@ -235,7 +244,7 @@ private fun ClassStatusColumn(
     }
 }
 
-enum class ClassStatus {
+private enum class ClassStatus {
     NOT_STARTED,
     IN_PROGRESS,
     ENDED,
@@ -248,9 +257,9 @@ fun ScheduleColumnItemPreview() {
         val c = Class(
             subject = "Administrowanie sieciami komputerowymi",
             teacher = "mgr Jakub Kanclerz",
-            _date = "2021-11-17",
-            _startTime = "09:45",
-            _endTime = "11:15",
+            _date = LocalDate.now().toString(),
+            _startTime = LocalTime.now().toString(),
+            _endTime = LocalTime.now().plusMinutes(90L).toString(),
             location = "Paw. A 014 lab. Win 8.1, Office16",
             type = "ćwiczenia"
         )
