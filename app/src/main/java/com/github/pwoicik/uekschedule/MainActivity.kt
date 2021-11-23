@@ -3,10 +3,14 @@ package com.github.pwoicik.uekschedule
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,17 +31,19 @@ class MainActivity : ComponentActivity() {
                 factory = ScheduleViewModelFactory(application)
             )
 
-            UekApp(viewModel)
+            UekApp(viewModel, isSystemInDarkTheme())
         }
     }
 }
 
 @Composable
-fun UekApp(viewModel: ScheduleViewModel) {
+fun UekApp(viewModel: ScheduleViewModel, systemInDarkTheme: Boolean) {
     val uiController = rememberSystemUiController()
     val navController = rememberNavController()
 
-    UEKScheduleTheme {
+    var isDarkMode by remember { mutableStateOf(systemInDarkTheme) }
+
+    UEKScheduleTheme(isDarkMode) {
         val barColor = MaterialTheme.colors.primary
         SideEffect {
             uiController.setStatusBarColor(
@@ -52,6 +58,9 @@ fun UekApp(viewModel: ScheduleViewModel) {
             topBar = {
                 UekTopAppBar(
                     isExpanded = dropdownIsExpanded,
+                    toggleDarkMode = {
+                        isDarkMode = !isDarkMode
+                    },
                     toggleDropdown = {
                         dropdownIsExpanded = !dropdownIsExpanded
                     },
@@ -77,6 +86,7 @@ fun UekApp(viewModel: ScheduleViewModel) {
 @Composable
 private fun UekTopAppBar(
     isExpanded: Boolean,
+    toggleDarkMode: () -> Unit,
     toggleDropdown: () -> Unit,
     onDismiss: () -> Unit,
     onEditGroups: () -> Unit
@@ -88,6 +98,15 @@ private fun UekTopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,
         actions = {
+            IconButton(onClick = toggleDarkMode) {
+                Icon(
+                    if (MaterialTheme.colors.isLight)
+                        Icons.Filled.DarkMode
+                    else
+                        Icons.Filled.LightMode,
+                    contentDescription = ""
+                )
+            }
             IconButton(
                 onClick = toggleDropdown
             ) {
