@@ -3,4 +3,5 @@
     <string name="class_starts_in">ZA %s</string>
     <string name="class_ends_in">TRWA JESZCZE %s</string>
     <string name="class_ended">MINĘŁO</string>
+    <string name="edit_gropus">Edytuj grupy</string>
 </resources>

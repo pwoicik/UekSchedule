@@ -1,6 +1,5 @@
 package com.github.pwoicik.uekschedule.screen.scheduleScreen
 
-import android.app.Application
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,19 +7,15 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.database.Class
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
-import com.github.pwoicik.uekschedule.database.ScheduleViewModelFactory
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -32,12 +27,8 @@ import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 
 @Composable
-fun ScheduleScreen() {
-    val viewModel: ScheduleViewModel = viewModel(
-        factory = ScheduleViewModelFactory(LocalContext.current.applicationContext as Application)
-    )
-
-    val classes by viewModel.classes
+fun ScheduleScreen(viewModel: ScheduleViewModel) {
+    val classes by viewModel.classes.collectAsState()
 
     if (!classes.isNullOrEmpty()) {
         ScheduleClassesColumn(classes!!, viewModel)
@@ -67,7 +58,7 @@ private fun ScheduleClassesColumn(
             stickyHeader {
                 ScheduleColumnStickyHeader(classes[0].startDateTime.toLocalDate())
             }
-            item(classes[0].id) {
+            item {
                 ScheduleColumnItem(clazz = classes[0], timeNow)
                 Divider(modifier = Modifier.height(1.dp))
             }
@@ -82,7 +73,7 @@ private fun ScheduleClassesColumn(
                     }
                 }
 
-                item(classes[i].id) {
+                item {
                     ScheduleColumnItem(clazz = nextClass, timeNow)
                     Divider(modifier = Modifier.height(1.dp))
                 }
@@ -94,7 +85,6 @@ private fun ScheduleClassesColumn(
 @Composable
 private fun ScheduleColumnStickyHeader(date: LocalDate) {
     Surface(
-        color = Color.LightGray,
         elevation = 6.dp,
         modifier = Modifier
             .fillMaxWidth()
@@ -195,7 +185,9 @@ private fun ClassDetailsColumn(clazz: Class) {
             if (clazz.details == null) {
                 Text(clazz.type, modifier = Modifier.padding(bottom = 4.dp))
             } else {
-                CompositionLocalProvider(LocalContentColor provides Color.Red) {
+                CompositionLocalProvider(
+                    LocalContentColor provides MaterialTheme.colors.error
+                ) {
                     Text(clazz.type)
                     Text(clazz.details, modifier = Modifier.padding(bottom = 4.dp))
                 }
@@ -231,6 +223,7 @@ private fun ClassStatusColumn(
             )
 
             ClassStatus.IN_PROGRESS -> {
+                @Suppress("NAME_SHADOWING")
                 val timeDifference = timeNow.until(clazz.endDateTime, ChronoUnit.MINUTES)
                 stringResource(
                     R.string.class_ends_in,
@@ -248,6 +241,10 @@ private fun ClassStatusColumn(
             text,
             textAlign = TextAlign.Right,
             style = MaterialTheme.typography.body2,
+            color = if (status == ClassStatus.IN_PROGRESS)
+                MaterialTheme.colors.secondary
+            else
+                MaterialTheme.colors.onSurface,
             modifier = Modifier.width(IntrinsicSize.Min)
         )
     }

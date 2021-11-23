@@ -4,10 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.github.pwoicik.uekschedule.api.model.Schedule as ModelSchedule
 
-data class ScheduleWithClasses(
+data class GroupWithClasses(
 
     @Embedded
-    val schedule: Schedule,
+    val group: Group,
 
     @Relation(
         parentColumn = "schedules",
@@ -16,10 +16,10 @@ data class ScheduleWithClasses(
     val classes: List<Class>
 ) {
     companion object {
-        fun fromModelSchedule(s: ModelSchedule): ScheduleWithClasses {
+        fun fromModelSchedule(s: ModelSchedule): GroupWithClasses {
             val groupId = s.groupId.toLong()
 
-            val schedule = Schedule(
+            val schedule = Group(
                 groupId,
                 s.groupName
             )
@@ -39,7 +39,7 @@ data class ScheduleWithClasses(
                 )
             } ?: emptyList()
 
-            return ScheduleWithClasses(schedule, classes)
+            return GroupWithClasses(schedule, classes)
         }
     }
 }

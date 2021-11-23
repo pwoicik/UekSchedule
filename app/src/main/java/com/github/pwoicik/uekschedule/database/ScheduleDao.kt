@@ -7,23 +7,23 @@ import kotlinx.coroutines.flow.Flow
 abstract class ScheduleDao {
 
     @Transaction
-    @Query("select * from schedules")
-    abstract suspend fun getAllSchedules(): List<Schedule>
+    @Query("select * from groups")
+    abstract fun getAllGroups(): Flow<List<Group>>
 
     @Transaction
     @Query("select * from classes")
-    abstract suspend fun getAllClasses(): List<Class>
+    abstract fun getAllClasses(): Flow<List<Class>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertSchedule(schedule: Schedule)
+    abstract suspend fun insertGroup(group: Group)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAllClasses(classes: Collection<Class>)
 
     @Transaction
     @Insert
-    suspend fun insertScheduleWithClasses(swc: ScheduleWithClasses) {
-        insertSchedule(swc.schedule)
-        insertAllClasses(swc.classes)
+    suspend fun insertGroupWithClasses(gwc: GroupWithClasses) {
+        insertGroup(gwc.group)
+        insertAllClasses(gwc.classes)
     }
 }

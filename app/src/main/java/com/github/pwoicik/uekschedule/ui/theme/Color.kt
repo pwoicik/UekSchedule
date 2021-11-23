@@ -2,7 +2,10 @@ package com.github.pwoicik.uekschedule.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val Red100 = Color(0xFFFD8585)
+val Red200 = Color(0xFFE43664)
+val Red500 = Color(0xFFB91742)
+val Red700 = Color(0xff8d0126)
+
+val Green500 = Color(0xFF32B314)
+val Green700 = Color(0xFF227E0C)

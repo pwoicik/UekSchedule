@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [Schedule::class, Class::class], version = 1)
+@Database(entities = [Group::class, Class::class], version = 3)
 @TypeConverters(ZonedDateTimeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

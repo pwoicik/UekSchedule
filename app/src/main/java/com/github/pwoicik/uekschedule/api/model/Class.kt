@@ -35,24 +35,8 @@ data class Class @JvmOverloads constructor(
         convertDateTime(_date, _startTime)
     }
 
-    val startDate: LocalDate by lazy {
-        startZonedDateTime.toLocalDate()
-    }
-
-    val startTime: LocalTime by lazy {
-        startZonedDateTime.toLocalTime()
-    }
-
     val endZonedDateTime: ZonedDateTime by lazy {
         convertDateTime(_date, _endTime)
-    }
-
-    val endDate: LocalDate by lazy {
-        endZonedDateTime.toLocalDate()
-    }
-
-    val endTime: LocalTime by lazy {
-        endZonedDateTime.toLocalTime()
     }
 }
 
