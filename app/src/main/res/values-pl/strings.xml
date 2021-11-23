@@ -4,4 +4,11 @@
     <string name="class_ends_in">TRWA JESZCZE %s</string>
     <string name="class_ended">MINĘŁO</string>
     <string name="edit_gropus">Edytuj grupy</string>
+    <string name="your_groups">Twoje grupy</string>
+    <string name="no_saved_groups">Nie masz zapisanych żadnych grup!</string>
+    <string name="add_group">Dodaj nową grupę</string>
+    <string name="add_group_textfield_placeholder">Nazwa grupy lub link do planu</string>
+    <string name="add">Dodaj</string>
+    <string name="no_classes_message_1">Na dzisiaj wolne!</string>
+    <string name="no_classes_message_2">Miłego odpoczynku!!!</string>
 </resources>

@@ -6,12 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
 import com.github.pwoicik.uekschedule.database.ScheduleViewModelFactory
@@ -92,7 +91,7 @@ private fun UekTopAppBar(
             IconButton(
                 onClick = toggleDropdown
             ) {
-                Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                Icon(Icons.Filled.MoreVert, contentDescription = "Menu")
                 DropdownMenu(
                     expanded = isExpanded,
                     onDismissRequest = onDismiss

@@ -26,4 +26,8 @@ abstract class ScheduleDao {
         insertGroup(gwc.group)
         insertAllClasses(gwc.classes)
     }
+
+    @Transaction
+    @Query("delete from groups where id = :groupId")
+    abstract suspend fun deleteGroup(groupId: Long)
 }

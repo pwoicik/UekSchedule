@@ -8,7 +8,7 @@ import org.simpleframework.xml.Root
 data class GroupsRoot @JvmOverloads constructor(
 
     @field:ElementList(name = "zasob", inline = true)
-    var groups: List<Group> = emptyList()
+    var groups: List<Group>? = null
 )
 
 @Root(name = "zasob", strict = false)

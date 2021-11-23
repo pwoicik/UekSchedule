@@ -3,8 +3,10 @@ package com.github.pwoicik.uekschedule.screen.scheduleScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.Layout
@@ -12,12 +14,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.database.Class
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
+import com.github.pwoicik.uekschedule.screen.editGroups.NoSavedGroups
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -27,11 +32,45 @@ import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 
 @Composable
-fun ScheduleScreen(viewModel: ScheduleViewModel) {
+fun ScheduleScreen(
+    viewModel: ScheduleViewModel,
+    onAddGroup: () -> Unit
+) {
+    val groups by viewModel.groups.collectAsState()
     val classes by viewModel.classes.collectAsState()
 
-    if (!classes.isNullOrEmpty()) {
-        ScheduleClassesColumn(classes!!, viewModel)
+    when {
+        groups.isNullOrEmpty() -> {
+            NoSavedGroups(onAddGroup)
+        }
+        classes.isNullOrEmpty() -> {
+            NoClasses()
+        }
+        else -> {
+            ScheduleClassesColumn(classes!!, viewModel)
+        }
+    }
+}
+
+@OptIn(ExperimentalUnitApi::class)
+@Composable
+fun NoClasses() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CompositionLocalProvider(
+            LocalTextStyle provides MaterialTheme.typography.h5
+        ) {
+            Text(stringResource(R.string.no_classes_message_1))
+            Text(stringResource(R.string.no_classes_message_2))
+        }
+        Text(
+            text = "🎉",
+            style = MaterialTheme.typography.h3,
+            modifier = Modifier.padding(top = 16.dp)
+        )
     }
 }
 
@@ -52,7 +91,10 @@ private fun ScheduleClassesColumn(
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(swipeRefreshState),
-        onRefresh = { viewModel.refresh() }
+        onRefresh = { viewModel.refresh() },
+        indicator = { s, trigger ->
+            SwipeRefreshIndicator(s, trigger, shape = RoundedCornerShape(50))
+        }
     ) {
         LazyColumn {
             stickyHeader {

@@ -4,4 +4,11 @@
     <string name="class_ends_in">ENDS IN %s</string>
     <string name="class_ended">ENDED</string>
     <string name="edit_gropus">Edit groups</string>
+    <string name="your_groups">Your groups</string>
+    <string name="no_saved_groups">You don\'t have any saved groups!</string>
+    <string name="add_group">Add a new group</string>
+    <string name="add_group_textfield_placeholder">Group name or schedule link</string>
+    <string name="add">Add</string>
+    <string name="no_classes_message_1">No classes today!</string>
+    <string name="no_classes_message_2">Enjoy your free time!!!</string>
 </resources>
