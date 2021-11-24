@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.screen.editGroups
+package com.github.pwoicik.uekschedule.screen.editGroupsScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

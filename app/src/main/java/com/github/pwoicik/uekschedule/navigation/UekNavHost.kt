@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
-import com.github.pwoicik.uekschedule.screen.editGroups.EditGroupsScreen
+import com.github.pwoicik.uekschedule.screen.editGroupsScreen.EditGroupsScreen
 import com.github.pwoicik.uekschedule.screen.scheduleScreen.ScheduleScreen
 
 @OptIn(ExperimentalFoundationApi::class)

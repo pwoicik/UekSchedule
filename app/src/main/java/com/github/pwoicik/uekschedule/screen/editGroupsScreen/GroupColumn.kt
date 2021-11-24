@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.screen.editGroups
+package com.github.pwoicik.uekschedule.screen.editGroupsScreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
