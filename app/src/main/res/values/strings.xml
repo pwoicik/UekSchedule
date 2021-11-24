@@ -3,7 +3,7 @@
     <string name="class_starts_in">STARTS IN %s</string>
     <string name="class_ends_in">ENDS IN %s</string>
     <string name="class_ended">ENDED</string>
-    <string name="edit_gropus">Edit groups</string>
+    <string name="edit_groups">Edit groups</string>
     <string name="your_groups">Your groups</string>
     <string name="no_saved_groups">You don\'t have any saved groups!</string>
     <string name="add_group">Add a new group</string>

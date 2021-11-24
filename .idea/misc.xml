@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/patry/source/UEKSchedule/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.4036458333333333" />
+        <entry key="..\:/Users/patry/source/UEKSchedule/app/src/main/res/drawable/ic_launcher_background.xml" value="0.23541666666666666" />
+        <entry key="..\:/Users/patry/source/UEKSchedule/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.4036458333333333" />
+        <entry key="..\:/Users/patry/source/UEKSchedule/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23541666666666666" />
+        <entry key="..\:/Users/patry/source/UEKSchedule/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.23541666666666666" />
       </map>
     </option>
   </component>

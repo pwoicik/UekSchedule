@@ -42,7 +42,7 @@ fun UekTopAppBar(
                     onDismissRequest = onDismiss
                 ) {
                     DropdownMenuItem(onClick = onEditGroups) {
-                        Text(stringResource(R.string.edit_gropus))
+                        Text(stringResource(R.string.edit_groups))
                     }
                 }
             }

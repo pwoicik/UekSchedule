@@ -36,12 +36,12 @@ fun ScheduleScreen(
 fun ScheduleColumnItemPreview() {
     UEKScheduleTheme {
         val c = Class(
-            subject = "Administrowanie sieciami komputerowymi",
-            teacher = "mgr Jakub Kanclerz",
+            subject = "Introduction to Computer Science",
+            teacher = "dr John Doe",
             startDateTime = ZonedDateTime.now(),
             endDateTime = ZonedDateTime.now().plusMinutes(90L),
             location = "Paw. A 014 lab. Win 8.1, Office16",
-            type = "ćwiczenia"
+            type = "workshop"
         )
         ScheduleColumnItem(clazz = c, ZonedDateTime.now())
     }
