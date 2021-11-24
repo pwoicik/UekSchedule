@@ -15,7 +15,7 @@ data class GroupsRoot @JvmOverloads constructor(
 data class Group @JvmOverloads constructor(
 
     @field:Attribute(name = "id")
-    var id: String = "",
+    var id: Long = 0L,
 
     @field:Attribute(name = "nazwa")
     var name: String = ""

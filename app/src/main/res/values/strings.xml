@@ -7,8 +7,9 @@
     <string name="your_groups">Your groups</string>
     <string name="no_saved_groups">You don\'t have any saved groups!</string>
     <string name="add_group">Add a new group</string>
-    <string name="add_group_textfield_placeholder">Group name or schedule link</string>
+    <string name="add_group_textfield_placeholder">Group name</string>
     <string name="add">Add</string>
     <string name="no_classes_message_1">No classes today!</string>
     <string name="no_classes_message_2">Enjoy your free time!!!</string>
+    <string name="no_group_found">The group you are looking for does not exist</string>
 </resources>

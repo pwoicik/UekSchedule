@@ -1,10 +1,7 @@
 package com.github.pwoicik.uekschedule.screen.editGroupsScreen
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -34,15 +31,11 @@ fun EditGroupsScreen(viewModel: ScheduleViewModel, showPopup: Boolean) {
             NoSavedGroups(showPopupFun)
         }
 
-        AnimatedVisibility(
-            visible = showPopup,
-            enter = scaleIn(),
-            exit = scaleOut()
-        ) {
+        if (showPopup) {
             AddGroupPopup(
                 availableGroups = availableGroups,
                 onDismiss = hidePopupFun,
-                onConfirmAddGroup = viewModel::addSchedule
+                onConfirmAddGroups = viewModel::addSchedules
             )
         }
     }

@@ -50,7 +50,9 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun addSchedule(groupId: Long) = fetchSchedule(groupId)
+    fun addSchedule(group: Group) = fetchSchedule(group.id)
+
+    fun addSchedules(groups: List<Group>) = groups.forEach(::addSchedule)
 
     fun deleteGroup(groupId: Long) {
         viewModelScope.launch(Dispatchers.IO) {

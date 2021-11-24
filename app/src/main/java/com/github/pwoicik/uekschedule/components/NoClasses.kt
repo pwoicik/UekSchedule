@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -24,9 +25,7 @@ fun NoClasses() {
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        CompositionLocalProvider(
-            LocalTextStyle provides MaterialTheme.typography.h5
-        ) {
+        ProvideTextStyle(MaterialTheme.typography.h5) {
             Text(stringResource(R.string.no_classes_message_1))
             Text(stringResource(R.string.no_classes_message_2))
         }
