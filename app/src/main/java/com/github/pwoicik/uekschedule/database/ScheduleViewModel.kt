@@ -30,7 +30,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     val classes = roomRepository
         .getAllClasses()
         .map {
-            it.sortedBy(Class::startDate)
+            it.sortedBy(Class::startDateTime)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
