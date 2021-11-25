@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit
 
 @Composable
 internal fun ClassTimeColumn(clazz: Class) {
-    val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
     Column(modifier = Modifier.wrapContentSize()) {
         Text(

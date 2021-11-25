@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.screen.scheduleScreen
+package com.github.pwoicik.uekschedule.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 
 @Composable
-fun NoSavedGroups(onAddGroup: () -> Unit) {
+fun NoSavedGroups(onAddGroups: () -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -19,7 +19,7 @@ fun NoSavedGroups(onAddGroup: () -> Unit) {
     ) {
         Text(stringResource(R.string.no_saved_groups))
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onAddGroup) {
+        Button(onClick = onAddGroups) {
             Text(stringResource(R.string.add_group))
         }
     }

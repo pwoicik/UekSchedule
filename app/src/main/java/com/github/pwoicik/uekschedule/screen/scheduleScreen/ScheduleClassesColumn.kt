@@ -21,7 +21,6 @@ import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -81,8 +80,8 @@ internal fun ScheduleColumnStickyHeader(date: LocalDate) {
             .fillMaxWidth()
     ) {
         Text(
-            date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)),
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)
+            date.format(DateTimeFormatter.ofPattern("EE dd MMM yyyy")),
+            modifier = Modifier.padding(8.dp)
         )
     }
 }

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.api.ApiRepository
-import com.github.pwoicik.uekschedule.api.model.Group
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -26,7 +25,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
 
     val groups = roomRepository
         .getAllGroups()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val classes = roomRepository
         .getAllClasses()
@@ -35,13 +34,16 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    fun getAllAvailableGroups(): State<List<Group>?> {
-        val allAvailableGroups: MutableState<List<Group>?> = mutableStateOf(null)
-        viewModelScope.launch(Dispatchers.IO) {
-            allAvailableGroups.value = apiRepository.getGroups()
+    private val _availableGroups: MutableState<List<Group>?> = mutableStateOf(null)
+    val availableGroups: State<List<Group>?>
+        get() {
+            if (_availableGroups.value == null)
+                viewModelScope.launch(Dispatchers.IO) {
+                    _availableGroups.value = apiRepository.getGroups()
+                }
+
+            return _availableGroups
         }
-        return allAvailableGroups
-    }
 
     private fun fetchSchedule(groupId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -50,9 +52,13 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun addSchedule(group: Group) = fetchSchedule(group.id)
-
-    fun addSchedules(groups: List<Group>) = groups.forEach(::addSchedule)
+    fun addSchedules(groups: List<Group>) =
+        viewModelScope.launch(Dispatchers.IO) {
+            for (group in groups) {
+                val schedule = apiRepository.getSchedule(group.id)
+                roomRepository.insertGroupWithClasses(schedule)
+            }
+        }
 
     fun deleteGroup(groupId: Long) {
         viewModelScope.launch(Dispatchers.IO) {

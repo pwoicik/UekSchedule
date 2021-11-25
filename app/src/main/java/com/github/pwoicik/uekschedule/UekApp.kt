@@ -1,14 +1,9 @@
 package com.github.pwoicik.uekschedule
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.github.pwoicik.uekschedule.components.UekTopAppBar
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
-import com.github.pwoicik.uekschedule.navigation.Routes
 import com.github.pwoicik.uekschedule.navigation.UekNavHost
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -21,41 +16,26 @@ fun UekApp(viewModel: ScheduleViewModel, systemInDarkTheme: Boolean) {
     var isDarkMode by remember { mutableStateOf(systemInDarkTheme) }
 
     UEKScheduleTheme(isDarkMode) {
-        val barColor = MaterialTheme.colors.primary
+        val topBarColor = MaterialTheme.colors.primary
+        val navBarColor = MaterialTheme.colors.surface
         SideEffect {
             uiController.setStatusBarColor(
-                color = barColor,
+                color = topBarColor,
                 darkIcons = false
             )
-        }
 
-        var dropdownIsExpanded by remember { mutableStateOf(false) }
-
-        Scaffold(
-            topBar = {
-                UekTopAppBar(
-                    isExpanded = dropdownIsExpanded,
-                    toggleDarkMode = {
-                        isDarkMode = !isDarkMode
-                    },
-                    toggleDropdown = {
-                        dropdownIsExpanded = !dropdownIsExpanded
-                    },
-                    onDismiss = {
-                        dropdownIsExpanded = false
-                    }
-                ) {
-                    dropdownIsExpanded = false
-                    navController.navigate(Routes.EditGroups.route)
-                }
-            },
-        ) { innerPadding ->
-
-            UekNavHost(
-                navController = navController,
-                viewModel = viewModel,
-                modifier = Modifier.padding(innerPadding)
+            uiController.setNavigationBarColor(
+                color = navBarColor,
+                darkIcons = !isDarkMode
             )
         }
+
+        UekNavHost(
+            navController = navController,
+            viewModel = viewModel,
+            toggleDarkMode = {
+                isDarkMode = !isDarkMode
+            }
+        )
     }
 }

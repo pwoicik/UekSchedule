@@ -2,14 +2,13 @@ package com.github.pwoicik.uekschedule.navigation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
-import com.github.pwoicik.uekschedule.screen.editGroupsScreen.EditGroupsScreen
+import com.github.pwoicik.uekschedule.screen.addGroupsScreen.AddGroupsScreen
+import com.github.pwoicik.uekschedule.screen.savedGroupsScreen.SavedGroupsScreen
 import com.github.pwoicik.uekschedule.screen.scheduleScreen.ScheduleScreen
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -17,35 +16,49 @@ import com.github.pwoicik.uekschedule.screen.scheduleScreen.ScheduleScreen
 fun UekNavHost(
     navController: NavHostController,
     viewModel: ScheduleViewModel,
-    modifier: Modifier = Modifier
+    toggleDarkMode: () -> Unit
 ) {
     NavHost(
         navController = navController,
-        startDestination = Routes.Schedule.route,
-        modifier = modifier
+        startDestination = Destinations.Schedule.route
     ) {
-        composable(Routes.Schedule.route) {
+        val onEditGroups = {
+            navController.navigate(Destinations.ManageGroups.route)
+        }
+        val onAddGroups = {
+            navController.navigate(Destinations.AddGroups.route)
+        }
+        val goBack: () -> Unit = {
+            navController.popBackStack()
+        }
+
+        composable(Destinations.Schedule.route) {
             ScheduleScreen(
                 viewModel = viewModel,
-                onAddGroup = {
-                    navController.navigate(Routes.EditGroups.route + "true")
-                }
+                toggleDarkMode = toggleDarkMode,
+                onEditGroups = onEditGroups,
+                onAddGroups = onAddGroups
             )
         }
 
-        composable(
-            route = Routes.EditGroups.route + "{showPopup}",
-            arguments = listOf(
-                navArgument(name = "showPopup") {
-                    type = NavType.BoolType
-                    defaultValue = false
-                }
-            )
-        ) { backStackEntry ->
-            EditGroupsScreen(
-                viewModel = viewModel,
-                showPopup = backStackEntry.arguments!!.getBoolean("showPopup")
-            )
+        navigation(
+            route = Destinations.ManageGroups.route,
+            startDestination = "saved-groups"
+        ) {
+            composable("saved-groups") {
+                SavedGroupsScreen(
+                    viewModel = viewModel,
+                    onAddGroups = onAddGroups,
+                    goBack = goBack,
+                )
+            }
+
+            composable(Destinations.AddGroups.route) {
+                AddGroupsScreen(
+                    viewModel = viewModel,
+                    goBack = goBack
+                )
+            }
         }
     }
 }
