@@ -45,11 +45,9 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
             return _availableGroups
         }
 
-    private fun fetchSchedule(groupId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val newSchedule = apiRepository.getSchedule(groupId)
-            roomRepository.insertGroupWithClasses(newSchedule)
-        }
+    private suspend fun fetchSchedule(groupId: Long) {
+        val newSchedule = apiRepository.getSchedule(groupId)
+        roomRepository.insertGroupWithClasses(newSchedule)
     }
 
     fun addSchedules(groups: List<Group>) =

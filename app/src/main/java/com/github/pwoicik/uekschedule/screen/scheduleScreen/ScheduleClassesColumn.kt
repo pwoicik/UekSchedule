@@ -34,11 +34,11 @@ fun ScheduleClassesColumn(
         timeNow = ZonedDateTime.now()
     }
 
-    val swipeRefreshState by viewModel.isRefreshing.collectAsState()
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
 
     SwipeRefresh(
-        state = rememberSwipeRefreshState(swipeRefreshState),
-        onRefresh = { viewModel.refresh() },
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = viewModel::refresh,
         indicator = { s, trigger ->
             SwipeRefreshIndicator(s, trigger, shape = RoundedCornerShape(50))
         }
