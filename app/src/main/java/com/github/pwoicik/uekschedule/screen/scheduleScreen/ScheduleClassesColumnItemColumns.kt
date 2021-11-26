@@ -17,7 +17,7 @@ import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 
 @Composable
-internal fun ClassTimeColumn(clazz: Class) {
+fun ClassTimeColumn(clazz: Class) {
     val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
     Column(modifier = Modifier.wrapContentSize()) {
@@ -36,7 +36,7 @@ internal fun ClassTimeColumn(clazz: Class) {
 }
 
 @Composable
-internal fun ClassDetailsColumn(clazz: Class) {
+fun ClassDetailsColumn(clazz: Class) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Text(clazz.subject, modifier = Modifier.padding(bottom = 8.dp))
 
@@ -67,7 +67,7 @@ internal fun ClassDetailsColumn(clazz: Class) {
 }
 
 @Composable
-internal fun ClassStatusColumn(
+fun ClassStatusColumn(
     status: ClassStatus,
     timeDifference: Long,
     timeNow: ZonedDateTime,

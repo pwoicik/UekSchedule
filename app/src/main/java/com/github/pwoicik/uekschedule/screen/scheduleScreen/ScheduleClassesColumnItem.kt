@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 @Composable
-internal fun ScheduleColumnItemLayout(
+fun ScheduleColumnItemLayout(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -49,7 +49,7 @@ internal fun ScheduleColumnItemLayout(
 }
 
 @Composable
-internal fun ScheduleColumnItem(clazz: Class, timeNow: ZonedDateTime) {
+fun ScheduleColumnItem(clazz: Class, timeNow: ZonedDateTime) {
     val timeDifference = timeNow.until(clazz.startDateTime, ChronoUnit.MINUTES)
     val status = when {
         timeNow.isBefore(clazz.startDateTime) -> ClassStatus.NOT_STARTED

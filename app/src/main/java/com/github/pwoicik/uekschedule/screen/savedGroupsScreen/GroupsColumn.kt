@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.database.Group
 
 @Composable
-internal fun GroupsColumn(
+fun GroupsColumn(
     groups: List<Group>,
     onDeleteGroup: (id: Long) -> Unit
 ) {
@@ -31,7 +31,7 @@ internal fun GroupsColumn(
 }
 
 @Composable
-internal fun GroupColumnItem(group: Group, onDeleteGroup: (id: Long) -> Unit) {
+fun GroupColumnItem(group: Group, onDeleteGroup: (id: Long) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)

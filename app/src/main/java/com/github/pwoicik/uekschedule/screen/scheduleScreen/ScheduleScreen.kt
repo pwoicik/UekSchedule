@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import com.github.pwoicik.uekschedule.components.NoSavedGroups
 import com.github.pwoicik.uekschedule.database.Class
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.time.ZonedDateTime
 
 @Composable
@@ -34,6 +36,7 @@ fun ScheduleScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
                 title = {
                     Text(stringResource(R.string.app_name))
                 },

@@ -24,12 +24,11 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun ScheduleClassesColumn(
+fun ScheduleClassesColumn(
     classes: List<Class>,
     viewModel: ScheduleViewModel
 ) {
     var timeNow by remember { mutableStateOf(ZonedDateTime.now()) }
-
     LaunchedEffect(key1 = timeNow) {
         delay(15_000)
         timeNow = ZonedDateTime.now()
@@ -50,7 +49,6 @@ internal fun ScheduleClassesColumn(
             }
             item {
                 ScheduleColumnItem(clazz = classes[0], timeNow)
-                Divider(modifier = Modifier.height(1.dp))
             }
 
             for (i in 1..classes.lastIndex) {
@@ -61,11 +59,14 @@ internal fun ScheduleClassesColumn(
                     stickyHeader {
                         ScheduleColumnStickyHeader(nextClass.startDateTime.toLocalDate())
                     }
-                }
-
-                item {
-                    ScheduleColumnItem(clazz = nextClass, timeNow)
-                    Divider(modifier = Modifier.height(1.dp))
+                    item {
+                        ScheduleColumnItem(clazz = nextClass, timeNow)
+                    }
+                } else {
+                    item {
+                        Divider(modifier = Modifier.height(1.dp))
+                        ScheduleColumnItem(clazz = nextClass, timeNow)
+                    }
                 }
             }
         }
@@ -73,7 +74,7 @@ internal fun ScheduleClassesColumn(
 }
 
 @Composable
-internal fun ScheduleColumnStickyHeader(date: LocalDate) {
+fun ScheduleColumnStickyHeader(date: LocalDate) {
     Surface(
         elevation = 6.dp,
         modifier = Modifier

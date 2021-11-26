@@ -35,6 +35,7 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.components.LoadingSpinnerCentered
 import com.github.pwoicik.uekschedule.database.Group
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -53,6 +54,7 @@ fun AddGroupsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = goBack) {
@@ -128,7 +130,7 @@ fun AddGroupsScreen(
 }
 
 @Composable
-internal fun ColumnScope.AddGroupsScreenContent(
+fun ColumnScope.AddGroupsScreenContent(
     availableGroups: List<Group>,
     savedGroups: List<Group>,
     inputText: String,
@@ -161,14 +163,14 @@ internal fun ColumnScope.AddGroupsScreenContent(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal fun SearchAvailableGroupsTextField(
+fun SearchAvailableGroupsTextField(
     inputText: String,
     onInputChange: (String) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(Unit) {
+    SideEffect {
         focusRequester.requestFocus()
     }
 
@@ -195,7 +197,7 @@ internal fun SearchAvailableGroupsTextField(
 }
 
 @Composable
-internal fun ColumnScope.AvailableGroups(
+fun ColumnScope.AvailableGroups(
     availableGroups: List<Group>,
     savedGroups: List<Group>,
     searchText: String,
@@ -243,7 +245,7 @@ internal fun ColumnScope.AvailableGroups(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun SelectedGroupsRow(
+fun SelectedGroupsRow(
     selectedGroups: List<Group>,
     onUnselectGroup: (Group) -> Unit
 ) {
@@ -277,7 +279,7 @@ internal fun SelectedGroupsRow(
 }
 
 @Composable
-internal fun AvailableGroupsList(
+fun AvailableGroupsList(
     availableGroups: List<Group>,
     savedGroups: List<Group>,
     onSelectGroup: (Group) -> Unit,
@@ -302,7 +304,7 @@ internal fun AvailableGroupsList(
 }
 
 @Composable
-internal fun AvailableGroupsListItem(
+fun AvailableGroupsListItem(
     groupName: String,
     isAlreadySaved: Boolean,
     alpha: Float,

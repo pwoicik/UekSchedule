@@ -26,6 +26,7 @@ fun SavedGroupsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
                 title = {
                     Text(stringResource(R.string.your_groups))
                 },
