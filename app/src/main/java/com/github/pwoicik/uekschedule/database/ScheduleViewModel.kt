@@ -1,6 +1,7 @@
 package com.github.pwoicik.uekschedule.database
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -19,8 +20,8 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
     private val apiRepository = ApiRepository()
     private val roomRepository = AppDatabase.getInstance(application).scheduleDao()
 
-    private val _isRefreshing = MutableStateFlow(true)
-    val isRefreshing: StateFlow<Boolean>
+    private val _isRefreshing = mutableStateOf(false)
+    val isRefreshing: State<Boolean>
         get() = _isRefreshing
 
     val groups = roomRepository
@@ -34,16 +35,7 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    private val _availableGroups: MutableState<List<Group>?> = mutableStateOf(null)
-    val availableGroups: State<List<Group>?>
-        get() {
-            if (_availableGroups.value == null)
-                viewModelScope.launch(Dispatchers.IO) {
-                    _availableGroups.value = apiRepository.getGroups()
-                }
-
-            return _availableGroups
-        }
+    suspend fun getAvailableGroups() = apiRepository.getGroups()
 
     private suspend fun fetchSchedule(groupId: Long) {
         val newSchedule = apiRepository.getSchedule(groupId)
@@ -64,20 +56,28 @@ class ScheduleViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun refresh() {
+    fun refresh(
+        onError: (() -> Unit)? = null,
+        onSuccess: (() -> Unit)? = null
+    ) {
+        if (_isRefreshing.value || groups.value == null) return
+
         viewModelScope.launch(Dispatchers.IO) {
-            _isRefreshing.emit(true)
+            try {
+                _isRefreshing.value = true
 
-            groups.value?.forEach { group ->
-                fetchSchedule(group.id)
+                groups.value?.forEach { group ->
+                    Log.d("syncing data",  group.id.toString())
+                    fetchSchedule(group.id)
+                }
+
+                onSuccess?.invoke()
+            } catch (e: Exception) {
+                onError?.invoke()
+            } finally {
+                _isRefreshing.value = false
             }
-
-            _isRefreshing.emit(false)
         }
-    }
-
-    init {
-        refresh()
     }
 }
 

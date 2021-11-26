@@ -26,7 +26,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ScheduleClassesColumn(
     classes: List<Class>,
-    viewModel: ScheduleViewModel
+    viewModel: ScheduleViewModel,
+    onRefresh: () -> Unit
 ) {
     var timeNow by remember { mutableStateOf(ZonedDateTime.now()) }
     LaunchedEffect(key1 = timeNow) {
@@ -34,11 +35,11 @@ fun ScheduleClassesColumn(
         timeNow = ZonedDateTime.now()
     }
 
-    val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val isRefreshing by viewModel.isRefreshing
 
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = viewModel::refresh,
+        onRefresh = onRefresh,
         indicator = { s, trigger ->
             SwipeRefreshIndicator(s, trigger, shape = RoundedCornerShape(50))
         }

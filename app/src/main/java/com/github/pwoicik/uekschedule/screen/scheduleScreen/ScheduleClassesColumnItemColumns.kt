@@ -13,7 +13,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.database.Class
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.time.temporal.ChronoUnit
 
 @Composable

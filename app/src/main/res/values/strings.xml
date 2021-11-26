@@ -11,4 +11,5 @@
     <string name="no_classes_message_2">Enjoy your free time!!!</string>
     <string name="no_group_found">The group you are looking for does not exist</string>
     <string name="group_saved">(saved) %s</string>
+    <string name="couldnt_connect">Couldn\'t connect to the server!</string>
 </resources>

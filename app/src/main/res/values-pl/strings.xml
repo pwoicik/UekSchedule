@@ -11,4 +11,5 @@
     <string name="no_classes_message_2">Miłego odpoczynku!!!</string>
     <string name="no_group_found">Szukana grupa nie istnieje</string>
     <string name="group_saved">(zapisana) %s</string>
+    <string name="couldnt_connect">Brak połączenia z serwerem!</string>
 </resources>

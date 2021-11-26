@@ -10,14 +10,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -35,7 +33,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.components.LoadingSpinnerCentered
 import com.github.pwoicik.uekschedule.database.Group
 import com.github.pwoicik.uekschedule.database.ScheduleViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -44,14 +41,46 @@ fun AddGroupsScreen(
     goBack: () -> Unit
 ) {
     val savedGroups by viewModel.groups.collectAsState()
-    val availableGroups by viewModel.availableGroups
+    var availableGroups: List<Group> by remember { mutableStateOf(emptyList()) }
+
+    var isFetchingAvailableGroups by remember { mutableStateOf(false) }
+
+    val scaffoldState = rememberScaffoldState()
+
+    val connectionErrorMessage = stringResource(R.string.couldnt_connect)
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarCoroutineScope = rememberCoroutineScope()
+    val fetchAvailableGroups: () -> Unit = {
+        coroutineScope.launch {
+            try {
+                isFetchingAvailableGroups = true
+                availableGroups = viewModel.getAvailableGroups()
+
+                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+            } catch (e: Exception) {
+                if (scaffoldState.snackbarHostState.currentSnackbarData == null)
+                    snackbarCoroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = connectionErrorMessage,
+                            duration = SnackbarDuration.Indefinite
+                        )
+                    }
+            } finally {
+                isFetchingAvailableGroups = false
+            }
+        }
+    }
+
+    SideEffect {
+        fetchAvailableGroups()
+    }
 
     var selectedGroups by remember { mutableStateOf(emptyList<Group>()) }
 
     var isFetchingNewGroups by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 backgroundColor = MaterialTheme.colors.primary,
@@ -101,6 +130,21 @@ fun AddGroupsScreen(
                         }
                 }
             )
+        },
+        snackbarHost = {
+            SnackbarHost(it) { snackbarData ->
+                Snackbar(
+                    shape = RoundedCornerShape(8.dp),
+                    action = {
+                        IconButton(onClick = fetchAvailableGroups) {
+                            Icon(Icons.Filled.Refresh, contentDescription = "")
+                        }
+                    },
+                    modifier = Modifier.padding(12.dp)
+                ) {
+                    Text(snackbarData.message)
+                }
+            }
         }
     ) { innerPadding ->
         Surface(modifier = Modifier.padding(innerPadding)) {
@@ -109,13 +153,13 @@ fun AddGroupsScreen(
                     .fillMaxSize()
                     .padding(horizontal = 24.dp, vertical = 12.dp)
             ) {
-                if (availableGroups == null || savedGroups == null) {
+                if (isFetchingAvailableGroups || savedGroups == null) {
                     LoadingSpinnerCentered()
                 } else {
                     var inputText by remember { mutableStateOf("") }
 
                     AddGroupsScreenContent(
-                        availableGroups = availableGroups!!,
+                        availableGroups = availableGroups,
                         savedGroups = savedGroups!!,
                         inputText = inputText,
                         onInputChange = { inputText = it },
