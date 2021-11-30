@@ -7,9 +7,17 @@
     <string name="no_saved_groups">Nie masz zapisanych żadnych grup!</string>
     <string name="add_group">Dodaj nową grupę</string>
     <string name="add_group_textfield_placeholder">Nazwa grupy</string>
-    <string name="no_classes_message_1">Na dzisiaj wolne!</string>
-    <string name="no_classes_message_2">Miłego odpoczynku!!!</string>
     <string name="no_group_found">Szukana grupa nie istnieje</string>
     <string name="group_saved">(zapisana) %s</string>
     <string name="couldnt_connect">Brak połączenia z serwerem!</string>
+    <string name="retry">Spróbuj ponownie</string>
+    <string name="delete_group">Usuń grupę</string>
+    <string name="search_groups">Szukaj grupy</string>
+    <string name="clear_search_text">Wyczyść szukaną frazę</string>
+    <string name="save_selected_groups">Zapisz zaznaczone grupy</string>
+    <string name="clear_selected_groups">Wyczyść zaznaczone grupy</string>
+    <string name="navigate_back">Wstecz</string>
+    <string name="unselect_group">Usuń z zaznaczonych</string>
+    <string name="manage_groups">Zarządzaj swoimi grupami</string>
+    <string name="no_classes_message">Nie masz żadnych zajęć!</string>
 </resources>
