@@ -7,10 +7,8 @@ import java.time.ZonedDateTime
 fun convertDateTime(
     date: String,
     time: String,
-    fromZone: ZoneId = ZoneId.of("Europe/Warsaw"),
-    toZone: ZoneId = ZoneId.systemDefault()
+    fromZone: ZoneId = ZoneId.of("Europe/Warsaw")
 ): ZonedDateTime {
     val ldt = LocalDateTime.parse("${date}T${time}")
-    val zdt = ZonedDateTime.of(ldt, fromZone)
-    return zdt.withZoneSameInstant(toZone)
+    return ZonedDateTime.of(ldt, fromZone)
 }

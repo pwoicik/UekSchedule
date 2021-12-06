@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
-import com.google.accompanist.insets.navigationBarsHeight
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsHeight
 
 @Composable
@@ -34,16 +34,17 @@ fun ManageGroupsScreen(
 
     Scaffold(
         topBar = {
-            Surface(
-                elevation = 24.dp,
+            Spacer(
                 modifier = Modifier
                     .statusBarsHeight(24.dp)
-            ) {}
-        }
+            )
+        },
+        modifier = Modifier.navigationBarsPadding()
     ) {
-        Surface(modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .padding(top = 8.dp)
+        Surface(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .padding(top = 8.dp)
         ) {
             Column {
                 Row(
@@ -71,53 +72,51 @@ fun ManageGroupsScreen(
                     }
                 }
 
-                AnimatedVisibility(!savedGroups.isNullOrEmpty()) {
-                    LazyColumn(modifier = Modifier.padding(horizontal = 12.dp)) {
-                        items(savedGroups!!) { group ->
-                            Surface(
-                                elevation = 8.dp,
-                                shape = RoundedCornerShape(24.dp),
-                                modifier = Modifier.padding(vertical = 16.dp)
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp, horizontal = 16.dp)
-                                        .padding(start = 8.dp)
+                savedGroups?.let { savedGroups ->
+                    AnimatedVisibility(
+                        visible = savedGroups.isEmpty(),
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Text(stringResource(R.string.no_saved_groups))
+                        }
+                    }
+
+                    AnimatedVisibility(savedGroups.isNotEmpty()) {
+                        LazyColumn(modifier = Modifier.padding(horizontal = 12.dp)) {
+                            items(savedGroups) { group ->
+                                Surface(
+                                    elevation = 8.dp,
+                                    shape = RoundedCornerShape(24.dp),
+                                    modifier = Modifier.padding(vertical = 16.dp)
                                 ) {
-                                    Text(group.name)
-                                    IconButton(
-                                        onClick = {
-                                            viewModel.deleteGroup(group)
-                                        }
+                                    Row(
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 8.dp, horizontal = 16.dp)
+                                            .padding(start = 8.dp)
                                     ) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.Delete,
-                                            contentDescription = stringResource(R.string.delete_group)
-                                        )
+                                        Text(group.name)
+                                        IconButton(
+                                            onClick = {
+                                                viewModel.deleteGroup(group)
+                                            }
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Outlined.Delete,
+                                                contentDescription = stringResource(R.string.delete_group)
+                                            )
+                                        }
                                     }
                                 }
                             }
                         }
-
-                        item {
-                            Spacer(modifier = Modifier.navigationBarsHeight())
-                        }
-                    }
-                }
-
-                AnimatedVisibility(
-                    visible = savedGroups != null && savedGroups!!.isEmpty(),
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Text(stringResource(R.string.no_saved_groups))
                     }
                 }
             }

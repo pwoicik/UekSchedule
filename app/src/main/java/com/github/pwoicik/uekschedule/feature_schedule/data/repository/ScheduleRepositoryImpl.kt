@@ -10,7 +10,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Group
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.GroupWithClasses
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class ScheduleRepositoryImpl(
     private val scheduleApi: ScheduleApi,
@@ -37,9 +36,7 @@ class ScheduleRepositoryImpl(
     }
 
     override fun getAllClassesFlow(): Flow<List<Class>> {
-        return classDao.getAllClasses().map {
-            it.sortedBy(Class::startDateTime)
-        }
+        return classDao.getAllClasses()
     }
 
     override suspend fun addGroups(groups: List<Group>) {

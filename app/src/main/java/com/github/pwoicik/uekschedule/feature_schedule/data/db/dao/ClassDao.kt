@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ClassDao {
 
-    @Query("select * from classes")
+    @Query("select * from classes order by start_datetime")
     fun getAllClasses(): Flow<List<Class>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

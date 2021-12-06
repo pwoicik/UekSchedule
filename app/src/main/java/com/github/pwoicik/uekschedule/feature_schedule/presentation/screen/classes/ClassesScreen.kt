@@ -55,30 +55,32 @@ fun ClassesScreen(
         navController = navController,
         viewModel = viewModel
     ) {
-        AnimatedVisibility(
-            visible = classes != null && classes!!.isEmpty(),
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
+        classes?.let { classes ->
+            AnimatedVisibility(
+                visible = classes.isEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
             ) {
-                Text(stringResource(R.string.no_classes_message))
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Text(stringResource(R.string.no_classes_message))
+                }
             }
-        }
 
-        AnimatedVisibility(
-            visible = classes != null && classes!!.isNotEmpty(),
-            enter = slideInVertically(),
-            exit = slideOutVertically()
-        ) {
-            ClassesList(
-                isUpdating = isUpdating,
-                classes = classes!!,
-                timeNow = timeNow,
-                onRefresh = viewModel::updateClasses
-            )
+            AnimatedVisibility(
+                visible = classes.isNotEmpty(),
+                enter = slideInVertically(),
+                exit = slideOutVertically()
+            ) {
+                ClassesList(
+                    isUpdating = isUpdating,
+                    classes = classes,
+                    timeNow = timeNow,
+                    onRefresh = viewModel::updateClasses
+                )
+            }
         }
     }
 }

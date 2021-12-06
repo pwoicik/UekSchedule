@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">UEK Schedule</string>
-    <string name="class_starts_in">STARTS IN %s</string>
-    <string name="class_ends_in">ENDS IN %s</string>
     <string name="class_ended">ENDED</string>
     <string name="your_groups">Your groups</string>
     <string name="no_saved_groups">You don\'t have any saved groups!</string>
@@ -20,4 +18,13 @@
     <string name="navigate_back">Go back</string>
     <string name="unselect_group">Remove from selected</string>
     <string name="manage_groups">Manage your groups</string>
+    <string name="class_starts_in_less_than_1_min"><![CDATA[STARTS IN\n< 1 MIN]]></string>
+    <string name="class_starts_in_minutes">STARTS IN\n%d MIN</string>
+    <string name="class_starts_in_hours">STARTS IN\n%d H</string>
+    <string name="class_ends_in_less_than_1_min">!<![CDATA[ENDS IN\n< 1 MIN]]></string>
+    <string name="class_ends_in_minutes">ENDS IN\n%d MIN</string>
+    <plurals name="class_starts_in_days">
+        <item quantity="one">STARTS IN\n%d DAY</item>
+        <item quantity="other">STARTS IN\n%d DAYS</item>
+    </plurals>
 </resources>

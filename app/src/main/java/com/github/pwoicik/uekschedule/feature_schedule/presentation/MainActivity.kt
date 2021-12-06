@@ -3,6 +3,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
@@ -29,11 +30,11 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val uiController = rememberSystemUiController()
 
+                val isDarkMode = isSystemInDarkTheme()
                 uiController.setStatusBarColor(
                     color = Color.Transparent,
-                    darkIcons = true
+                    darkIcons = !isDarkMode
                 )
-                uiController.setNavigationBarColor(Color.Transparent)
 
                 ProvideWindowInsets {
                     NavHost(

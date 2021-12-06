@@ -16,6 +16,7 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes.ClassesViewModel
 import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 
 @Composable
@@ -73,6 +74,7 @@ fun ClassesScaffold(
                 }
             }
         },
+        modifier = Modifier.navigationBarsPadding()
     ) {
         Surface(
             modifier = Modifier

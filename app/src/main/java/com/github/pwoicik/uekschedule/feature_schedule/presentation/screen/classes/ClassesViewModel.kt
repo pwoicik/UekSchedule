@@ -45,7 +45,7 @@ class ClassesViewModel @Inject constructor(
         updateClasses()
 
         scheduleUseCases.getAllClasses().onEach { classes ->
-            _classes.value = classes.sortedBy(Class::startDateTime)
+            _classes.value = classes
         }.launchIn(viewModelScope)
     }
 

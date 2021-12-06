@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="class_starts_in">ZA %s</string>
-    <string name="class_ends_in">TRWA JESZCZE %s</string>
     <string name="class_ended">MINĘŁO</string>
     <string name="your_groups">Twoje grupy</string>
     <string name="no_saved_groups">Nie masz zapisanych żadnych grup!</string>
@@ -20,4 +18,14 @@
     <string name="unselect_group">Usuń z zaznaczonych</string>
     <string name="manage_groups">Zarządzaj swoimi grupami</string>
     <string name="no_classes_message">Nie masz żadnych zajęć!</string>
+    <string name="class_starts_in_less_than_1_min"><![CDATA[ZA\n< 1 MIN]]></string>
+    <string name="class_starts_in_minutes">ZA\n%d MIN</string>
+    <string name="class_starts_in_hours">ZA\n%d H</string>
+    <string name="class_ends_in_less_than_1_min">!<![CDATA[TRWA JESZCZE\n< 1 MIN]]></string>
+    <string name="class_ends_in_minutes">TRWA JESZCZE\n%d MIN</string>
+    <plurals name="class_starts_in_days">
+        <item quantity="one">ZA\n%d DZIEŃ</item>
+        <item quantity="few">ZA\n%d DNI</item>
+        <item quantity="many">ZA\n%d DNI</item>
+    </plurals>
 </resources>
