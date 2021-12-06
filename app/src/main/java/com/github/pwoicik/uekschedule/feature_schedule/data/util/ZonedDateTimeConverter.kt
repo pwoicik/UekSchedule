@@ -5,7 +5,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-object LocalDateTimeConverter {
+object ZonedDateTimeConverter {
     @TypeConverter
     @JvmStatic
     fun fromTimestamp(timestamp: Long): ZonedDateTime {
