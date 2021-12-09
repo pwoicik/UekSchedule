@@ -25,7 +25,7 @@ fun ClassesScreen(
     navController: NavController,
     viewModel: ClassesViewModel = hiltViewModel()
 ) {
-    val classes by viewModel.classes
+    val classes by viewModel.classes.collectAsState()
     val isUpdating by viewModel.isUpdating
 
     val timeNow by viewModel.timeFlow.collectAsState()

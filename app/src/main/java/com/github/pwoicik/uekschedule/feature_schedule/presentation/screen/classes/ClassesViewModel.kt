@@ -1,12 +1,10 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.common.Resource
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Class
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -20,11 +18,10 @@ class ClassesViewModel @Inject constructor(
     private val scheduleUseCases: ScheduleUseCases
 ) : ViewModel() {
 
-    private val _classes: MutableState<List<Class>?> = mutableStateOf(null)
-    val classes: State<List<Class>?>
-        get() = _classes
+    val classes = scheduleUseCases.getAllClasses()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    private val _eventFlow: MutableSharedFlow<UiEvent> = MutableSharedFlow(replay = Int.MAX_VALUE)
+    private val _eventFlow: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val eventFlow: SharedFlow<UiEvent>
         get() = _eventFlow
 
@@ -34,8 +31,9 @@ class ClassesViewModel @Inject constructor(
 
     val timeFlow = flow {
         while (true) {
-            delay(5_000)
-            emit(ZonedDateTime.now())
+            val timeNow = ZonedDateTime.now()
+            emit(timeNow)
+            delay((60 - timeNow.second) * 1000L)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ZonedDateTime.now())
 
@@ -43,10 +41,6 @@ class ClassesViewModel @Inject constructor(
 
     init {
         updateClasses()
-
-        scheduleUseCases.getAllClasses().onEach { classes ->
-            _classes.value = classes
-        }.launchIn(viewModelScope)
     }
 
     fun updateClasses() {
