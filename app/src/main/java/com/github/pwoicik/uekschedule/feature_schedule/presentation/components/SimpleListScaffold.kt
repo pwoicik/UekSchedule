@@ -1,6 +1,5 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -76,28 +75,26 @@ fun <T> SimpleListScaffold(
                                 }
                             }
                             false -> {
-                                AnimatedVisibility(it) {
-                                    LazyColumn(modifier = Modifier.padding(horizontal = 12.dp)) {
-                                        items(items) { item ->
-                                            Surface(
-                                                elevation = 8.dp,
-                                                shape = RoundedCornerShape(24.dp),
+                                LazyColumn(modifier = Modifier.padding(horizontal = 12.dp)) {
+                                    items(items) { item ->
+                                        Surface(
+                                            elevation = 8.dp,
+                                            shape = RoundedCornerShape(24.dp),
+                                            modifier = Modifier
+                                                .padding(vertical = 16.dp)
+                                        ) {
+                                            Box(
                                                 modifier = Modifier
-                                                    .padding(vertical = 16.dp)
+                                                    .clip(RoundedCornerShape(24.dp))
+                                                    .run {
+                                                        if (onClickItem != null)
+                                                            clickable {
+                                                                onClickItem(item)
+                                                            }
+                                                        else this
+                                                    }
                                             ) {
-                                                Box(
-                                                    modifier = Modifier
-                                                        .clip(RoundedCornerShape(24.dp))
-                                                        .run {
-                                                            if (onClickItem != null)
-                                                                clickable {
-                                                                    onClickItem(item)
-                                                                }
-                                                            else this
-                                                        }
-                                                ) {
-                                                    itemComposable(item)
-                                                }
+                                                itemComposable(item)
                                             }
                                         }
                                     }

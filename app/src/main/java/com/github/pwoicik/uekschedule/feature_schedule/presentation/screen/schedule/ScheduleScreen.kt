@@ -1,9 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.SnackbarDuration
@@ -70,18 +67,12 @@ fun ScheduleScreen(
                         }
                     }
                     false -> {
-                        AnimatedVisibility(
-                            visible = !isEmpty,
-                            enter = slideInVertically(),
-                            exit = slideOutVertically()
-                        ) {
-                            ScheduleEntriesList(
-                                isUpdating = isUpdating,
-                                scheduleEntries = scheduleEntries,
-                                timeNow = timeNow,
-                                onRefresh = viewModel::updateClasses
-                            )
-                        }
+                        ScheduleEntriesList(
+                            isUpdating = isUpdating,
+                            scheduleEntries = scheduleEntries,
+                            timeNow = timeNow,
+                            onRefresh = viewModel::updateClasses
+                        )
                     }
                 }
             }
