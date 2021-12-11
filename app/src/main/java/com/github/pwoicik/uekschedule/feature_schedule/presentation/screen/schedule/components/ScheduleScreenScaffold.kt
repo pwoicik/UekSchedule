@@ -15,7 +15,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.ScheduleScreenViewModel
 import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.TopAppBar
 
@@ -94,12 +93,12 @@ fun ScheduleScreenScaffold(
                     Text(snackbarData.message)
                 }
             }
-        },
-        modifier = Modifier.navigationBarsPadding()
-    ) {
+        }
+    ) { innerPadding ->
         Surface(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(innerPadding),
             content = content
         )
     }

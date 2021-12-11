@@ -20,7 +20,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.AddActivityTextFiled
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.RepeatActivityInputColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.TimeInputField
-import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.insets.statusBarsHeight
 import kotlinx.coroutines.flow.collectLatest
 
@@ -80,10 +79,8 @@ fun AddActivityScreen(
                     )
                 }
             }
-        },
-        modifier = Modifier
-            .navigationBarsWithImePadding()
-    ) {
+        }
+    ) { innerPadding ->
         state?.let { state ->
             val focusRequester = remember { FocusRequester() }
             LaunchedEffect(Unit) {
@@ -100,6 +97,7 @@ fun AddActivityScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(innerPadding)
             ) {
                 item {
                     AddActivityTextFiled(

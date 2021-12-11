@@ -1,6 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.components
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Surface
@@ -10,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.AddGroupsEvent
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.AddGroupsViewModel
-import com.google.accompanist.insets.navigationBarsWithImePadding
 
 @Composable
 fun AddGroupsScaffold(
@@ -21,7 +21,6 @@ fun AddGroupsScaffold(
     content: @Composable () -> Unit
 ) {
     Scaffold(
-        modifier = Modifier.navigationBarsWithImePadding(),
         backgroundColor = Color.Transparent,
         scaffoldState = scaffoldState,
         bottomBar = {
@@ -38,9 +37,11 @@ fun AddGroupsScaffold(
                 }
             )
         }
-    ) {
+    ) { innerPadding ->
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             content = content
         )
     }

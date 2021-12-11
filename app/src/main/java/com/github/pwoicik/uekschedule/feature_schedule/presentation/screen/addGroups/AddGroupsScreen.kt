@@ -28,8 +28,7 @@ fun AddGroupsScreen(
     navController: NavController,
     viewModel: AddGroupsViewModel = hiltViewModel()
 ) {
-    val availableGroupsState by viewModel.availableGroups
-    val addGroupsState by viewModel.addGroupsState
+    val state by viewModel.state
 
     val scaffoldState = rememberScaffoldState()
     val snackbarMessage = stringResource(R.string.couldnt_connect)
@@ -54,14 +53,14 @@ fun AddGroupsScreen(
         scaffoldState = scaffoldState,
         navController = navController,
         viewModel = viewModel,
-        selectedGroupsActionButtonsEnabled = addGroupsState.selectedGroups.isNotEmpty() &&
-                !addGroupsState.isSaving
+        selectedGroupsActionButtonsEnabled = state.selectedGroups.isNotEmpty() &&
+                !state.isSaving
     ) {
         when {
-            availableGroupsState.isLoading -> {
+            state.availableGroupsState.isLoading -> {
                 CircularProgressIndicatorCentered(modifier = Modifier.fillMaxSize())
             }
-            availableGroupsState.isError -> {
+            state.availableGroupsState.isError -> {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,7 +83,7 @@ fun AddGroupsScreen(
             else -> {
                 AddGroupsSelectionList(
                     viewModel = viewModel,
-                    addGroupsState = addGroupsState
+                    state = state
                 )
             }
         }

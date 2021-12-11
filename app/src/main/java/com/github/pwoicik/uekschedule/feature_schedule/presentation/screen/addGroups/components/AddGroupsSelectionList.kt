@@ -10,6 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,21 +19,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.AddGroupsEvent
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.AddGroupsState
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.AddGroupsScreenState
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.AddGroupsViewModel
 import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun AddGroupsSelectionList(
     viewModel: AddGroupsViewModel,
-    addGroupsState: AddGroupsState
+    state: AddGroupsScreenState
 ) {
     val savedGroups by viewModel.savedGroups.collectAsState()
+    val filteredGroups by derivedStateOf { state.filteredGroups }
 
     Column {
         Surface(elevation = 24.dp) {
             AddGroupsTextFiled(
-                value = addGroupsState.searchText,
+                value = state.searchText,
                 onValueChange = { newText ->
                     viewModel.event(AddGroupsEvent.SearchTextChange(newText))
                 },
@@ -48,9 +50,9 @@ fun AddGroupsSelectionList(
                     .padding(top = 8.dp)
                     .padding(8.dp)
             ) {
-                AnimatedVisibility(addGroupsState.selectedGroups.isNotEmpty()) {
+                AnimatedVisibility(state.selectedGroups.isNotEmpty()) {
                     AddGroupsSelectedGroupsRow(
-                        selectedGroups = addGroupsState.selectedGroups,
+                        selectedGroups = state.selectedGroups,
                         onUnselectGroup = {
                             viewModel.event(AddGroupsEvent.UnselectGroup(it))
                         }
@@ -59,14 +61,14 @@ fun AddGroupsSelectionList(
                 }
 
                 AnimatedVisibility(
-                    visible = addGroupsState.filteredGroups.isNotEmpty(),
+                    visible = filteredGroups.isNotEmpty(),
                     enter = slideInVertically(),
                     exit = slideOutVertically()
                 ) {
                     LazyColumn(modifier = Modifier.selectableGroup()) {
-                        items(addGroupsState.filteredGroups) { group ->
+                        items(filteredGroups) { group ->
                             val isSaved = group in savedGroups
-                            val isSelected = group in addGroupsState.selectedGroups
+                            val isSelected = group in state.selectedGroups
 
                             Surface(
                                 modifier = Modifier
@@ -94,7 +96,7 @@ fun AddGroupsSelectionList(
                 }
 
                 AnimatedVisibility(
-                    visible = addGroupsState.filteredGroups.isEmpty(),
+                    visible = filteredGroups.isEmpty(),
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {

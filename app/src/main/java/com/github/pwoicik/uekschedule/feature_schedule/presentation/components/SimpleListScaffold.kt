@@ -33,9 +33,10 @@ fun <T> SimpleListScaffold(
                     .statusBarsHeight(24.dp)
             )
         }
-    ) {
+    ) { innerPadding ->
         Surface(
             modifier = Modifier
+                .padding(innerPadding)
                 .padding(horizontal = 8.dp)
                 .padding(top = 8.dp)
         ) {

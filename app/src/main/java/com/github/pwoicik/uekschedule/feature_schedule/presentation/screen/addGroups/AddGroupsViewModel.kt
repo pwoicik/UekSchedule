@@ -19,13 +19,9 @@ class AddGroupsViewModel @Inject constructor(
     val savedGroups = scheduleUseCases.getSavedGroups()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
-    private val _availableGroups = mutableStateOf(AvailableGroupsState(isLoading = true))
-    val availableGroups: State<AvailableGroupsState>
-        get() = _availableGroups
-
-    private val _addGroupsState = mutableStateOf(AddGroupsState())
-    val addGroupsState: State<AddGroupsState>
-        get() = _addGroupsState
+    private val _state = mutableStateOf(AddGroupsScreenState())
+    val state: State<AddGroupsScreenState>
+        get() = _state
 
     private val _eventFlow = MutableSharedFlow<UiEvent>(replay = Int.MAX_VALUE)
     val eventFlow: SharedFlow<UiEvent>
@@ -39,39 +35,27 @@ class AddGroupsViewModel @Inject constructor(
     }
 
     fun event(event: AddGroupsEvent) {
+        val state = _state.value
         when (event) {
             is AddGroupsEvent.SelectGroup -> {
-                val selectedGroups = _addGroupsState.value.selectedGroups + event.group
-                _addGroupsState.value = _addGroupsState.value.copy(
-                    selectedGroups = selectedGroups,
-                    filteredGroups = _availableGroups.value.groups.filter { group ->
-                        group !in selectedGroups
-                    }
+                _state.value = state.copy(
+                    selectedGroups = state.selectedGroups + event.group
                 )
             }
             is AddGroupsEvent.UnselectGroup -> {
-                val selectedGroups = _addGroupsState.value.selectedGroups - event.group
-                _addGroupsState.value = _addGroupsState.value.copy(
-                    selectedGroups = selectedGroups,
-                    filteredGroups = _availableGroups.value.groups.filter { group ->
-                        group !in selectedGroups
-                    }
+                val selectedGroups = state.selectedGroups - event.group
+                _state.value = state.copy(
+                    selectedGroups = selectedGroups
                 )
             }
             is AddGroupsEvent.SearchTextChange -> {
-                _addGroupsState.value = _addGroupsState.value.copy(
-                    searchText = event.text,
-                    filteredGroups = _availableGroups.value.groups.filter { group ->
-                        event.text.lowercase() in group.name.lowercase()
-                    }
+                _state.value = state.copy(
+                    searchText = event.text
                 )
             }
             is AddGroupsEvent.ClearSelectedGroups -> {
-                _addGroupsState.value = _addGroupsState.value.copy(
-                    selectedGroups = emptyList(),
-                    filteredGroups = _availableGroups.value.groups.filter { group ->
-                        _addGroupsState.value.searchText.lowercase() in group.name.lowercase()
-                    }
+                _state.value = state.copy(
+                    selectedGroups = emptyList()
                 )
             }
             is AddGroupsEvent.SaveSelectedGroups,
@@ -89,25 +73,29 @@ class AddGroupsViewModel @Inject constructor(
         getAvailableGroupsJob = scheduleUseCases
             .getAllGroups()
             .onEach { groups ->
+                val state = _state.value
                 when (groups) {
                     is Resource.Loading ->
-                        _availableGroups.value = _availableGroups.value.copy(
-                            isLoading = true
+                        _state.value = state.copy(
+                            availableGroupsState = state.availableGroupsState.copy(
+                                isLoading = true
+                            )
                         )
                     is Resource.Success -> {
-                        _availableGroups.value = _availableGroups.value.copy(
-                            isLoading = false,
-                            isError = false,
-                            groups = groups.data!!
-                        )
-                        _addGroupsState.value = _addGroupsState.value.copy(
-                            filteredGroups = groups.data
+                        _state.value = state.copy(
+                            availableGroupsState = state.availableGroupsState.copy(
+                                isLoading = false,
+                                isError = false,
+                                groups = groups.data!!
+                            )
                         )
                     }
                     is Resource.Error -> {
-                        _availableGroups.value = _availableGroups.value.copy(
-                            isError = true,
-                            isLoading = false,
+                        _state.value = state.copy(
+                            availableGroupsState = state.availableGroupsState.copy(
+                                isError = true,
+                                isLoading = false,
+                            )
                         )
                         _eventFlow.emit(UiEvent.ShowSnackbar)
                     }
@@ -118,11 +106,11 @@ class AddGroupsViewModel @Inject constructor(
     private fun saveSelectedGroups() {
         saveSelectedGroupsJob?.cancel()
         saveSelectedGroupsJob = scheduleUseCases
-            .addGroups(_addGroupsState.value.selectedGroups)
+            .addGroups(_state.value.selectedGroups)
             .onEach { res ->
                 when (res) {
                     is Resource.Loading -> {
-                        _addGroupsState.value = _addGroupsState.value.copy(
+                        _state.value = _state.value.copy(
                             isSaving = true
                         )
                     }
@@ -131,7 +119,7 @@ class AddGroupsViewModel @Inject constructor(
                         _eventFlow.emit(UiEvent.HideSnackbar)
                     }
                     is Resource.Error -> {
-                        _addGroupsState.value = _addGroupsState.value.copy(
+                        _state.value = _state.value.copy(
                             isSaving = false,
                             isSavingError = true
                         )

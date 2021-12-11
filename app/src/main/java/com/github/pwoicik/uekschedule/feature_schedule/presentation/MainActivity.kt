@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavType
@@ -19,6 +20,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.manag
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.ScheduleScreen
 import com.github.pwoicik.uekschedule.ui.theme.UEKScheduleTheme
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,7 +45,9 @@ class MainActivity : AppCompatActivity() {
                 ProvideWindowInsets {
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.ScheduleScreen.route
+                        startDestination = Screen.ScheduleScreen.route,
+                        modifier = Modifier
+                            .navigationBarsWithImePadding()
                     ) {
                         composable(Screen.ScheduleScreen.route) {
                             ScheduleScreen(navController = navController)
