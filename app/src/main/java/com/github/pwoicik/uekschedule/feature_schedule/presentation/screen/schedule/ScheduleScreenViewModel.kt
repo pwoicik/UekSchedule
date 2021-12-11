@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes
+package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,13 +10,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import java.time.ZonedDateTime
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class ClassesViewModel @Inject constructor(
+class ScheduleScreenViewModel @Inject constructor(
     private val scheduleUseCases: ScheduleUseCases
 ) : ViewModel() {
+
+    val scheduleEntries = scheduleUseCases.getAllScheduleEntries()
 
     val classes = scheduleUseCases.getAllClasses()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
@@ -31,17 +33,17 @@ class ClassesViewModel @Inject constructor(
 
     val timeFlow = flow {
         while (true) {
-            val timeNow = ZonedDateTime.now()
+            val timeNow = LocalDateTime.now()
             emit(timeNow)
             delay((60 - timeNow.second) * 1000L)
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), ZonedDateTime.now())
-
-    private var updateClassesJob: Job? = null
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LocalDateTime.now())
 
     init {
         updateClasses()
     }
+
+    private var updateClassesJob: Job? = null
 
     fun updateClasses() {
         updateClassesJob?.cancel()

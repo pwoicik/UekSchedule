@@ -1,10 +1,8 @@
-package com.github.pwoicik.uekschedule.feature_schedule.domain.model
+package com.github.pwoicik.uekschedule.feature_schedule.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.Ignore
-import java.time.LocalDate
 import java.time.ZonedDateTime
 
 @Entity(
@@ -36,13 +34,7 @@ data class Class(
 
     val details: String? = null,
 
-    val teachers: String,
+    val teachers: List<String>?,
 
     val location: String? = null
-) {
-
-    @delegate:Ignore
-    val startDate: LocalDate by lazy {
-        startDateTime.toLocalDate()
-    }
-}
+)

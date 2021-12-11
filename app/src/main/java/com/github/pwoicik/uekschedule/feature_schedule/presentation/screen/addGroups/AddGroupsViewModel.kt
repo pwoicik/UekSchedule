@@ -16,7 +16,7 @@ class AddGroupsViewModel @Inject constructor(
     private val scheduleUseCases: ScheduleUseCases
 ) : ViewModel() {
 
-    val savedGroups = scheduleUseCases.getSavedGroupsFlow()
+    val savedGroups = scheduleUseCases.getSavedGroups()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     private val _availableGroups = mutableStateOf(AvailableGroupsState(isLoading = true))

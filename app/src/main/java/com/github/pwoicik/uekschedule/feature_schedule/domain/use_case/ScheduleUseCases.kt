@@ -5,20 +5,28 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.Schedul
 data class ScheduleUseCases(
     val getAllGroups: GetAllGroups,
     val getSavedGroups: GetSavedGroups,
-    val getSavedGroupsFlow: GetSavedGroupsFlow,
     val deleteGroup: DeleteGroup,
     val getAllClasses: GetAllClasses,
     val addGroups: AddGroups,
-    val updateClasses: UpdateClasses
+    val updateClasses: UpdateClasses,
+    val getActivity: GetActivity,
+    val getAllActivities: GetAllActivities,
+    val addActivity: AddActivity,
+    val deleteActivity: DeleteActivity,
+    val getAllScheduleEntries: GetAllScheduleEntries
 ) {
 
     constructor(repository: ScheduleRepository) : this(
         GetAllGroups(repository),
         GetSavedGroups(repository),
-        GetSavedGroupsFlow(repository),
         DeleteGroup(repository),
         GetAllClasses(repository),
         AddGroups(repository),
-        UpdateClasses(repository)
+        UpdateClasses(repository),
+        GetActivity(repository),
+        GetAllActivities(repository),
+        AddActivity(repository),
+        DeleteActivity(repository),
+        GetAllScheduleEntries(repository)
     )
 }

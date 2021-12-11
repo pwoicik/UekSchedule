@@ -1,14 +1,13 @@
 package com.github.pwoicik.uekschedule.feature_schedule.domain.use_case
 
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Class
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
-import kotlinx.coroutines.flow.Flow
 
-class GetAllClasses(
+class DeleteActivity(
     private val repository: ScheduleRepository
 ) {
 
-    operator fun invoke(): Flow<List<Class>> {
-        return repository.getAllClasses()
+    suspend operator fun invoke(activity: Activity) {
+        repository.deleteActivity(activity)
     }
 }

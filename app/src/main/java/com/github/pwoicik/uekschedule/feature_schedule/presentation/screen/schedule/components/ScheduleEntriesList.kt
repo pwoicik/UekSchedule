@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes.components
+package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -17,20 +17,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Class
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes.ClassStatus
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes.status
+import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.ScheduleEntryStatus
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.status
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.time.LocalDate
-import java.time.ZonedDateTime
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ClassesList(
+fun ScheduleEntriesList(
     isUpdating: Boolean,
-    classes: List<Class>,
-    timeNow: ZonedDateTime,
+    scheduleEntries: List<ScheduleEntry>,
+    timeNow: LocalDateTime,
     onRefresh: () -> Unit
 ) {
     SwipeRefresh(
@@ -38,26 +38,26 @@ fun ClassesList(
         onRefresh = onRefresh
     ) {
         LazyColumn {
-            classesListStickyHeader(classes[0].startDate)
+            scheduleEntriesListStickyHeader(scheduleEntries[0].startDate)
             item {
-                ClassesListItem(
-                    clazz = classes[0],
-                    status = classes[0].status(timeNow)
+                ScheduleEntriesListItem(
+                    scheduleEntry = scheduleEntries[0],
+                    status = scheduleEntries[0].status(timeNow)
                 )
             }
 
-            for (i in 1..classes.lastIndex) {
-                val prevClazz = classes[i - 1]
-                val clazz = classes[i]
+            for (i in 1..scheduleEntries.lastIndex) {
+                val prevClazz = scheduleEntries[i - 1]
+                val clazz = scheduleEntries[i]
 
                 val isNextDay = clazz.startDate != prevClazz.startDate
                 if (isNextDay) {
-                    classesListStickyHeader(clazz.startDate)
+                    scheduleEntriesListStickyHeader(clazz.startDate)
                 }
                 item {
                     if (!isNextDay) Divider()
-                    ClassesListItem(
-                        clazz = clazz,
+                    ScheduleEntriesListItem(
+                        scheduleEntry = clazz,
                         status = clazz.status(timeNow)
                     )
                 }
@@ -67,7 +67,7 @@ fun ClassesList(
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun LazyListScope.classesListStickyHeader(
+fun LazyListScope.scheduleEntriesListStickyHeader(
     startDate: LocalDate
 ) {
     stickyHeader {
@@ -84,9 +84,9 @@ fun LazyListScope.classesListStickyHeader(
 }
 
 @Composable
-fun ClassesListItem(
-    clazz: Class,
-    status: ClassStatus
+fun ScheduleEntriesListItem(
+    scheduleEntry: ScheduleEntry,
+    status: ScheduleEntryStatus
 ) {
     val context = LocalContext.current
 
@@ -94,21 +94,21 @@ fun ClassesListItem(
         modifier = Modifier
             .fillMaxSize()
             .alpha(
-                if (status is ClassStatus.Ended) 0.4f
+                if (status is ScheduleEntryStatus.Ended) 0.4f
                 else 1f
             )
             .padding(10.dp)
     ) {
         Column {
-            val startAlpha = if (status is ClassStatus.InProgress) 0.6f else 1f
-            val endAlpha = if (status is ClassStatus.NotStarted) 0.6f else 1f
+            val startAlpha = if (status is ScheduleEntryStatus.InProgress) 0.6f else 1f
+            val endAlpha = if (status is ScheduleEntryStatus.NotStarted) 0.6f else 1f
             Text(
-                text = clazz.startDateTime.format(timeFormatter),
+                text = scheduleEntry.startDateTime.format(timeFormatter),
                 modifier = Modifier.alpha(startAlpha)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = clazz.endDateTime.format(timeFormatter),
+                text = scheduleEntry.endDateTime.format(timeFormatter),
                 modifier = Modifier.alpha(endAlpha)
             )
         }
@@ -118,33 +118,35 @@ fun ClassesListItem(
                 .weight(0.6f, fill = true)
                 .padding(horizontal = 16.dp)
         ) {
-            Text(clazz.subject)
+            Text(scheduleEntry.name)
             Spacer(modifier = Modifier.height(4.dp))
 
             CompositionLocalProvider(
                 LocalTextStyle provides MaterialTheme.typography.body2,
                 LocalContentAlpha provides ContentAlpha.medium
             ) {
-                clazz.teachers.split(", ").forEach { teacher ->
-                    Text(teacher)
+                if (scheduleEntry.teachers != null) {
+                    scheduleEntry.teachers.forEach { teacher ->
+                        Text(teacher)
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
-                Spacer(modifier = Modifier.height(4.dp))
 
-                if (clazz.details == null) {
-                    Text(clazz.type)
+                if (scheduleEntry.details == null) {
+                    if (scheduleEntry.type != null) Text(scheduleEntry.type)
                 } else {
                     CompositionLocalProvider(
                         LocalContentColor provides MaterialTheme.colors.error
                     ) {
-                        Text(clazz.type)
-                        Text(clazz.details)
+                        Text(scheduleEntry.type!!)
+                        Text(scheduleEntry.details)
                     }
                 }
 
-                if (clazz.location != null) {
+                if (scheduleEntry.location != null) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = clazz.location,
+                        text = scheduleEntry.location,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -155,7 +157,7 @@ fun ClassesListItem(
         Column(horizontalAlignment = Alignment.End) {
             ProvideTextStyle(MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Medium)) {
                 when (status) {
-                    is ClassStatus.NotStarted -> {
+                    is ScheduleEntryStatus.NotStarted -> {
                         val startsIn = status.minutesToStart
                         val text = when {
                             startsIn < 1 ->
@@ -184,7 +186,7 @@ fun ClassesListItem(
                             textAlign = TextAlign.End
                         )
                     }
-                    is ClassStatus.InProgress -> {
+                    is ScheduleEntryStatus.InProgress -> {
                         val endsIn = status.minutesRemaining
                         val text = when {
                             endsIn < 1 -> stringResource(R.string.class_ends_in_less_than_1_min)
@@ -197,7 +199,7 @@ fun ClassesListItem(
                             textAlign = TextAlign.End
                         )
                     }
-                    is ClassStatus.Ended -> {
+                    is ScheduleEntryStatus.Ended -> {
                         Text(
                             text = stringResource(R.string.class_ended),
                             textAlign = TextAlign.End

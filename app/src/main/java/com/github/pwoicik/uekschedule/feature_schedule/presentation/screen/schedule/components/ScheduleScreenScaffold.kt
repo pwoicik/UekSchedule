@@ -1,32 +1,34 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes.components
+package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.classes.ClassesViewModel
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.ScheduleScreenViewModel
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import com.google.accompanist.insets.ui.TopAppBar
 
 @Composable
-fun ClassesScaffold(
+fun ScheduleScreenScaffold(
     scaffoldState: ScaffoldState,
     isUpdating: Boolean,
     navController: NavController,
-    viewModel: ClassesViewModel,
+    viewModel: ScheduleScreenViewModel,
     content: @Composable () -> Unit
 ) {
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -34,25 +36,44 @@ fun ClassesScaffold(
                 contentPadding = rememberInsetsPaddingValues(
                     insets = LocalWindowInsets.current.statusBars,
                     additionalStart = 8.dp
-                )
-            ) {
-                Text(
-                    text = stringResource(R.string.app_name),
-                    style = MaterialTheme.typography.h6
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    enabled = !isUpdating,
-                    onClick = {
-                        navController.navigate(Screen.ManageGroupsScreen.route)
+                ),
+                title = {
+                    Text(stringResource(R.string.app_name))
+                },
+                actions = {
+                    IconButton(
+                        enabled = !isUpdating,
+                        onClick = {
+                            isDropdownExpanded = !isDropdownExpanded
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = stringResource(R.string.manage_groups)
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.manage_groups)
-                    )
+                    DropdownMenu(
+                        expanded = isDropdownExpanded,
+                        onDismissRequest = { isDropdownExpanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                navController.navigate(Screen.ManageGroupsScreen.route)
+                            }
+                        ) {
+                            Text(stringResource(R.string.your_groups))
+                        }
+                        Divider(modifier = Modifier.padding(horizontal = 8.dp))
+                        DropdownMenuItem(
+                            onClick = {
+                                navController.navigate(Screen.ManageActivitiesScreen.route)
+                            }
+                        ) {
+                            Text(stringResource(R.string.other_activities))
+                        }
+                    }
                 }
-            }
+            )
         },
         snackbarHost = {
             SnackbarHost(hostState = it) { snackbarData ->

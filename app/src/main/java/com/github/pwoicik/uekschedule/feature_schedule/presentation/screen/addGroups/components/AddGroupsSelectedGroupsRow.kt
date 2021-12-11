@@ -1,7 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,12 +14,12 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Group
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 
 @Composable
 fun AddGroupsSelectedGroupsRow(
@@ -33,12 +32,13 @@ fun AddGroupsSelectedGroupsRow(
             val group = selectedGroups[i]
             item {
                 Surface(
-                    shape = RoundedCornerShape(50),
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = Color.Gray.copy(0.5f)
-                    ),
                     modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .border(
+                            width = 2.dp,
+                            color = MaterialTheme.colors.primary.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(50)
+                        )
                         .clickable {
                             onUnselectGroup(group)
                         }
@@ -55,10 +55,6 @@ fun AddGroupsSelectedGroupsRow(
                             ),
                             modifier = Modifier
                                 .size(14.dp)
-                                .background(
-                                    color = Color.Gray.copy(0.2f),
-                                    shape = RoundedCornerShape(50)
-                                )
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
@@ -72,5 +68,4 @@ fun AddGroupsSelectedGroupsRow(
             }
         }
     }
-
 }

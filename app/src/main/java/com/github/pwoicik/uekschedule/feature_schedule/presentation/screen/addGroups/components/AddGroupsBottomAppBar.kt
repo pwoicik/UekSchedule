@@ -6,7 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
@@ -29,7 +29,7 @@ fun AddGroupsBottomAppBar(
             onClick = onNavigateBack
         ) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = Icons.Default.ArrowBackIosNew,
                 contentDescription = stringResource(R.string.navigate_back)
             )
         }

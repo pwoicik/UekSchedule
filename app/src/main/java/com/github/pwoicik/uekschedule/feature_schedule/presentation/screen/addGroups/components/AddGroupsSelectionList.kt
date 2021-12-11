@@ -58,7 +58,6 @@ fun AddGroupsSelectionList(
                     Spacer(modifier = Modifier.height(42.dp))
                 }
 
-
                 AnimatedVisibility(
                     visible = addGroupsState.filteredGroups.isNotEmpty(),
                     enter = slideInVertically(),
@@ -74,11 +73,10 @@ fun AddGroupsSelectionList(
                                     .fillMaxWidth()
                                     .selectable(
                                         selected = isSelected,
-                                        enabled = !isSaved,
-                                        onClick = {
-                                            viewModel.event(AddGroupsEvent.SelectGroup(group))
-                                        }
-                                    )
+                                        enabled = !isSaved
+                                    ) {
+                                        viewModel.event(AddGroupsEvent.SelectGroup(group))
+                                    }
                             ) {
                                 if (isSaved)
                                     Text(
