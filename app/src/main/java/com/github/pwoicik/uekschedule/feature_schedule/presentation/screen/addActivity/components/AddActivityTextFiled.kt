@@ -7,8 +7,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 
@@ -23,8 +21,6 @@ fun AddActivityTextFiled(
     isLast: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
-    val inputService = LocalTextInputService.current
-
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -43,10 +39,5 @@ fun AddActivityTextFiled(
             focusedLabelColor = MaterialTheme.colors.secondary
         ),
         modifier = modifier
-            .onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    inputService?.showSoftwareKeyboard()
-                }
-            }
     )
 }

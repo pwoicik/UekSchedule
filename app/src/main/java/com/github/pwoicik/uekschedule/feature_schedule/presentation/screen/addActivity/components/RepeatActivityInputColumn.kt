@@ -34,10 +34,11 @@ import java.util.*
 @Composable
 fun RepeatActivityInputColumn(
     state: AddActivityScreenState,
-    viewModel: AddActivityViewModel
+    viewModel: AddActivityViewModel,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .animateContentSize()
     ) {
         Row(
@@ -120,6 +121,7 @@ fun DaysOfWeekSelectionRow(
         FlowRow(
             mainAxisSize = SizeMode.Expand,
             mainAxisAlignment = FlowMainAxisAlignment.SpaceEvenly,
+            mainAxisSpacing = 6.dp,
             crossAxisSpacing = 4.dp,
             modifier = Modifier
                 .selectableGroup()

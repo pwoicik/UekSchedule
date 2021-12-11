@@ -38,7 +38,7 @@
     <string name="start_time">Start time</string>
     <string name="duration">Duration (in minutes)</string>
     <string name="save_activity">Save activity</string>
-    <string name="activity_data_error">Wrong input! Check field highlighted in red</string>
+    <string name="activity_data_error">Wrong input! Check fields highlighted in red</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">STARTS IN\n%d DAY</item>
         <item quantity="other">STARTS IN\n%d DAYS</item>

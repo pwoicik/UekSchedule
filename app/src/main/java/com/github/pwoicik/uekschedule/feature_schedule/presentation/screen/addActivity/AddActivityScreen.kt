@@ -1,10 +1,9 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.AddActivityScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.AddActivityTextFiled
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.RepeatActivityInputColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.TimeInputField
-import com.google.accompanist.insets.statusBarsHeight
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -45,141 +44,94 @@ fun AddActivityScreen(
         }
     }
 
-    Scaffold(
+    AddActivityScaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-            ) {
-                Spacer(
-                    modifier = Modifier
-                        .statusBarsHeight(24.dp)
-                )
-                Text(
-                    text = stringResource(R.string.create_new_activity),
-                    style = MaterialTheme.typography.h5,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-            }
-        },
-        bottomBar = {
-            BottomAppBar(
-                backgroundColor = MaterialTheme.colors.surface
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(
-                    onClick = {
-                        viewModel.event(AddActivityScreenEvent.SaveActivity)
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        contentDescription = stringResource(R.string.save_activity)
-                    )
-                }
-            }
-        }
-    ) { innerPadding ->
+        viewModel = viewModel
+    ) {
         state?.let { state ->
             val focusRequester = remember { FocusRequester() }
             LaunchedEffect(Unit) {
                 focusRequester.requestFocus()
             }
-            
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(
-                    top = 0.dp,
-                    bottom = 24.dp,
-                    start = 16.dp,
-                    end = 16.dp
-                ),
+
+            AddActivityTextFiled(
+                value = state.name,
+                onValueChange = { viewModel.event(AddActivityScreenEvent.NameChanged(it)) },
+                label = stringResource(R.string.activity_name),
+                isRequired = true,
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+
+            AddActivityTextFiled(
+                value = state.location,
+                onValueChange = { viewModel.event(AddActivityScreenEvent.LocationChanged(it)) },
+                label = stringResource(R.string.location),
+                placeholder = stringResource(R.string.optional),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(innerPadding)
-            ) {
-                item {
-                    AddActivityTextFiled(
-                        value = state.name,
-                        onValueChange = { viewModel.event(AddActivityScreenEvent.NameChanged(it)) },
-                        label = stringResource(R.string.activity_name),
-                        isRequired = true,
-                        modifier = Modifier
-                            .focusRequester(focusRequester)
-                            .fillMaxWidth()
-                    )
-                }
+                    .padding(horizontal = 16.dp)
+            )
 
-                item {
-                    AddActivityTextFiled(
-                        value = state.location,
-                        onValueChange = { viewModel.event(AddActivityScreenEvent.LocationChanged(it)) },
-                        label = stringResource(R.string.location),
-                        placeholder = stringResource(R.string.optional),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
+            AddActivityTextFiled(
+                value = state.type,
+                onValueChange = { viewModel.event(AddActivityScreenEvent.TypeChanged(it)) },
+                label = stringResource(R.string.activity_type),
+                placeholder = stringResource(R.string.optional),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
 
-                item {
-                    AddActivityTextFiled(
-                        value = state.type,
-                        onValueChange = { viewModel.event(AddActivityScreenEvent.TypeChanged(it)) },
-                        label = stringResource(R.string.activity_type),
-                        placeholder = stringResource(R.string.optional),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
+            AddActivityTextFiled(
+                value = state.teacher,
+                onValueChange = { viewModel.event(AddActivityScreenEvent.TeacherChanged(it)) },
+                label = stringResource(R.string.teacher),
+                placeholder = stringResource(R.string.optional),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
 
-                item {
-                    AddActivityTextFiled(
-                        value = state.teacher,
-                        onValueChange = { viewModel.event(AddActivityScreenEvent.TeacherChanged(it)) },
-                        label = stringResource(R.string.teacher),
-                        placeholder = stringResource(R.string.optional),
-                        modifier = Modifier
-                            .fillMaxWidth()
+            TimeInputField(
+                time = state.startTime,
+                onTimeSelected = { lt ->
+                    viewModel.event(
+                        AddActivityScreenEvent.StartTimeChanged(lt)
                     )
-                }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
 
-                item {
-                    TimeInputField(
-                        time = state.startTime,
-                        onTimeSelected = { lt ->
-                            viewModel.event(
-                                AddActivityScreenEvent.StartTimeChanged(lt)
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
+            AddActivityTextFiled(
+                value = state.durationMinutes,
+                onValueChange = {
+                    viewModel.event(
+                        AddActivityScreenEvent.DurationMinutesChanged(it)
                     )
-                }
+                },
+                label = stringResource(R.string.duration),
+                isRequired = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
 
-                item {
-                    AddActivityTextFiled(
-                        value = state.durationMinutes,
-                        onValueChange = {
-                            viewModel.event(
-                                AddActivityScreenEvent.DurationMinutesChanged(it)
-                            )
-                        },
-                        label = stringResource(R.string.duration),
-                        isRequired = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-
-                item {
-                    Divider(
-                        modifier = Modifier
-                            .padding(vertical = 8.dp)
-                    )
-                    RepeatActivityInputColumn(state = state, viewModel = viewModel)
-                }
-            }
+            Divider(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .padding(horizontal = 16.dp)
+            )
+            RepeatActivityInputColumn(
+                state = state,
+                viewModel = viewModel,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+            )
         }
     }
 }
