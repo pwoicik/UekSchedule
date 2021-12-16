@@ -1,6 +1,9 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.db.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +13,7 @@ interface GroupDao {
     @Query("select * from groups order by name")
     fun getAllGroups(): Flow<List<Group>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insertGroup(group: Group)
 
     @Delete

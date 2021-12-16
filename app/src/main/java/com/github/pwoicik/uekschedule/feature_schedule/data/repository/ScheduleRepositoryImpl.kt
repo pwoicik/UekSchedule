@@ -48,6 +48,7 @@ class ScheduleRepositoryImpl(
         }
         scheduleDatabase.withTransaction {
             groupsWithClasses.forEach { (group, classes) ->
+                groupDao.deleteGroup(group)
                 groupDao.insertGroup(group)
                 classDao.insertAllClasses(classes)
             }
