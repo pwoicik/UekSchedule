@@ -10,6 +10,6 @@ interface ScheduleApi {
     @GET("index.php?typ=G&xml")
     suspend fun getGroups(): GroupsDto
 
-    @GET("index.php?typ=G&okres=1&xml")
+    @GET("index.php?typ=G&okres=2&xml")
     suspend fun getSchedule(@Query("id") id: Long): ScheduleDto
 }

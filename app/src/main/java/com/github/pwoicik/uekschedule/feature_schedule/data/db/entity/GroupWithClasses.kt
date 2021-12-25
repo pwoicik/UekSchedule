@@ -9,8 +9,8 @@ data class GroupWithClasses(
     val group: Group,
 
     @Relation(
-        parentColumn = "schedules",
-        entityColumn = "classes"
+        parentColumn = "id",
+        entityColumn = "group_id"
     )
     val classes: List<Class>
 )

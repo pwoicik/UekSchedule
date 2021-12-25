@@ -17,7 +17,8 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
         Class::class,
         Activity::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(ScheduleDbTypeConverters::class)
 abstract class ScheduleDatabase : RoomDatabase() {

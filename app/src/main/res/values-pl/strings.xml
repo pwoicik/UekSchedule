@@ -39,6 +39,7 @@
     <string name="duration">Czas trwania (w minutach)</string>
     <string name="save_activity">Zapisz zajęcia</string>
     <string name="activity_data_error">Błędne dane! Sprawdź pola zaznaczone na czerwono</string>
+    <string name="open_in_browser">Otwórz link w przeglądarce</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>

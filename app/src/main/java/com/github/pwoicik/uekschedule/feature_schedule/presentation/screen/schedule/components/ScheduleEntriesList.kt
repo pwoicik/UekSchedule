@@ -1,12 +1,18 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -14,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
@@ -25,6 +32,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.xml.parsers.DocumentBuilderFactory
 
 @Composable
 fun ScheduleEntriesList(
@@ -145,11 +153,48 @@ fun ScheduleEntriesListItem(
 
                 if (scheduleEntry.location != null) {
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = scheduleEntry.location,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    if (scheduleEntry.location.matches("<.+(/>|</\\w+>)".toRegex())) {
+                        val inputStream = scheduleEntry.location
+                            .toByteArray()
+                            .inputStream()
+                        val node = DocumentBuilderFactory.newInstance()
+                            .newDocumentBuilder()
+                            .parse(inputStream)
+                            .documentElement
+
+                        val text = node.textContent.trim()
+                        val link = node.getAttribute("href")
+
+                        val intent = remember {
+                            Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                        }
+                        Row(
+                            modifier = Modifier
+                                .clickable {
+                                    context.startActivity(intent)
+                                }
+                        ) {
+                            Text(
+                                text = text,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textDecoration = link?.let { TextDecoration.Underline },
+                                modifier = Modifier
+                                    .align(Alignment.Bottom)
+                                    .padding(end = 4.dp)
+                            )
+                            Icon(
+                                imageVector = Icons.Default.OpenInBrowser,
+                                contentDescription = stringResource(R.string.open_in_browser)
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = scheduleEntry.location,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }

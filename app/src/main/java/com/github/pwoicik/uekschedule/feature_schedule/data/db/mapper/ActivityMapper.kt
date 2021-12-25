@@ -8,7 +8,7 @@ import java.time.LocalTime
 
 fun Activity.toScheduleEntries(): List<ScheduleEntry> {
     val dateNow = LocalDate.now()
-    val maxDateTime = LocalDateTime.of(dateNow, LocalTime.of(0, 0)).plusWeeks(2)
+    val maxDateTime = LocalDateTime.of(dateNow, LocalTime.MIDNIGHT).plusMonths(6)
 
     if (repeatOnDaysOfWeek == null) {
         val startDateTime = startDateTime.toLocalDateTime()

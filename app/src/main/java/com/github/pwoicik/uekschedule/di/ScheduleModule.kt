@@ -32,11 +32,14 @@ object ScheduleModule {
     @Provides
     @Singleton
     fun provideScheduleDatabase(app: Application): ScheduleDatabase {
-        return Room.databaseBuilder(
-            app,
-            ScheduleDatabase::class.java,
-            Constants.DATABASE_NAME
-        ).build()
+        return Room
+            .databaseBuilder(
+                app,
+                ScheduleDatabase::class.java,
+                Constants.DATABASE_NAME
+            )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

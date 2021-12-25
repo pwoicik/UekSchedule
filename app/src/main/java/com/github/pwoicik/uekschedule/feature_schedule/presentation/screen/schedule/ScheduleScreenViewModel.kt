@@ -20,9 +20,6 @@ class ScheduleScreenViewModel @Inject constructor(
 
     val scheduleEntries = scheduleUseCases.getAllScheduleEntries()
 
-    val classes = scheduleUseCases.getAllClasses()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
-
     private val _eventFlow: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val eventFlow: SharedFlow<UiEvent>
         get() = _eventFlow

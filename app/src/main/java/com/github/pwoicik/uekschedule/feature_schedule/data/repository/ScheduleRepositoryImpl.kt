@@ -16,6 +16,10 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.Schedul
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class ScheduleRepositoryImpl(
     private val scheduleApi: ScheduleApi,
@@ -76,7 +80,12 @@ class ScheduleRepositoryImpl(
     }
 
     override fun getAllScheduleEntries(): Flow<List<ScheduleEntry>> {
-        val classes = classDao.getAllClasses().map {
+        val todayAtMidnight = ZonedDateTime.of(
+            LocalDate.now(),
+            LocalTime.MIDNIGHT,
+            ZoneId.systemDefault()
+        )
+        val classes = classDao.getAllClassesPast(todayAtMidnight).map {
             it.map(Class::toScheduleEntry)
         }
         val activities = activityDao.getAllActivities().map {
