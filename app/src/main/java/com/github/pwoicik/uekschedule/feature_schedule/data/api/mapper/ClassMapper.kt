@@ -9,7 +9,7 @@ fun ClassDto.toClass(groupId: Long): Class {
 
     return Class(
         groupId = groupId,
-        subject = subject,
+        subject = subject ?: type.replaceFirstChar { it.uppercaseChar() },
         startDateTime = convertDateTime(date, startTime),
         endDateTime = convertDateTime(date, endTime),
         type = type,

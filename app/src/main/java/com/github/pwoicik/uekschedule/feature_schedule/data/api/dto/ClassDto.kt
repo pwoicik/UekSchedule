@@ -7,8 +7,8 @@ import org.simpleframework.xml.Root
 @Root(name = "zajecia", strict = false)
 data class ClassDto(
 
-    @field:Element(name = "przedmiot")
-    var subject: String = "",
+    @field:Element(name = "przedmiot", required = false)
+    var subject: String? = null,
 
     @field:Element(name = "termin")
     var date: String = "",
