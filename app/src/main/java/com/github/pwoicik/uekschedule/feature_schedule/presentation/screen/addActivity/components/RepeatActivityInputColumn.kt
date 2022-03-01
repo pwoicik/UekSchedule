@@ -96,12 +96,12 @@ fun DaysOfWeekSelectionRow(
 ) {
     val daysOfWeek by remember {
         derivedStateOf {
-            DayOfWeek.values().map {
+            DayOfWeek.values().associate {
                 it to it.getDisplayName(
                     TextStyle.SHORT_STANDALONE,
                     Locale.getDefault()
                 )
-            }.toMap()
+            }
         }
     }
 

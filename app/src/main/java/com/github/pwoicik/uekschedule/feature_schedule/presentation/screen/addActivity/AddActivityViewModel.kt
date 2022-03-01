@@ -164,4 +164,4 @@ class AddActivityViewModel @Inject constructor(
     }
 }
 
-private fun String.ifBlankThenNull() = if (isNotBlank()) this else null
+private fun String.ifBlankThenNull() = ifBlank { null }
