@@ -1,8 +1,13 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
@@ -25,8 +30,7 @@ fun ScheduleScreen(
     navController: NavController,
     viewModel: ScheduleScreenViewModel = hiltViewModel()
 ) {
-    val scheduleEntries by viewModel.scheduleEntries.collectAsState(null)
-    val isUpdating by viewModel.isUpdating
+    val state by viewModel.state
 
     val timeNow by viewModel.timeFlow.collectAsState()
 
@@ -51,29 +55,35 @@ fun ScheduleScreen(
 
     ScheduleScreenScaffold(
         scaffoldState = scaffoldState,
-        isUpdating = isUpdating,
-        navController = navController,
-        viewModel = viewModel
+        swipeEnabled = state.hasSavedGroups,
+        isUpdating = state.isUpdating,
+        onRefresh = viewModel::updateClasses,
+        onUpdate = viewModel::updateClasses,
+        navController = navController
     ) {
-        scheduleEntries?.let { scheduleEntries ->
-            Crossfade(scheduleEntries.isEmpty()) { isEmpty ->
-                when (isEmpty) {
-                    true -> {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Text(stringResource(R.string.no_classes_message))
-                        }
-                    }
-                    false -> {
-                        ScheduleEntriesList(
-                            isUpdating = isUpdating,
-                            scheduleEntries = scheduleEntries,
-                            timeNow = timeNow,
-                            onRefresh = viewModel::updateClasses
+        Crossfade(state.entries.isEmpty()) { isEmpty ->
+            when (isEmpty) {
+                true -> {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        Text(
+                            if (state.hasSavedGroups)
+                                stringResource(R.string.no_classes_message)
+                            else
+                                stringResource(R.string.no_saved_groups)
                         )
                     }
+                }
+                false -> {
+                    ScheduleEntriesList(
+                        scheduleEntries = state.entries,
+                        timeNow = timeNow
+                    )
                 }
             }
         }

@@ -14,7 +14,7 @@ interface ClassDao {
     fun getAllClasses(): Flow<List<Class>>
 
     @Query("select * from classes where start_datetime >= :date")
-    fun getAllClassesPast(date: ZonedDateTime): Flow<List<Class>>
+    suspend fun getAllClassesPastDate(date: ZonedDateTime): List<Class>
 
     @Insert
     suspend fun insertAllClasses(classes: Collection<Class>)

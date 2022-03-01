@@ -13,6 +13,9 @@ interface GroupDao {
     @Query("select * from groups order by name")
     fun getAllGroups(): Flow<List<Group>>
 
+    @Query("select count(id) from groups")
+    fun getGroupsCount(): Flow<Int>
+
     @Insert
     suspend fun insertGroup(group: Group)
 

@@ -8,7 +8,7 @@ class GetAllActivities(
     private val repository: ScheduleRepository
 ) {
 
-    operator fun invoke(): Flow<List<Activity>> {
+    suspend operator fun invoke(): List<Activity> {
         return repository.getAllActivities()
     }
 }

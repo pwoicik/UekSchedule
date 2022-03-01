@@ -15,6 +15,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntr
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.LocalTime
@@ -36,6 +37,10 @@ class ScheduleRepositoryImpl(
 
     override fun getSavedGroups(): Flow<List<Group>> {
         return groupDao.getAllGroups()
+    }
+
+    override fun getSavedGroupsCount(): Flow<Int> {
+        return groupDao.getGroupsCount()
     }
 
     override suspend fun deleteGroup(group: Group) {
@@ -67,7 +72,11 @@ class ScheduleRepositoryImpl(
         return activityDao.getActivity(id)
     }
 
-    override fun getAllActivities(): Flow<List<Activity>> {
+    override suspend fun getAllActivities(): List<Activity> {
+        return activityDao.getAllActivities().first()
+    }
+
+    override fun getAllActivitiesFlow(): Flow<List<Activity>> {
         return activityDao.getAllActivities()
     }
 
@@ -79,22 +88,18 @@ class ScheduleRepositoryImpl(
         activityDao.deleteActivity(activity)
     }
 
-    override fun getAllScheduleEntries(): Flow<List<ScheduleEntry>> {
+    override suspend fun getAllScheduleEntries(): List<ScheduleEntry> {
         val todayAtMidnight = ZonedDateTime.of(
             LocalDate.now(),
             LocalTime.MIDNIGHT,
             ZoneId.systemDefault()
         )
-        val classes = classDao.getAllClassesPast(todayAtMidnight).map {
-            it.map(Class::toScheduleEntry)
-        }
-        val activities = activityDao.getAllActivities().map {
-            it.map(Activity::toScheduleEntries)
-                .flatten()
-        }
-        return combine(classes, activities) { arrayOfFlowResults ->
-            arrayOfFlowResults.flatMap { it }
-                .sortedBy(ScheduleEntry::startDateTime)
-        }
+        val classes = classDao.getAllClassesPastDate(todayAtMidnight)
+            .map(Class::toScheduleEntry)
+        val activities = activityDao.getAllActivities()
+            .first()
+            .map(Activity::toScheduleEntries)
+            .flatten()
+        return (classes + activities).sortedBy(ScheduleEntry::startDateTime)
     }
 }

@@ -2,6 +2,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.sche
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
@@ -17,13 +19,17 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.sched
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.ui.TopAppBar
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun ScheduleScreenScaffold(
     scaffoldState: ScaffoldState,
+    swipeEnabled: Boolean,
     isUpdating: Boolean,
+    onRefresh: () -> Unit,
+    onUpdate: () -> Unit,
     navController: NavController,
-    viewModel: ScheduleScreenViewModel,
     content: @Composable () -> Unit
 ) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
@@ -41,7 +47,6 @@ fun ScheduleScreenScaffold(
                 },
                 actions = {
                     IconButton(
-                        enabled = !isUpdating,
                         onClick = {
                             isDropdownExpanded = !isDropdownExpanded
                         }
@@ -80,7 +85,7 @@ fun ScheduleScreenScaffold(
                     action = {
                         IconButton(
                             enabled = !isUpdating,
-                            onClick = viewModel::updateClasses
+                            onClick = onUpdate
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Refresh,
@@ -95,7 +100,10 @@ fun ScheduleScreenScaffold(
             }
         }
     ) { innerPadding ->
-        Surface(
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isUpdating),
+            swipeEnabled = swipeEnabled,
+            onRefresh = onRefresh,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),

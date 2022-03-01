@@ -27,8 +27,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.ScheduleEntryStatus
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.status
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -36,39 +34,32 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 @Composable
 fun ScheduleEntriesList(
-    isUpdating: Boolean,
     scheduleEntries: List<ScheduleEntry>,
-    timeNow: LocalDateTime,
-    onRefresh: () -> Unit
+    timeNow: LocalDateTime
 ) {
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isUpdating),
-        onRefresh = onRefresh
-    ) {
-        LazyColumn {
-            scheduleEntriesListStickyHeader(scheduleEntries[0].startDate)
-            item {
-                ScheduleEntriesListItem(
-                    scheduleEntry = scheduleEntries[0],
-                    status = scheduleEntries[0].status(timeNow)
-                )
+    LazyColumn {
+        scheduleEntriesListStickyHeader(scheduleEntries[0].startDate)
+        item {
+            ScheduleEntriesListItem(
+                scheduleEntry = scheduleEntries[0],
+                status = scheduleEntries[0].status(timeNow)
+            )
+        }
+
+        for (i in 1..scheduleEntries.lastIndex) {
+            val prevClazz = scheduleEntries[i - 1]
+            val clazz = scheduleEntries[i]
+
+            val isNextDay = clazz.startDate != prevClazz.startDate
+            if (isNextDay) {
+                scheduleEntriesListStickyHeader(clazz.startDate)
             }
-
-            for (i in 1..scheduleEntries.lastIndex) {
-                val prevClazz = scheduleEntries[i - 1]
-                val clazz = scheduleEntries[i]
-
-                val isNextDay = clazz.startDate != prevClazz.startDate
-                if (isNextDay) {
-                    scheduleEntriesListStickyHeader(clazz.startDate)
-                }
-                item {
-                    if (!isNextDay) Divider()
-                    ScheduleEntriesListItem(
-                        scheduleEntry = clazz,
-                        status = clazz.status(timeNow)
-                    )
-                }
+            item {
+                if (!isNextDay) Divider()
+                ScheduleEntriesListItem(
+                    scheduleEntry = clazz,
+                    status = clazz.status(timeNow)
+                )
             }
         }
     }

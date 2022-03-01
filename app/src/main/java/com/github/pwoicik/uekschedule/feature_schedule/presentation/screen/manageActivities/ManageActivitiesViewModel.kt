@@ -15,7 +15,7 @@ class ManageActivitiesViewModel @Inject constructor(
     private val scheduleUseCases: ScheduleUseCases
 ) : ViewModel() {
 
-    val activities = scheduleUseCases.getAllActivities()
+    val activities = scheduleUseCases.getAllActivitiesFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     fun deleteActivity(activity: Activity) {

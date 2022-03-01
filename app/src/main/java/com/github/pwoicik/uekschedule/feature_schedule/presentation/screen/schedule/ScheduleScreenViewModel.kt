@@ -18,15 +18,11 @@ class ScheduleScreenViewModel @Inject constructor(
     private val scheduleUseCases: ScheduleUseCases
 ) : ViewModel() {
 
-    val scheduleEntries = scheduleUseCases.getAllScheduleEntries()
+    private val _state = mutableStateOf(ScheduleScreenState())
+    val state: State<ScheduleScreenState> = _state
 
     private val _eventFlow: MutableSharedFlow<UiEvent> = MutableSharedFlow()
-    val eventFlow: SharedFlow<UiEvent>
-        get() = _eventFlow
-
-    private val _isUpdating = mutableStateOf(true)
-    val isUpdating: State<Boolean>
-        get() = _isUpdating
+    val eventFlow = _eventFlow.asSharedFlow()
 
     val timeFlow = flow {
         while (true) {
@@ -37,6 +33,16 @@ class ScheduleScreenViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LocalDateTime.now())
 
     init {
+        scheduleUseCases.getSavedGroupsCount().onEach { count ->
+            val hasGroups = count > 0
+            _state.value = state.value.copy(hasSavedGroups = hasGroups)
+            if (hasGroups) {
+                _state.value = state.value.copy(
+                    entries = scheduleUseCases.getAllScheduleEntries()
+                )
+            }
+        }.launchIn(viewModelScope)
+
         updateClasses()
     }
 
@@ -48,14 +54,15 @@ class ScheduleScreenViewModel @Inject constructor(
             .onEach { res ->
                 when (res) {
                     is Resource.Error -> {
-                        _isUpdating.value = false
+                        _state.value = state.value.copy(isUpdating = false)
                         _eventFlow.emit(UiEvent.ShowSnackbar)
                     }
                     is Resource.Loading -> {
-                        _isUpdating.value = true
+                        _state.value = state.value.copy(isUpdating = true)
+                        _eventFlow.emit(UiEvent.HideSnackbar)
                     }
                     is Resource.Success -> {
-                        _isUpdating.value = false
+                        _state.value = state.value.copy(isUpdating = false)
                         _eventFlow.emit(UiEvent.HideSnackbar)
                     }
                 }
