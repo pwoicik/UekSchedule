@@ -40,6 +40,9 @@
     <string name="save_activity">Zapisz zajęcia</string>
     <string name="activity_data_error">Błędne dane! Sprawdź pola zaznaczone na czerwono</string>
     <string name="open_in_browser">Otwórz link w przeglądarce</string>
+    <string name="search_entry">Szukaj zajęć</string>
+    <string name="cancel_search">Anuluj wyszukiwanie</string>
+    <string name="entry_search_placeholder">Przedmiot lub prowadzący</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>

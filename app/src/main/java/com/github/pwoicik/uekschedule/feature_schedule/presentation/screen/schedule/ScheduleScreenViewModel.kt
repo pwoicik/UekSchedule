@@ -69,6 +69,12 @@ class ScheduleScreenViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
+    fun updateSearchResults(text: String) {
+        _state.value = state.value.copy(
+            searchText = text
+        )
+    }
+
     sealed class UiEvent {
         object ShowSnackbar : UiEvent()
         object HideSnackbar : UiEvent()

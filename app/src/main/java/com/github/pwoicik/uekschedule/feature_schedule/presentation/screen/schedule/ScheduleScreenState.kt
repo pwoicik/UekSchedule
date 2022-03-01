@@ -5,5 +5,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntr
 data class ScheduleScreenState(
     val hasSavedGroups: Boolean = false,
     val entries: List<ScheduleEntry> = emptyList(),
-    val isUpdating: Boolean = false
+    val isUpdating: Boolean = false,
+    val searchText: String = ""
 )

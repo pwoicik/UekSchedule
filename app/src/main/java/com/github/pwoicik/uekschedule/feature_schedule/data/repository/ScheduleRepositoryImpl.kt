@@ -14,9 +14,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toSchedule
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId

@@ -2,23 +2,16 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.sche
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.ScheduleScreenViewModel
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.insets.ui.TopAppBar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -29,53 +22,22 @@ fun ScheduleScreenScaffold(
     isUpdating: Boolean,
     onRefresh: () -> Unit,
     onUpdate: () -> Unit,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit,
     navController: NavController,
     content: @Composable () -> Unit
 ) {
-    var isDropdownExpanded by remember { mutableStateOf(false) }
-
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            TopAppBar(
-                contentPadding = rememberInsetsPaddingValues(
-                    insets = LocalWindowInsets.current.statusBars,
-                    additionalStart = 8.dp
-                ),
-                title = {
-                    Text(stringResource(R.string.app_name))
+            ScheduleScreenTopBar(
+                searchText = searchText,
+                onSearchTextChange = onSearchTextChange,
+                onManageGroupsButtonClick = {
+                    navController.navigate(Screen.ManageGroupsScreen.route)
                 },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            isDropdownExpanded = !isDropdownExpanded
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.manage_groups)
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = isDropdownExpanded,
-                        onDismissRequest = { isDropdownExpanded = false }
-                    ) {
-                        DropdownMenuItem(
-                            onClick = {
-                                navController.navigate(Screen.ManageGroupsScreen.route)
-                            }
-                        ) {
-                            Text(stringResource(R.string.your_groups))
-                        }
-                        Divider(modifier = Modifier.padding(horizontal = 8.dp))
-                        DropdownMenuItem(
-                            onClick = {
-                                navController.navigate(Screen.ManageActivitiesScreen.route)
-                            }
-                        ) {
-                            Text(stringResource(R.string.other_activities))
-                        }
-                    }
+                onManageActivitiesButtonClick = {
+                    navController.navigate(Screen.ManageActivitiesScreen.route)
                 }
             )
         },

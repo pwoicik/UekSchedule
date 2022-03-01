@@ -1,9 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
@@ -59,6 +57,8 @@ fun ScheduleScreen(
         isUpdating = state.isUpdating,
         onRefresh = viewModel::updateClasses,
         onUpdate = viewModel::updateClasses,
+        searchText = state.searchText,
+        onSearchTextChange = viewModel::updateSearchResults,
         navController = navController
     ) {
         Crossfade(state.entries.isEmpty()) { isEmpty ->
@@ -80,8 +80,19 @@ fun ScheduleScreen(
                     }
                 }
                 false -> {
+                    val filteredEntries = state.entries.filter { entry ->
+                        val matchesName =
+                            entry.name.contains(state.searchText, ignoreCase = true)
+                        val matchesTeacher =
+                            entry.teachers?.any {
+                                it.contains(state.searchText, ignoreCase = true)
+                            } ?: false
+
+                        matchesName || matchesTeacher
+                    }
+
                     ScheduleEntriesList(
-                        scheduleEntries = state.entries,
+                        scheduleEntries = filteredEntries,
                         timeNow = timeNow
                     )
                 }

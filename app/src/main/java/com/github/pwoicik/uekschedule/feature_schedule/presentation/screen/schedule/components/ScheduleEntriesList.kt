@@ -38,6 +38,8 @@ fun ScheduleEntriesList(
     timeNow: LocalDateTime
 ) {
     LazyColumn {
+        if (scheduleEntries.isEmpty()) return@LazyColumn
+
         scheduleEntriesListStickyHeader(scheduleEntries[0].startDate)
         item {
             ScheduleEntriesListItem(
