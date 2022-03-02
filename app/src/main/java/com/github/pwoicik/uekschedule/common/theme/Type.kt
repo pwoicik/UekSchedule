@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.ui.theme
+package com.github.pwoicik.uekschedule.common.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
