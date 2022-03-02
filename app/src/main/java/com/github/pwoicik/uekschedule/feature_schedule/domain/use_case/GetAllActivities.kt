@@ -2,12 +2,13 @@ package com.github.pwoicik.uekschedule.feature_schedule.domain.use_case
 
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import kotlinx.coroutines.flow.Flow
 
 class GetAllActivities(
     private val repository: ScheduleRepository
 ) {
 
-    suspend operator fun invoke(): List<Activity> {
+    operator fun invoke(): Flow<List<Activity>> {
         return repository.getAllActivities()
     }
 }

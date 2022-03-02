@@ -21,7 +21,7 @@
     <string name="class_starts_in_less_than_1_min"><![CDATA[ZA\n< 1 MIN]]></string>
     <string name="class_starts_in_minutes">ZA\n%d MIN</string>
     <string name="class_starts_in_hours">ZA\n%d H</string>
-    <string name="class_ends_in_less_than_1_min">!<![CDATA[TRWA JESZCZE\n< 1 MIN]]></string>
+    <string name="class_ends_in_less_than_1_min"><![CDATA[TRWA JESZCZE\n< 1 MIN]]></string>
     <string name="class_ends_in_minutes">TRWA JESZCZE\n%d MIN</string>
     <string name="other_activities">Inne zajęcia</string>
     <string name="no_activities">Nie masz zapisanych żadnych zajęć!</string>
@@ -43,6 +43,7 @@
     <string name="search_entry">Szukaj zajęć</string>
     <string name="cancel_search">Anuluj wyszukiwanie</string>
     <string name="entry_search_placeholder">Przedmiot lub prowadzący</string>
+    <string name="refresh_data">Odśwież</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>

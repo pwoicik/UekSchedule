@@ -1,6 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,21 +12,19 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.ManageActivitiesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.ManageGroupsScreenDestination
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 fun ScheduleScreenScaffold(
     scaffoldState: ScaffoldState,
-    swipeEnabled: Boolean,
-    isUpdating: Boolean,
+    refreshEnabled: Boolean,
+    isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onUpdate: () -> Unit,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
     navigator: DestinationsNavigator,
-    content: @Composable () -> Unit
+    content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -34,6 +32,9 @@ fun ScheduleScreenScaffold(
             ScheduleScreenTopBar(
                 searchText = searchText,
                 onSearchTextChange = onSearchTextChange,
+                refreshEnabled = refreshEnabled,
+                isRefreshing = isRefreshing,
+                onRefreshButtonClick = onRefresh,
                 onManageGroupsButtonClick = {
                     navigator.navigate(ManageGroupsScreenDestination)
                 },
@@ -47,7 +48,7 @@ fun ScheduleScreenScaffold(
                 Snackbar(
                     action = {
                         IconButton(
-                            enabled = !isUpdating,
+                            enabled = !isRefreshing,
                             onClick = onUpdate
                         ) {
                             Icon(
@@ -61,16 +62,7 @@ fun ScheduleScreenScaffold(
                     Text(snackbarData.message)
                 }
             }
-        }
-    ) { innerPadding ->
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing = isUpdating),
-            swipeEnabled = swipeEnabled,
-            onRefresh = onRefresh,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            content = content
-        )
-    }
+        },
+        content = content
+    )
 }

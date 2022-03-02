@@ -12,6 +12,7 @@ data class ScheduleEntry(
     val teachers: List<String>?,
     val location: String?,
 ) {
+
     val startDate: LocalDate by lazy {
         startDateTime.toLocalDate()
     }

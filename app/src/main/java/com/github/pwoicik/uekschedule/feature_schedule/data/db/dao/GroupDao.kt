@@ -13,7 +13,20 @@ interface GroupDao {
     @Query("select * from groups order by name")
     fun getAllGroups(): Flow<List<Group>>
 
-    @Query("select count(id) from groups")
+    @Query(
+        """
+        select sum(count) from (
+            select count(*) count from groups
+            union all
+            select count(*) count
+                from activities
+                where 
+                    repeat_on_days_of_week is not null
+                    or
+                    start_datetime >= strftime('%s', date(strftime('now')))
+        )
+    """
+    )
     fun getGroupsCount(): Flow<Int>
 
     @Insert

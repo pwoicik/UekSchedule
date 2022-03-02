@@ -1,6 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
@@ -9,8 +10,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -21,11 +24,15 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.ui.TopAppBar
+import kotlinx.coroutines.launch
 
 @Composable
 fun ScheduleScreenTopBar(
     searchText: String,
     onSearchTextChange: (String) -> Unit,
+    refreshEnabled: Boolean,
+    isRefreshing: Boolean,
+    onRefreshButtonClick: () -> Unit,
     onManageGroupsButtonClick: () -> Unit,
     onManageActivitiesButtonClick: () -> Unit,
 ) {
@@ -44,6 +51,26 @@ fun ScheduleScreenTopBar(
                 Text(stringResource(R.string.app_name))
             },
             actions = {
+                if (refreshEnabled) {
+                    val spin by rememberInfiniteTransition().animateFloat(
+                        initialValue = 0f,
+                        targetValue = 360f,
+                        animationSpec = infiniteRepeatable(tween(
+                            durationMillis = 1000,
+                            easing = LinearEasing
+                        ))
+                    )
+                    IconButton(
+                        enabled = !isRefreshing,
+                        onClick = onRefreshButtonClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Sync,
+                            contentDescription = stringResource(R.string.refresh_data),
+                            modifier = Modifier.rotate(if (isRefreshing) -spin else 0f)
+                        )
+                    }
+                }
                 IconButton(onClick = { isInputMode = true }) {
                     Icon(
                         imageVector = Icons.Default.Search,

@@ -7,12 +7,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.OpenInBrowser
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,34 +34,28 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 @Composable
 fun ScheduleEntriesList(
-    scheduleEntries: List<ScheduleEntry>,
+    scheduleEntries: Map<LocalDate, List<ScheduleEntry>>,
     timeNow: LocalDateTime
 ) {
-    LazyColumn {
-        if (scheduleEntries.isEmpty()) return@LazyColumn
-
-        scheduleEntriesListStickyHeader(scheduleEntries[0].startDate)
-        item {
-            ScheduleEntriesListItem(
-                scheduleEntry = scheduleEntries[0],
-                status = scheduleEntries[0].status(timeNow)
-            )
+    val firstEntryToday by derivedStateOf {
+        var idx = 0
+        val today = timeNow.toLocalDate()
+        for ((day, entries) in scheduleEntries) {
+            if (day >= today) break
+            idx += 1 + entries.size
         }
-
-        for (i in 1..scheduleEntries.lastIndex) {
-            val prevClazz = scheduleEntries[i - 1]
-            val clazz = scheduleEntries[i]
-
-            val isNextDay = clazz.startDate != prevClazz.startDate
-            if (isNextDay) {
-                scheduleEntriesListStickyHeader(clazz.startDate)
-            }
-            item {
-                if (!isNextDay) Divider()
-                ScheduleEntriesListItem(
-                    scheduleEntry = clazz,
-                    status = clazz.status(timeNow)
-                )
+        idx
+    }
+    val lazyListState = rememberLazyListState(initialFirstVisibleItemIndex = firstEntryToday)
+    LazyColumn(
+        state = lazyListState,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        for ((date, entries) in scheduleEntries) {
+            scheduleEntriesListStickyHeader(date)
+            items(entries) {entry ->
+                ScheduleEntriesListItem(scheduleEntry = entry, status = entry.status(timeNow))
+                Divider(modifier = Modifier.alpha(0.5f))
             }
         }
     }

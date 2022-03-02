@@ -1,11 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
@@ -15,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.schedule.components.ScheduleScreenScaffold
 import com.ramcosta.composedestinations.annotation.Destination
@@ -57,23 +54,24 @@ fun ScheduleScreen(
 
     ScheduleScreenScaffold(
         scaffoldState = scaffoldState,
-        swipeEnabled = state.hasSavedGroups,
-        isUpdating = state.isUpdating,
+        refreshEnabled = state.hasSavedGroups,
+        isRefreshing = state.isRefreshing,
         onRefresh = viewModel::updateClasses,
         onUpdate = viewModel::updateClasses,
         searchText = state.searchText,
         onSearchTextChange = viewModel::updateSearchResults,
         navigator = navigator
-    ) {
-        Crossfade(state.entries.isEmpty()) { isEmpty ->
+    ) { innerPadding ->
+        Crossfade(
+            targetState = state.entries.isEmpty(),
+            modifier = Modifier.padding(innerPadding)
+        ) { isEmpty ->
             when (isEmpty) {
                 true -> {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
+                    Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
                     ) {
                         Text(
                             if (state.hasSavedGroups)
@@ -85,16 +83,16 @@ fun ScheduleScreen(
                 }
                 false -> {
                     val filteredEntries by derivedStateOf {
-                        state.entries.filter { entry ->
+                        state.entries.filter { entriesByDate ->
                             val matchesName =
-                                entry.name.contains(state.searchText, ignoreCase = true)
+                                entriesByDate.name.contains(state.searchText, ignoreCase = true)
                             val matchesTeacher =
-                                entry.teachers?.any {
+                                entriesByDate.teachers?.any {
                                     it.contains(state.searchText, ignoreCase = true)
                                 } ?: false
 
                             matchesName || matchesTeacher
-                        }
+                        }.groupBy(ScheduleEntry::startDate)
                     }
                     ScheduleEntriesList(
                         scheduleEntries = filteredEntries,

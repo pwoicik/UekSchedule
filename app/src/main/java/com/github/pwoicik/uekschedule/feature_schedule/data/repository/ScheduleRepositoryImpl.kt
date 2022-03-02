@@ -45,10 +45,6 @@ class ScheduleRepositoryImpl(
         groupDao.deleteGroup(group)
     }
 
-    override fun getAllClasses(): Flow<List<Class>> {
-        return classDao.getAllClasses()
-    }
-
     override suspend fun addGroups(groups: List<Group>) {
         val groupsWithClasses = groups.map { group ->
             fetchSchedule(group)
@@ -70,11 +66,7 @@ class ScheduleRepositoryImpl(
         return activityDao.getActivity(id)
     }
 
-    override suspend fun getAllActivities(): List<Activity> {
-        return activityDao.getAllActivities().first()
-    }
-
-    override fun getAllActivitiesFlow(): Flow<List<Activity>> {
+    override fun getAllActivities(): Flow<List<Activity>> {
         return activityDao.getAllActivities()
     }
 
@@ -87,12 +79,7 @@ class ScheduleRepositoryImpl(
     }
 
     override suspend fun getAllScheduleEntries(): List<ScheduleEntry> {
-        val todayAtMidnight = ZonedDateTime.of(
-            LocalDate.now(),
-            LocalTime.MIDNIGHT,
-            ZoneId.systemDefault()
-        )
-        val classes = classDao.getAllClassesPastDate(todayAtMidnight)
+        val classes = classDao.getAllClasses()
             .map(Class::toScheduleEntry)
         val activities = activityDao.getAllActivities()
             .first()

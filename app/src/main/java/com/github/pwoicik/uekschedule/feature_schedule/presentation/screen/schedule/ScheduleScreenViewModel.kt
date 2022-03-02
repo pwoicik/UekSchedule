@@ -52,15 +52,15 @@ class ScheduleScreenViewModel @Inject constructor(
             .onEach { res ->
                 when (res) {
                     is Resource.Error -> {
-                        _state.value = state.value.copy(isUpdating = false)
+                        _state.value = state.value.copy(isRefreshing = false)
                         _eventFlow.emit(UiEvent.ShowSnackbar)
                     }
                     is Resource.Loading -> {
-                        _state.value = state.value.copy(isUpdating = true)
+                        _state.value = state.value.copy(isRefreshing = true)
                         _eventFlow.emit(UiEvent.HideSnackbar)
                     }
                     is Resource.Success -> {
-                        _state.value = state.value.copy(isUpdating = false)
+                        _state.value = state.value.copy(isRefreshing = false)
                         _eventFlow.emit(UiEvent.HideSnackbar)
                     }
                 }

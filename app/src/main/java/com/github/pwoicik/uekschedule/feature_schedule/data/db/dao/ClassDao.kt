@@ -11,10 +11,7 @@ import java.time.ZonedDateTime
 interface ClassDao {
 
     @Query("select * from classes")
-    fun getAllClasses(): Flow<List<Class>>
-
-    @Query("select * from classes where start_datetime >= :date")
-    suspend fun getAllClassesPastDate(date: ZonedDateTime): List<Class>
+    suspend fun getAllClasses(): List<Class>
 
     @Insert
     suspend fun insertAllClasses(classes: Collection<Class>)
