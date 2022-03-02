@@ -5,6 +5,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -24,6 +25,8 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.ui.TopAppBar
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun ScheduleScreenTopBar(
@@ -51,14 +54,25 @@ fun ScheduleScreenTopBar(
             },
             actions = {
                 if (refreshEnabled) {
-                    val spin by rememberInfiniteTransition().animateFloat(
-                        initialValue = 0f,
-                        targetValue = 360f,
-                        animationSpec = infiniteRepeatable(tween(
-                            durationMillis = 1000,
-                            easing = LinearEasing
-                        ))
-                    )
+                    val spin = remember {
+                        Animatable(90f)
+                    }
+                    LaunchedEffect(isRefreshing) {
+                        Timber.d(isRefreshing.toString())
+                        if (isRefreshing) {
+                            spin.animateTo(
+                                targetValue = 450f,
+                                animationSpec = infiniteRepeatable(
+                                    tween(
+                                        durationMillis = 1000,
+                                        easing = LinearEasing
+                                    )
+                                )
+                            )
+                        } else {
+                            spin.animateTo(90f)
+                        }
+                    }
                     IconButton(
                         enabled = !isRefreshing,
                         onClick = onRefreshButtonClick
@@ -66,7 +80,9 @@ fun ScheduleScreenTopBar(
                         Icon(
                             imageVector = Icons.Default.Sync,
                             contentDescription = stringResource(R.string.refresh_data),
-                            modifier = Modifier.rotate(if (isRefreshing) -spin else 0f)
+                            modifier = Modifier
+                                .rotate(-spin.value)
+                                .progressSemantics()
                         )
                     }
                 }

@@ -7,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.common.Resource
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class ScheduleScreenViewModel @Inject constructor(
     private val scheduleUseCases: ScheduleUseCases
 ) : ViewModel() {
 
+    private val stateMutex = Mutex()
     private val _state = mutableStateOf(ScheduleScreenState())
     val state: State<ScheduleScreenState> = _state
 
@@ -35,10 +37,12 @@ class ScheduleScreenViewModel @Inject constructor(
     init {
         scheduleUseCases.getSavedGroupsCount().onEach { count ->
             val hasGroups = count > 0
-            _state.value = state.value.copy(
-                hasSavedGroups = hasGroups,
-                entries = if (hasGroups) scheduleUseCases.getAllScheduleEntries() else emptyList()
-            )
+            stateMutex.withLock {
+                _state.value = state.value.copy(
+                    hasSavedGroups = hasGroups,
+                    entries = if (hasGroups) scheduleUseCases.getAllScheduleEntries() else emptyList()
+                )
+            }
         }.launchIn(viewModelScope)
 
         refreshClasses()
@@ -50,27 +54,33 @@ class ScheduleScreenViewModel @Inject constructor(
         refreshClassesJob?.cancel()
         refreshClassesJob = scheduleUseCases.refreshClasses()
             .onEach { res ->
-                when (res) {
-                    is Resource.Error -> {
-                        _state.value = state.value.copy(isRefreshing = false)
-                        _eventFlow.emit(UiEvent.ShowSnackbar)
-                    }
-                    is Resource.Loading -> {
-                        _state.value = state.value.copy(isRefreshing = true)
-                        _eventFlow.emit(UiEvent.HideSnackbar)
-                    }
-                    is Resource.Success -> {
-                        _state.value = state.value.copy(isRefreshing = false)
-                        _eventFlow.emit(UiEvent.HideSnackbar)
+                stateMutex.withLock {
+                    when (res) {
+                        is Resource.Error -> {
+                            _state.value = state.value.copy(isRefreshing = false)
+                            _eventFlow.emit(UiEvent.ShowSnackbar)
+                        }
+                        is Resource.Loading -> {
+                            _state.value = state.value.copy(isRefreshing = true)
+                            _eventFlow.emit(UiEvent.HideSnackbar)
+                        }
+                        is Resource.Success -> {
+                            _state.value = state.value.copy(isRefreshing = false)
+                            _eventFlow.emit(UiEvent.HideSnackbar)
+                        }
                     }
                 }
             }.launchIn(viewModelScope)
     }
 
     fun updateSearchResults(text: String) {
-        _state.value = state.value.copy(
-            searchText = text
-        )
+        viewModelScope.launch {
+            stateMutex.withLock {
+                _state.value = state.value.copy(
+                    searchText = text
+                )
+            }
+        }
     }
 
     sealed class UiEvent {
