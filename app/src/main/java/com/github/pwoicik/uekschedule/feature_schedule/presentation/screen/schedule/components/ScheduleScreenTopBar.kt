@@ -150,6 +150,7 @@ fun SearchTopBar(
             placeholder = {
                 Text(stringResource(R.string.entry_search_placeholder))
             },
+            singleLine = true,
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
             },
