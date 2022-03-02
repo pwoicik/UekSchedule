@@ -5,7 +5,7 @@ import com.github.pwoicik.uekschedule.common.Resource
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.*
 
-class UpdateClasses(
+class RefreshClasses(
     private val repository: ScheduleRepository
 ) {
 

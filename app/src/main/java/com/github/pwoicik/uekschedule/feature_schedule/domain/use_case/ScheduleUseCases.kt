@@ -3,30 +3,30 @@ package com.github.pwoicik.uekschedule.feature_schedule.domain.use_case
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 
 data class ScheduleUseCases(
-    val getAllGroups: GetAllGroups,
-    val getSavedGroups: GetSavedGroups,
-    val getSavedGroupsCount: GetSavedGroupsCount,
-    val deleteGroup: DeleteGroup,
+    val addActivity: AddActivity,
     val addGroups: AddGroups,
-    val updateClasses: UpdateClasses,
+    val deleteActivity: DeleteActivity,
+    val deleteGroup: DeleteGroup,
     val getActivity: GetActivity,
     val getAllActivities: GetAllActivities,
-    val addActivity: AddActivity,
-    val deleteActivity: DeleteActivity,
-    val getAllScheduleEntries: GetAllScheduleEntries
+    val getAllGroups: GetAllGroups,
+    val getAllScheduleEntries: GetAllScheduleEntries,
+    val getSavedGroups: GetSavedGroups,
+    val getSavedGroupsCount: GetSavedGroupsCount,
+    val refreshClasses: RefreshClasses,
 ) {
 
     constructor(repository: ScheduleRepository) : this(
-        GetAllGroups(repository),
-        GetSavedGroups(repository),
-        GetSavedGroupsCount(repository),
-        DeleteGroup(repository),
+        AddActivity(repository),
         AddGroups(repository),
-        UpdateClasses(repository),
+        DeleteActivity(repository),
+        DeleteGroup(repository),
         GetActivity(repository),
         GetAllActivities(repository),
-        AddActivity(repository),
-        DeleteActivity(repository),
-        GetAllScheduleEntries(repository)
+        GetAllGroups(repository),
+        GetAllScheduleEntries(repository),
+        GetSavedGroups(repository),
+        GetSavedGroupsCount(repository),
+        RefreshClasses(repository),
     )
 }

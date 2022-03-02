@@ -24,7 +24,6 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.ui.TopAppBar
-import kotlinx.coroutines.launch
 
 @Composable
 fun ScheduleScreenTopBar(

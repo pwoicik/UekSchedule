@@ -41,14 +41,14 @@ class ScheduleScreenViewModel @Inject constructor(
             )
         }.launchIn(viewModelScope)
 
-        updateClasses()
+        refreshClasses()
     }
 
-    private var updateClassesJob: Job? = null
+    private var refreshClassesJob: Job? = null
 
-    fun updateClasses() {
-        updateClassesJob?.cancel()
-        updateClassesJob = scheduleUseCases.updateClasses()
+    fun refreshClasses() {
+        refreshClassesJob?.cancel()
+        refreshClassesJob = scheduleUseCases.refreshClasses()
             .onEach { res ->
                 when (res) {
                     is Resource.Error -> {

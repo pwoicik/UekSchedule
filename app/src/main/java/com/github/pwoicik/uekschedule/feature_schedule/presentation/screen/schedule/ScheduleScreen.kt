@@ -56,8 +56,8 @@ fun ScheduleScreen(
         scaffoldState = scaffoldState,
         refreshEnabled = state.hasSavedGroups,
         isRefreshing = state.isRefreshing,
-        onRefresh = viewModel::updateClasses,
-        onUpdate = viewModel::updateClasses,
+        onRefresh = viewModel::refreshClasses,
+        onUpdate = viewModel::refreshClasses,
         searchText = state.searchText,
         onSearchTextChange = viewModel::updateSearchResults,
         navigator = navigator
