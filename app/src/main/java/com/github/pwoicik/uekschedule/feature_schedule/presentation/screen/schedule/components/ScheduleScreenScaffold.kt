@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.ManageActivitiesScreenDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.ManageGroupsScreenDestination
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 fun ScheduleScreenScaffold(
@@ -24,7 +25,7 @@ fun ScheduleScreenScaffold(
     onUpdate: () -> Unit,
     searchText: String,
     onSearchTextChange: (String) -> Unit,
-    navController: NavController,
+    navigator: DestinationsNavigator,
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -34,10 +35,10 @@ fun ScheduleScreenScaffold(
                 searchText = searchText,
                 onSearchTextChange = onSearchTextChange,
                 onManageGroupsButtonClick = {
-                    navController.navigate(Screen.ManageGroupsScreen.route)
+                    navigator.navigate(ManageGroupsScreenDestination)
                 },
                 onManageActivitiesButtonClick = {
-                    navController.navigate(Screen.ManageActivitiesScreen.route)
+                    navigator.navigate(ManageActivitiesScreenDestination)
                 }
             )
         },

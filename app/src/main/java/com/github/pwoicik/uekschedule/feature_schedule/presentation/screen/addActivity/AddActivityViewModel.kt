@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.AddActivityScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,30 +25,19 @@ class AddActivityViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val navArgs = AddActivityScreenDestination.argsFrom(savedStateHandle)
+
     private val _state: MutableState<AddActivityScreenState?> = mutableStateOf(null)
     val state: State<AddActivityScreenState?>
         get() = _state
 
-    private val activityId = savedStateHandle.get<Long>("activityId")!!
-
     init {
-        if (activityId == -1L) {
+        val activityId = navArgs.activityId
+        if (activityId == 0L) {
             _state.value = AddActivityScreenState()
         } else {
             viewModelScope.launch {
-                val activity = scheduleUseCases.getActivity(activityId)
-                val repeatActivity = activity.repeatOnDaysOfWeek != null
-                _state.value = AddActivityScreenState(
-                    name = activity.name,
-                    location = activity.location ?: "",
-                    type = activity.type ?: "",
-                    teacher = activity.teacher ?: "",
-                    startDate = if (repeatActivity) null else activity.startDateTime.toLocalDate(),
-                    startTime = activity.startDateTime.toLocalTime(),
-                    durationMinutes = activity.durationMinutes.toString(),
-                    repeatActivity = repeatActivity,
-                    repeatOnDaysOfWeek = activity.repeatOnDaysOfWeek?.toSet() ?: emptySet()
-                )
+                _state.value = AddActivityScreenState(scheduleUseCases.getActivity(activityId))
             }
         }
     }
@@ -137,9 +127,10 @@ class AddActivityViewModel @Inject constructor(
                             ZoneId.systemDefault()
                         )
                     }
+
                     scheduleUseCases.addActivity(
                         Activity(
-                            id = if (activityId != -1L) activityId else 0,
+                            id = navArgs.activityId,
                             name = state.name,
                             location = state.location.ifBlankThenNull(),
                             type = state.type.ifBlankThenNull(),

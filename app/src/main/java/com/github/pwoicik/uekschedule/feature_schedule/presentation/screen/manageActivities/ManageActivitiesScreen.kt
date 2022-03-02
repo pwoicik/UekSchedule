@@ -16,17 +16,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SimpleListScaffold
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.AddActivityScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
+@Destination
 @Composable
 fun ManageActivitiesScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     viewModel: ManageActivitiesViewModel = hiltViewModel()
 ) {
     val activities by viewModel.activities.collectAsState()
@@ -37,12 +39,10 @@ fun ManageActivitiesScreen(
         emptyListMessage = stringResource(R.string.no_activities),
         onAddItemContentDescription = stringResource(R.string.add_activity),
         onAddItem = {
-            navController.navigate(Screen.AddActivityScreen.route)
+            navigator.navigate(AddActivityScreenDestination())
         },
         onClickItem = { activity ->
-            navController.navigate(
-                "${Screen.AddActivityScreen.route}?activityId=${activity.id}"
-            )
+            navigator.navigate(AddActivityScreenDestination(activity.id))
         }
     ) { activity ->
         Row(

@@ -16,16 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.CircularProgressIndicatorCentered
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.components.AddGroupsScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGroups.components.AddGroupsSelectionList
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
 
+@Destination
 @Composable
 fun AddGroupsScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     viewModel: AddGroupsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state
@@ -43,7 +45,7 @@ fun AddGroupsScreen(
                     scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                 }
                 is AddGroupsViewModel.UiEvent.AddedGroups -> {
-                    navController.navigateUp()
+                    navigator.navigateUp()
                 }
             }
         }
@@ -51,10 +53,9 @@ fun AddGroupsScreen(
 
     AddGroupsScaffold(
         scaffoldState = scaffoldState,
-        navController = navController,
         viewModel = viewModel,
-        selectedGroupsActionButtonsEnabled = state.selectedGroups.isNotEmpty() &&
-                !state.isSaving
+        selectedGroupsActionButtonsEnabled = state.selectedGroups.isNotEmpty() && !state.isSaving,
+        onNavigateBack = navigator::navigateUp
     ) {
         when {
             state.availableGroupsState.isLoading -> {

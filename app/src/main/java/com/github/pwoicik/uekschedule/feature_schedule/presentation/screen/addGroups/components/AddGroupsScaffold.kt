@@ -15,9 +15,9 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addGr
 @Composable
 fun AddGroupsScaffold(
     scaffoldState: ScaffoldState,
-    navController: NavController,
     viewModel: AddGroupsViewModel,
     selectedGroupsActionButtonsEnabled: Boolean,
+    onNavigateBack: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Scaffold(
@@ -25,9 +25,7 @@ fun AddGroupsScaffold(
         scaffoldState = scaffoldState,
         bottomBar = {
             AddGroupsBottomAppBar(
-                onNavigateBack = {
-                    navController.navigateUp()
-                },
+                onNavigateBack = onNavigateBack,
                 selectedGroupsActionButtonsEnabled = selectedGroupsActionButtonsEnabled,
                 onClearSelectedGroups = {
                     viewModel.event(AddGroupsEvent.ClearSelectedGroups)

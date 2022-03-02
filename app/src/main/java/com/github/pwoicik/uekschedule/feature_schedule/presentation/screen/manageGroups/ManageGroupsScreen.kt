@@ -17,14 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SimpleListScaffold
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.Screen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.destinations.AddGroupsScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@Destination
 @Composable
 fun ManageGroupsScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     viewModel: ManageGroupsViewModel = hiltViewModel()
 ) {
     val savedGroups by viewModel.savedGroups.collectAsState()
@@ -35,7 +37,7 @@ fun ManageGroupsScreen(
         emptyListMessage = stringResource(R.string.no_saved_groups),
         onAddItemContentDescription = stringResource(R.string.add_group),
         onAddItem = {
-            navController.navigate(Screen.AddGroupsScreen.route)
+            navigator.navigate(AddGroupsScreenDestination)
         }
     ) { group ->
         Row(

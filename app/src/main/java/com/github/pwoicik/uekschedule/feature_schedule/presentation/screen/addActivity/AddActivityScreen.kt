@@ -14,17 +14,21 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.AddActivityScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.AddActivityTextFiled
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.RepeatActivityInputColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.addActivity.components.TimeInputField
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
 
+@Destination(
+    navArgsDelegate = AddActivityNavArgs::class
+)
 @Composable
 fun AddActivityScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     viewModel: AddActivityViewModel = hiltViewModel()
 ) {
     val state by viewModel.state
@@ -38,7 +42,7 @@ fun AddActivityScreen(
                     scaffoldState.snackbarHostState.showSnackbar(snackbarErrorMessage)
                 }
                 is AddActivityViewModel.UiEvent.ActivitySaved -> {
-                    navController.navigateUp()
+                    navigator.navigateUp()
                 }
             }
         }
