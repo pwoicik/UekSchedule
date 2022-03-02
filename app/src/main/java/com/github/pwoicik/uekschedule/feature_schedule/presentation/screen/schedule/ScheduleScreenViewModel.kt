@@ -35,12 +35,10 @@ class ScheduleScreenViewModel @Inject constructor(
     init {
         scheduleUseCases.getSavedGroupsCount().onEach { count ->
             val hasGroups = count > 0
-            _state.value = state.value.copy(hasSavedGroups = hasGroups)
-            if (hasGroups) {
-                _state.value = state.value.copy(
-                    entries = scheduleUseCases.getAllScheduleEntries()
-                )
-            }
+            _state.value = state.value.copy(
+                hasSavedGroups = hasGroups,
+                entries = if (hasGroups) scheduleUseCases.getAllScheduleEntries() else emptyList()
+            )
         }.launchIn(viewModelScope)
 
         updateClasses()
