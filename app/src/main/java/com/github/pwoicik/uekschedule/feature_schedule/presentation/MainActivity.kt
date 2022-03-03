@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.NavGraphs
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
