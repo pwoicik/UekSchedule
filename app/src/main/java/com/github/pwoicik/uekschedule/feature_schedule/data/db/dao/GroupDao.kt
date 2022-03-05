@@ -1,9 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import kotlinx.coroutines.flow.Flow
 
@@ -29,7 +26,7 @@ interface GroupDao {
     )
     fun getGroupsCount(): Flow<Int>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertGroup(group: Group)
 
     @Delete

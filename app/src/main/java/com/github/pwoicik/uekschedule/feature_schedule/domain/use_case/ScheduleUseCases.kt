@@ -4,7 +4,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.Schedul
 
 data class ScheduleUseCases(
     val addActivity: AddActivity,
-    val addGroups: AddGroups,
+    val addGroup: AddGroup,
     val deleteActivity: DeleteActivity,
     val deleteGroup: DeleteGroup,
     val getActivity: GetActivity,
@@ -18,7 +18,7 @@ data class ScheduleUseCases(
 
     constructor(repository: ScheduleRepository) : this(
         AddActivity(repository),
-        AddGroups(repository),
+        AddGroup(repository),
         DeleteActivity(repository),
         DeleteGroup(repository),
         GetActivity(repository),
