@@ -4,7 +4,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.Schedul
 
 data class ScheduleUseCases(
     val addActivity: AddActivity,
-    val addGroups: AddGroups,
+    val addGroup: AddGroup,
     val deleteActivity: DeleteActivity,
     val deleteGroup: DeleteGroup,
     val getActivity: GetActivity,
@@ -13,12 +13,13 @@ data class ScheduleUseCases(
     val getAllScheduleEntries: GetAllScheduleEntries,
     val getSavedGroups: GetSavedGroups,
     val getSavedGroupsCount: GetSavedGroupsCount,
+    val getScheduleForGroup: GetScheduleForGroup,
     val refreshClasses: RefreshClasses,
 ) {
 
     constructor(repository: ScheduleRepository) : this(
         AddActivity(repository),
-        AddGroups(repository),
+        AddGroup(repository),
         DeleteActivity(repository),
         DeleteGroup(repository),
         GetActivity(repository),
@@ -27,6 +28,7 @@ data class ScheduleUseCases(
         GetAllScheduleEntries(repository),
         GetSavedGroups(repository),
         GetSavedGroupsCount(repository),
+        GetScheduleForGroup(repository),
         RefreshClasses(repository),
     )
 }

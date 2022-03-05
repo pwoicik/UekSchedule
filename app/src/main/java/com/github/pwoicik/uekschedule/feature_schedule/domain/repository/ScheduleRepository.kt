@@ -1,31 +1,33 @@
 package com.github.pwoicik.uekschedule.feature_schedule.domain.repository
 
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Class
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import kotlinx.coroutines.flow.Flow
-import java.time.LocalDate
 
 interface ScheduleRepository {
 
-    suspend fun getAllGroups(): List<Group>
+    suspend fun addActivity(activity: Activity)
 
-    fun getSavedGroupsCount(): Flow<Int>
+    suspend fun addGroup(group: Group)
 
-    fun getSavedGroups(): Flow<List<Group>>
+    suspend fun deleteActivity(activity: Activity)
 
     suspend fun deleteGroup(group: Group)
-
-    suspend fun addGroups(groups: List<Group>)
 
     suspend fun getActivity(id: Long): Activity
 
     fun getAllActivities(): Flow<List<Activity>>
 
-    suspend fun addActivity(activity: Activity)
+    suspend fun getAllGroups(): List<Group>
 
-    suspend fun deleteActivity(activity: Activity)
+    fun getAllScheduleEntries(): Flow<List<ScheduleEntry>>
 
-    suspend fun getAllScheduleEntries(): List<ScheduleEntry>
+    suspend fun getSchedule(groupId: Long): List<ScheduleEntry>
+
+    fun getSavedGroups(): Flow<List<Group>>
+
+    fun getSavedGroupsCount(): Flow<Int>
+
+    suspend fun refetchSchedules()
 }

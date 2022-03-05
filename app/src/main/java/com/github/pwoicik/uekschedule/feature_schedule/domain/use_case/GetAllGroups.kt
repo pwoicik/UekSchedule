@@ -16,7 +16,7 @@ class GetAllGroups(
             val groups = repository.getAllGroups()
             emit(Resource.Success(groups))
         } catch (e: Exception) {
-            emit(Resource.Error("Couldn't reach server."))
+            emit(Resource.Error(e.message ?: "Couldn't reach server."))
         }
     }
 }

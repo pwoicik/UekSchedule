@@ -3,20 +3,23 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screen.NavGraphs
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
+import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,18 +27,25 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             UEKScheduleTheme {
-                val uiController = rememberSystemUiController()
-
-                val isDarkMode = isSystemInDarkTheme()
-                uiController.setStatusBarColor(
-                    color = Color.Transparent,
-                    darkIcons = !isDarkMode
-                )
-
                 ProvideWindowInsets {
+                    val uiController = rememberSystemUiController()
+
+                    val isDarkMode = isSystemInDarkTheme()
+                    uiController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = !isDarkMode
+                    )
+
+                    val navController = rememberNavController()
+                    val currentDestination = navController.currentBackStackEntryAsState()
+                        .value?.navDestination
+                    LaunchedEffect(currentDestination) {
+                        Timber.tag("root navGraph destination")
+                            .d(currentDestination?.route.toString())
+                    }
                     DestinationsNavHost(
                         navGraph = NavGraphs.root,
-                        modifier = Modifier.navigationBarsWithImePadding()
+                        navController = navController
                     )
                 }
             }

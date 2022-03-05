@@ -13,12 +13,9 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toSchedule
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 class ScheduleRepositoryImpl(
     private val scheduleApi: ScheduleApi,
@@ -29,33 +26,20 @@ class ScheduleRepositoryImpl(
     private val groupDao = scheduleDatabase.groupDao
     private val activityDao = scheduleDatabase.activityDao
 
-    override suspend fun getAllGroups(): List<Group> {
-        return scheduleApi.getGroups().groups!!.map { it.toGroup() }
+    override suspend fun addActivity(activity: Activity) {
+        activityDao.insertActivity(activity)
     }
 
-    override fun getSavedGroups(): Flow<List<Group>> {
-        return groupDao.getAllGroups()
+    override suspend fun addGroup(group: Group) {
+        groupDao.insertGroup(group)
     }
 
-    override fun getSavedGroupsCount(): Flow<Int> {
-        return groupDao.getGroupsCount()
+    override suspend fun deleteActivity(activity: Activity) {
+        activityDao.deleteActivity(activity)
     }
 
     override suspend fun deleteGroup(group: Group) {
         groupDao.deleteGroup(group)
-    }
-
-    override suspend fun addGroups(groups: List<Group>) {
-        val groupsWithClasses = groups.map { group ->
-            fetchSchedule(group)
-        }
-        scheduleDatabase.withTransaction {
-            groupsWithClasses.forEach { (group, classes) ->
-                groupDao.deleteGroup(group)
-                groupDao.insertGroup(group)
-                classDao.insertAllClasses(classes)
-            }
-        }
     }
 
     private suspend fun fetchSchedule(group: Group): GroupWithClasses {
@@ -70,21 +54,51 @@ class ScheduleRepositoryImpl(
         return activityDao.getAllActivities()
     }
 
-    override suspend fun addActivity(activity: Activity) {
-        activityDao.insertActivity(activity)
+    override suspend fun getAllGroups(): List<Group> {
+        return scheduleApi.getGroups().groups!!.map { it.toGroup() }
     }
 
-    override suspend fun deleteActivity(activity: Activity) {
-        activityDao.deleteActivity(activity)
-    }
-
-    override suspend fun getAllScheduleEntries(): List<ScheduleEntry> {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getAllScheduleEntries(): Flow<List<ScheduleEntry>> {
         val classes = classDao.getAllClasses()
-            .map(Class::toScheduleEntry)
+            .map { it.map(Class::toScheduleEntry) }
         val activities = activityDao.getAllActivities()
-            .first()
-            .map(Activity::toScheduleEntries)
-            .flatten()
-        return (classes + activities).sortedBy(ScheduleEntry::startDateTime)
+            .map {
+                it.map(Activity::toScheduleEntries)
+                    .flatten()
+            }
+
+        @Suppress("NAME_SHADOWING")
+        return combine(classes, activities) { classes, activities ->
+            (classes + activities).sortedBy(ScheduleEntry::startDateTime)
+        }
+    }
+
+    override fun getSavedGroups(): Flow<List<Group>> {
+        return groupDao.getAllGroups()
+    }
+
+    override fun getSavedGroupsCount(): Flow<Int> {
+        return groupDao.getGroupsCount()
+    }
+
+    override suspend fun getSchedule(groupId: Long): List<ScheduleEntry> {
+        return scheduleApi.getSchedule(groupId)
+            .toGroupWithClasses()
+            .classes.map(Class::toScheduleEntry)
+    }
+
+    override suspend fun refetchSchedules() {
+        val groups = getSavedGroups().first()
+        val groupsWithClasses = groups.map { group ->
+            Timber.d("fetching schedule for group ${group.name}")
+            fetchSchedule(group)
+        }
+        scheduleDatabase.withTransaction {
+            groupsWithClasses.forEach { (_, classes) ->
+                classDao.deleteAllClasses()
+                classDao.insertAllClasses(classes)
+            }
+        }
     }
 }
