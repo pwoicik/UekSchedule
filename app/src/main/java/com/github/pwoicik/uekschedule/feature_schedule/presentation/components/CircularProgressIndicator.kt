@@ -56,7 +56,7 @@ fun CircularProgressIndicator(
             contentDescription = null,
             tint = color,
             modifier = Modifier
-                .padding(4.dp)
+                .padding(6.dp)
                 .rotate(spin.value)
         )
     }

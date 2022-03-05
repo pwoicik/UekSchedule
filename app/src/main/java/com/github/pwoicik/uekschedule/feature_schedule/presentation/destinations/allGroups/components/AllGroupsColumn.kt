@@ -47,7 +47,8 @@ fun AllGroupsColumn(
                     IconButton(onClick = { onGroupAddButtonClick(group) }) {
                         Surface(
                             shape = RoundedCornerShape(50),
-                            tonalElevation = 4.dp
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,

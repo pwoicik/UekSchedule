@@ -70,7 +70,9 @@ class ScheduleDestinationViewModel @Inject constructor(
             }
             is ScheduleDestinationEvent.SearchTextChanged -> {
                 _state.update { state ->
-                    state.copy(searchText = event.newText.trimStart())
+                    state.copy(
+                        searchValue = event.newValue.copy()
+                    )
                 }
             }
             ScheduleDestinationEvent.RefreshButtonClicked -> {

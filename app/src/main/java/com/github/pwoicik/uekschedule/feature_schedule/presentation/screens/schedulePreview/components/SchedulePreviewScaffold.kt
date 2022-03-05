@@ -79,9 +79,9 @@ fun SchedulePreviewScaffold(
             ) {
                 CircularProgressIndicator(
                     isSpinning = isRefreshing,
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    backgroundColor = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(top = 16.dp)
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier = Modifier.padding(top = 24.dp)
                 )
             }
         }

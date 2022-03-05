@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.CircularProgressIndicator
@@ -19,8 +20,8 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.S
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleDestinationScaffold(
-    searchText: String,
-    onSearchTextChange: (String) -> Unit,
+    searchText: TextFieldValue,
+    onSearchTextChange: (TextFieldValue) -> Unit,
     isFabVisible: Boolean,
     onFabClick: () -> Unit,
     fabPadding: PaddingValues,
@@ -73,8 +74,8 @@ fun ScheduleDestinationScaffold(
             ) {
                 CircularProgressIndicator(
                     isSpinning = isRefreshing,
-                    color = MaterialTheme.colorScheme.onTertiary,
-                    backgroundColor = MaterialTheme.colorScheme.tertiary,
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(top = 24.dp)
                 )
             }

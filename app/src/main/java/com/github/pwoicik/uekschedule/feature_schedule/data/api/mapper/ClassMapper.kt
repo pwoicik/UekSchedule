@@ -5,7 +5,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Class
 import com.github.pwoicik.uekschedule.feature_schedule.data.util.convertDateTime
 
 fun ClassDto.toClass(groupId: Long): Class {
-    val endTime = endTime.dropLast(6)
+    val endTime = endTime.replace(""" \(.+\)""".toRegex(), "")
 
     return Class(
         groupId = groupId,

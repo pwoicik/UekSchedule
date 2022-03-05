@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.*
@@ -23,6 +24,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.C
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.SchedulePreviewScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.allGroups.components.AllGroupsColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.allGroups.components.AllGroupsScaffold
 import com.google.accompanist.insets.LocalWindowInsets
@@ -63,9 +65,6 @@ fun AllGroupsDestination(
                         }
                     }
                 }
-                is AllGroupsViewModel.UiEvent.NavigateToGroupPreview -> {
-                    parentNavigator.navigate(event.destination)
-                }
                 is AllGroupsViewModel.UiEvent.ShowSavedGroupSnackbar -> {
                     launch {
                         snackbarHostState.showSnackbar(
@@ -92,7 +91,7 @@ fun AllGroupsDestination(
     )
 
     AllGroupsScaffold(
-        searchFieldValue = state.searchText,
+        searchFieldValue = state.searchValue,
         onSearchValueChange = { viewModel.emit(AllGroupsEvent.SearchTextChanged(it)) },
         snackbarHostState = snackbarHostState,
         snackbarPadding = bottomPadding
@@ -112,7 +111,7 @@ fun AllGroupsDestination(
                 AllGroupsColumn(
                     groups = filteredGroups,
                     onGroupClick = {
-                        viewModel.emit(AllGroupsEvent.GroupCardClicked(it))
+                        parentNavigator.navigate(SchedulePreviewScreenDestination(it.id, it.name))
                     },
                     onGroupAddButtonClick = {
                         viewModel.emit(AllGroupsEvent.GroupSaveButtonClicked(it))
@@ -129,7 +128,9 @@ fun AllGroupsDestination(
             ) {
                 CircularProgressIndicator(
                     isSpinning = state.isLoading,
-                    modifier = Modifier.padding(top = 16.dp)
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.padding(top = 24.dp)
                 )
             }
         }

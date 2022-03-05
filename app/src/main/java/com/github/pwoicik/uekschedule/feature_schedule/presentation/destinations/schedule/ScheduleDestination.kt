@@ -1,21 +1,22 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.schedule
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
@@ -88,7 +89,7 @@ fun ScheduleDestination(
         )
     }
     ScheduleDestinationScaffold(
-        searchText = state.searchText,
+        searchText = state.searchValue,
         onSearchTextChange = { viewModel.emit(ScheduleDestinationEvent.SearchTextChanged(it)) },
         isFabVisible = state.entries != null,
         onFabClick = { viewModel.emit(ScheduleDestinationEvent.FabClicked) },
@@ -103,7 +104,25 @@ fun ScheduleDestination(
     ) {
         Crossfade(state.entries) { entries ->
             when {
-                entries == null -> {}
+                entries == null -> {
+                    AnimatedVisibility(
+                        visible = !state.isRefreshing,
+                        enter = fadeIn(tween(delayMillis = 500)),
+                        exit = fadeOut()
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CloudOff,
+                                contentDescription = stringResource(R.string.couldnt_connect),
+                                tint = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                    }
+                }
                 entries.isEmpty() -> {
                     Box(
                         contentAlignment = Alignment.Center,

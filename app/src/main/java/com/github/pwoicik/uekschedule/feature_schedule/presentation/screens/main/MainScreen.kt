@@ -33,7 +33,8 @@ fun MainScreen(
         .value?.navDestination
 
     SideEffect {
-        Timber.tag("current destination").d(currentDestination?.route.toString())
+        Timber.tag("mainScreen navGraph destination")
+            .d(currentDestination?.route.toString())
     }
 
     MainScreenScaffold(

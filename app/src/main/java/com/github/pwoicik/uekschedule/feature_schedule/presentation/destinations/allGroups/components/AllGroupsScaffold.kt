@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.*
 import com.google.accompanist.insets.statusBarsPadding
@@ -17,8 +18,8 @@ import com.google.accompanist.insets.statusBarsPadding
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun AllGroupsScaffold(
-    searchFieldValue: String,
-    onSearchValueChange: (String) -> Unit,
+    searchFieldValue: TextFieldValue,
+    onSearchValueChange: (TextFieldValue) -> Unit,
     snackbarHostState: SnackbarHostState,
     snackbarPadding: PaddingValues = PaddingValues(),
     content: @Composable (PaddingValues) -> Unit

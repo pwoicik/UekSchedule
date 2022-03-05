@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
@@ -23,8 +24,8 @@ import com.google.accompanist.insets.statusBarsPadding
 
 @Composable
 fun ScheduleDestinationTopBar(
-    searchText: String,
-    onSearchTextChange: (String) -> Unit,
+    searchText: TextFieldValue,
+    onSearchTextChange: (TextFieldValue) -> Unit,
     onRefreshButtonClick: () -> Unit,
     onPreferencesButtonClick: () -> Unit
 ) {
@@ -98,7 +99,7 @@ fun ScheduleDestinationTopBar(
                     value = searchText,
                     onValueChange = onSearchTextChange,
                     onClearText = {
-                        onSearchTextChange("")
+                        onSearchTextChange(TextFieldValue())
                         isSearchFieldVisible = false
                     },
                     placeholder = stringResource(R.string.entry_search_placeholder),

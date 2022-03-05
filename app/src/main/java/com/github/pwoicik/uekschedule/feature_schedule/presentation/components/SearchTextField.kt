@@ -9,14 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
 
 @Composable
 fun SearchTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
-    onClearText: () -> Unit = { onValueChange("") },
+    onClearText: () -> Unit = { onValueChange(TextFieldValue("")) },
     placeholder: String? = null,
     singleLine: Boolean = true,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
@@ -56,4 +57,5 @@ fun SearchTextField(
         textStyle = MaterialTheme.typography.bodyLarge,
         modifier = modifier
     )
+
 }
