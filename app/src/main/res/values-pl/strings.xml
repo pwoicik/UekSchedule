@@ -44,6 +44,8 @@
     <string name="scroll_to_today">Pokaż najbliższe zajęcia</string>
     <string name="preferences">Preferencje</string>
     <string name="activity_deleted">Usunięto zajęcia \"%s\"</string>
+    <string name="go_back">Cofnij</string>
+    <string name="no_classes_message2">Brak zajęć dla tej grupy!</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>

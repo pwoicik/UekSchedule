@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.common.Resource
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.Destination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.ScheduleDestinationDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.SchedulePreviewScreenDestination
+import com.ramcosta.composedestinations.spec.Direction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -66,7 +66,9 @@ class AllGroupsViewModel @Inject constructor(
             is AllGroupsEvent.GroupCardClicked -> {
                 viewModelScope.launch {
                     _eventFlow.emit(
-                        UiEvent.NavigateToGroupPreview(ScheduleDestinationDestination)
+                        UiEvent.NavigateToGroupPreview(
+                            SchedulePreviewScreenDestination(event.group.id, event.group.name)
+                        )
                     )
                 }
             }
@@ -91,6 +93,6 @@ class AllGroupsViewModel @Inject constructor(
         object ShowErrorSnackbar : UiEvent()
         object HideSnackbar : UiEvent()
         data class ShowSavedGroupSnackbar(val group: Group) : UiEvent()
-        data class NavigateToGroupPreview(val destination: Destination) : UiEvent()
+        data class NavigateToGroupPreview(val destination: Direction) : UiEvent()
     }
 }

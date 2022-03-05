@@ -26,38 +26,20 @@ class ScheduleRepositoryImpl(
     private val groupDao = scheduleDatabase.groupDao
     private val activityDao = scheduleDatabase.activityDao
 
-    override suspend fun getAllGroups(): List<Group> {
-        return scheduleApi.getGroups().groups!!.map { it.toGroup() }
-    }
-
-    override fun getSavedGroups(): Flow<List<Group>> {
-        return groupDao.getAllGroups()
-    }
-
-    override fun getSavedGroupsCount(): Flow<Int> {
-        return groupDao.getGroupsCount()
-    }
-
-    override suspend fun deleteGroup(group: Group) {
-        groupDao.deleteGroup(group)
+    override suspend fun addActivity(activity: Activity) {
+        activityDao.insertActivity(activity)
     }
 
     override suspend fun addGroup(group: Group) {
         groupDao.insertGroup(group)
     }
 
-    override suspend fun refetchSchedules() {
-        val groups = getSavedGroups().first()
-        val groupsWithClasses = groups.map { group ->
-            Timber.d("fetching schedule for group ${group.name}")
-            fetchSchedule(group)
-        }
-        scheduleDatabase.withTransaction {
-            groupsWithClasses.forEach { (_, classes) ->
-                classDao.deleteAllClasses()
-                classDao.insertAllClasses(classes)
-            }
-        }
+    override suspend fun deleteActivity(activity: Activity) {
+        activityDao.deleteActivity(activity)
+    }
+
+    override suspend fun deleteGroup(group: Group) {
+        groupDao.deleteGroup(group)
     }
 
     private suspend fun fetchSchedule(group: Group): GroupWithClasses {
@@ -72,12 +54,8 @@ class ScheduleRepositoryImpl(
         return activityDao.getAllActivities()
     }
 
-    override suspend fun addActivity(activity: Activity) {
-        activityDao.insertActivity(activity)
-    }
-
-    override suspend fun deleteActivity(activity: Activity) {
-        activityDao.deleteActivity(activity)
+    override suspend fun getAllGroups(): List<Group> {
+        return scheduleApi.getGroups().groups!!.map { it.toGroup() }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -92,6 +70,34 @@ class ScheduleRepositoryImpl(
 
         return merge(classes, activities).map {
             it.sortedBy(ScheduleEntry::startDateTime)
+        }
+    }
+
+    override fun getSavedGroups(): Flow<List<Group>> {
+        return groupDao.getAllGroups()
+    }
+
+    override fun getSavedGroupsCount(): Flow<Int> {
+        return groupDao.getGroupsCount()
+    }
+
+    override suspend fun getSchedule(groupId: Long): List<ScheduleEntry> {
+        return scheduleApi.getSchedule(groupId)
+            .toGroupWithClasses()
+            .classes.map(Class::toScheduleEntry)
+    }
+
+    override suspend fun refetchSchedules() {
+        val groups = getSavedGroups().first()
+        val groupsWithClasses = groups.map { group ->
+            Timber.d("fetching schedule for group ${group.name}")
+            fetchSchedule(group)
+        }
+        scheduleDatabase.withTransaction {
+            groupsWithClasses.forEach { (_, classes) ->
+                classDao.deleteAllClasses()
+                classDao.insertAllClasses(classes)
+            }
         }
     }
 }

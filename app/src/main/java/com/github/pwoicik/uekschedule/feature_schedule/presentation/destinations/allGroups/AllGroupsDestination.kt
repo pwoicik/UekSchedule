@@ -27,6 +27,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.allGroups.components.AllGroupsScaffold
 import com.google.accompanist.insets.LocalWindowInsets
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -34,6 +35,7 @@ import kotlinx.coroutines.launch
 @Destination(navGraph = "mainScreen")
 @Composable
 fun AllGroupsDestination(
+    parentNavigator: DestinationsNavigator,
     viewModel: AllGroupsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -61,7 +63,9 @@ fun AllGroupsDestination(
                         }
                     }
                 }
-                is AllGroupsViewModel.UiEvent.NavigateToGroupPreview -> TODO()
+                is AllGroupsViewModel.UiEvent.NavigateToGroupPreview -> {
+                    parentNavigator.navigate(event.destination)
+                }
                 is AllGroupsViewModel.UiEvent.ShowSavedGroupSnackbar -> {
                     launch {
                         snackbarHostState.showSnackbar(

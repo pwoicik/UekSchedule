@@ -3,10 +3,10 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.destination
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.common.Resource
+import com.github.pwoicik.uekschedule.feature_schedule.common.timeFlow
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -23,13 +23,8 @@ class ScheduleDestinationViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>(replay = 1)
     val eventFlow = _eventFlow.asSharedFlow()
 
-    val timeFlow = flow {
-        while (true) {
-            val timeNow = LocalDateTime.now()
-            emit(timeNow)
-            delay((60 - timeNow.second) * 1000L)
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LocalDateTime.now())
+    val timeFlow = timeFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LocalDateTime.now())
 
     init {
         useCases.getSavedGroupsCount()

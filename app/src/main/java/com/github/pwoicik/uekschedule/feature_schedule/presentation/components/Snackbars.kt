@@ -15,6 +15,7 @@ fun SnackbarWithError(
         snackbarData = snackbarData,
         containerColor = MaterialTheme.colorScheme.errorContainer,
         contentColor = MaterialTheme.colorScheme.onErrorContainer,
+        actionColor = MaterialTheme.colorScheme.error,
         modifier = Modifier.padding(padding)
     )
 }

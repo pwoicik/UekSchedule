@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
+package com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList
 
 import android.content.Intent
 import android.net.Uri

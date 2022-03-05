@@ -1,28 +1,27 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.schedule
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.CircularProgressIndicator
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.schedule.components.ScheduleDestinationScaffold
 import com.google.accompanist.insets.LocalWindowInsets
@@ -30,7 +29,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination(
@@ -49,13 +47,7 @@ fun ScheduleDestination(
         state.filteredEntries
     }
     val firstEntryIdx by derivedStateOf {
-        var idx = 0
-        val today = timeNow.toLocalDate()
-        for ((day, entries) in filteredEntries) {
-            if (day >= today) break
-            idx += 1 + entries.size
-        }
-        idx
+        filteredEntries?.firstVisibleItemIndex(timeNow.toLocalDate()) ?: 0
     }
 
     val listState = rememberLazyListState()
@@ -70,9 +62,7 @@ fun ScheduleDestination(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 ScheduleDestinationViewModel.UiEvent.ScrollToToday -> {
-                    Timber.d("scrolling to today")
                     listState.animateScrollToItem(firstEntryIdx)
-                    Timber.d("scroll finished")
                 }
                 ScheduleDestinationViewModel.UiEvent.ShowErrorSnackbar -> {
                     launch {
@@ -100,8 +90,10 @@ fun ScheduleDestination(
     ScheduleDestinationScaffold(
         searchText = state.searchText,
         onSearchTextChange = { viewModel.emit(ScheduleDestinationEvent.SearchTextChanged(it)) },
-        fabPadding = PaddingValues(bottom = bottomPadding),
+        isFabVisible = state.entries != null,
         onFabClick = { viewModel.emit(ScheduleDestinationEvent.FabClicked) },
+        fabPadding = PaddingValues(bottom = bottomPadding),
+        isRefreshing = state.isRefreshing,
         onRefreshButtonClick = { viewModel.emit(ScheduleDestinationEvent.RefreshButtonClicked) },
         onPreferencesButtonClick = {
             parentNavigator.navigate(PreferencesScreenDestination)
@@ -109,9 +101,10 @@ fun ScheduleDestination(
         snackbarHostState = snackbarHostState,
         snackbarPadding = PaddingValues(bottom = bottomPadding)
     ) {
-        Crossfade(state.entries.isEmpty()) { isEmpty ->
-            when (isEmpty) {
-                true -> {
+        Crossfade(state.entries) { entries ->
+            when {
+                entries == null -> {}
+                entries.isEmpty() -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -125,27 +118,15 @@ fun ScheduleDestination(
                         )
                     }
                 }
-                false -> {
+                else -> {
                     ScheduleEntriesList(
                         lazyListState = listState,
-                        scheduleEntries = filteredEntries,
+                        scheduleEntries = filteredEntries!!,
                         timeNow = timeNow,
                         modifier = Modifier.padding(bottom = bottomPadding)
                     )
                 }
             }
-        }
-        AnimatedVisibility(
-            visible = state.isRefreshing,
-            enter = slideInVertically(),
-            exit = slideOutVertically()
-        ) {
-            CircularProgressIndicator(
-                isSpinning = state.isRefreshing,
-                color = MaterialTheme.colorScheme.onTertiary,
-                backgroundColor = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.padding(top = 24.dp)
-            )
         }
     }
 }

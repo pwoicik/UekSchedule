@@ -44,6 +44,8 @@
     <string name="scroll_to_today">Scroll to today</string>
     <string name="preferences">Preferences</string>
     <string name="activity_deleted">Deleted activity \"%s\"</string>
+    <string name="go_back">Go back</string>
+    <string name="no_classes_message2">No classes here!</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">STARTS IN\n%d DAY</item>
         <item quantity="other">STARTS IN\n%d DAYS</item>

@@ -15,6 +15,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.C
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SimpleList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.AllGroupsDestinationDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.CreateActivityDestinationDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.SchedulePreviewScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups.components.SavedGroupsScaffold
 import com.google.accompanist.insets.LocalWindowInsets
 import com.ramcosta.composedestinations.annotation.Destination
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 @Destination(navGraph = "mainScreen")
 @Composable
 fun SavedGroupsDestination(
+    parentNavigator: DestinationsNavigator,
     navigator: DestinationsNavigator,
     viewModel: SavedGroupsViewModel = hiltViewModel()
 ) {
@@ -114,7 +116,11 @@ fun SavedGroupsDestination(
                             )
                         }
                     },
-                    onItemClick = {}
+                    onItemClick = {
+                        parentNavigator.navigate(
+                            SchedulePreviewScreenDestination(it.id, it.name)
+                        )
+                    }
                 )
             }
             1 -> {

@@ -13,6 +13,7 @@ data class ScheduleUseCases(
     val getAllScheduleEntries: GetAllScheduleEntries,
     val getSavedGroups: GetSavedGroups,
     val getSavedGroupsCount: GetSavedGroupsCount,
+    val getScheduleForGroup: GetScheduleForGroup,
     val refreshClasses: RefreshClasses,
 ) {
 
@@ -27,6 +28,7 @@ data class ScheduleUseCases(
         GetAllScheduleEntries(repository),
         GetSavedGroups(repository),
         GetSavedGroupsCount(repository),
+        GetScheduleForGroup(repository),
         RefreshClasses(repository),
     )
 }
