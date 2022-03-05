@@ -5,9 +5,9 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.VerticalAlignCenter
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,8 +20,8 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.S
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleDestinationScaffold(
-    searchText: TextFieldValue,
-    onSearchTextChange: (TextFieldValue) -> Unit,
+    searchValue: TextFieldValue,
+    onSearchValueChange: (TextFieldValue) -> Unit,
     isFabVisible: Boolean,
     onFabClick: () -> Unit,
     fabPadding: PaddingValues,
@@ -35,8 +35,8 @@ fun ScheduleDestinationScaffold(
     Scaffold(
         topBar = {
             ScheduleDestinationTopBar(
-                searchText = searchText,
-                onSearchTextChange = onSearchTextChange,
+                searchValue = searchValue,
+                onSearchValueChange = onSearchValueChange,
                 onRefreshButtonClick = onRefreshButtonClick,
                 onPreferencesButtonClick = onPreferencesButtonClick
             )

@@ -89,9 +89,9 @@ fun ScheduleDestination(
         )
     }
     ScheduleDestinationScaffold(
-        searchText = state.searchValue,
-        onSearchTextChange = { viewModel.emit(ScheduleDestinationEvent.SearchTextChanged(it)) },
-        isFabVisible = state.entries != null,
+        searchValue = state.searchValue,
+        onSearchValueChange = { viewModel.emit(ScheduleDestinationEvent.SearchTextChanged(it)) },
+        isFabVisible = state.entries?.isEmpty() == false,
         onFabClick = { viewModel.emit(ScheduleDestinationEvent.FabClicked) },
         fabPadding = PaddingValues(bottom = bottomPadding),
         isRefreshing = state.isRefreshing,
@@ -102,49 +102,58 @@ fun ScheduleDestination(
         snackbarHostState = snackbarHostState,
         snackbarPadding = PaddingValues(bottom = bottomPadding)
     ) {
-        Crossfade(state.entries) { entries ->
-            when {
-                entries == null -> {
-                    AnimatedVisibility(
-                        visible = !state.isRefreshing,
-                        enter = fadeIn(tween(delayMillis = 500)),
-                        exit = fadeOut()
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.CloudOff,
-                                contentDescription = stringResource(R.string.couldnt_connect),
-                                tint = MaterialTheme.colorScheme.onErrorContainer,
-                                modifier = Modifier.size(50.dp)
+        Crossfade(state) { state ->
+            when (state.hasSavedGroups) {
+                true -> {
+                    when {
+                        state.entries == null -> {
+                            AnimatedVisibility(
+                                visible = !state.isRefreshing,
+                                enter = fadeIn(tween(delayMillis = 500)),
+                                exit = fadeOut()
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    modifier = Modifier.fillMaxSize()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.CloudOff,
+                                        contentDescription = stringResource(R.string.couldnt_connect),
+                                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                                        modifier = Modifier.size(50.dp)
+                                    )
+                                }
+                            }
+                        }
+                        state.entries.isEmpty() -> {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                Text(stringResource(R.string.no_classes_message))
+                            }
+                        }
+                        else -> {
+                            ScheduleEntriesList(
+                                lazyListState = listState,
+                                scheduleEntries = filteredEntries!!,
+                                timeNow = timeNow,
+                                modifier = Modifier.padding(bottom = bottomPadding)
                             )
                         }
                     }
                 }
-                entries.isEmpty() -> {
+                false -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        Text(
-                            if (state.hasSavedGroups)
-                                stringResource(R.string.no_classes_message)
-                            else
-                                stringResource(R.string.no_saved_groups)
-                        )
+                        Text(stringResource(R.string.no_saved_groups))
                     }
                 }
-                else -> {
-                    ScheduleEntriesList(
-                        lazyListState = listState,
-                        scheduleEntries = filteredEntries!!,
-                        timeNow = timeNow,
-                        modifier = Modifier.padding(bottom = bottomPadding)
-                    )
-                }
+                null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/ }
             }
         }
     }

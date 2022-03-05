@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 data class ScheduleDestinationState(
 
-    val hasSavedGroups: Boolean = true,
+    val hasSavedGroups: Boolean? = null,
     val entries: List<ScheduleEntry>? = null,
     val isRefreshing: Boolean = false,
     val searchValue: TextFieldValue = TextFieldValue()
