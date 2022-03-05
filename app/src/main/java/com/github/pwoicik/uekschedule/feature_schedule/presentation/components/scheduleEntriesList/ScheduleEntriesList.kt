@@ -42,7 +42,7 @@ fun ScheduleEntriesList(
     ) {
         for ((date, entries) in scheduleEntries) {
             scheduleEntriesListStickyHeader(date)
-            items(items = entries, key = ScheduleEntry::startDateTime) { entry ->
+            items(items = entries) { entry ->
                 ScheduleEntriesListItem(scheduleEntry = entry, status = entry.status(timeNow))
                 Divider(modifier = Modifier.alpha(0.5f))
             }

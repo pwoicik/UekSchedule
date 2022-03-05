@@ -68,8 +68,9 @@ class ScheduleRepositoryImpl(
                     .flatten()
             }
 
-        return merge(classes, activities).map {
-            it.sortedBy(ScheduleEntry::startDateTime)
+        @Suppress("NAME_SHADOWING")
+        return combine(classes, activities) { classes, activities ->
+            (classes + activities).sortedBy(ScheduleEntry::startDateTime)
         }
     }
 

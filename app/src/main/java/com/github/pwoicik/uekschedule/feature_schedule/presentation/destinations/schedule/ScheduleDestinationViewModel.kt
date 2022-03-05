@@ -27,7 +27,8 @@ class ScheduleDestinationViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LocalDateTime.now())
 
     init {
-        useCases.getSavedGroupsCount()
+        useCases
+            .getSavedGroupsCount()
             .combine(useCases.getAllScheduleEntries()) { count, entries ->
                 _state.update { state ->
                     state.copy(
