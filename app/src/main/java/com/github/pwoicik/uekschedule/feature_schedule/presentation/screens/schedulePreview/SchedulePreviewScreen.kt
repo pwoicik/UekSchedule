@@ -1,10 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedulePreview
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -90,26 +86,20 @@ fun SchedulePreviewScreen(
     ) {
         Crossfade(targetState = state.entries) { entries ->
             when {
-                entries == null -> {
-                    AnimatedVisibility(
-                        visible = !state.isRefreshing,
-                        enter = fadeIn(tween(delayMillis = 500)),
-                        exit = fadeOut(),
+                state.didTry && entries == null -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.CloudOff,
-                                contentDescription = stringResource(R.string.couldnt_connect),
-                                tint = MaterialTheme.colorScheme.onErrorContainer,
-                                modifier = Modifier.size(50.dp)
-                            )
-                        }
+                        Icon(
+                            imageVector = Icons.Default.CloudOff,
+                            contentDescription = stringResource(R.string.couldnt_connect),
+                            tint = MaterialTheme.colorScheme.onErrorContainer,
+                            modifier = Modifier.size(50.dp)
+                        )
                     }
                 }
-                entries.isEmpty() -> {
+                entries?.isEmpty() == true -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -119,7 +109,7 @@ fun SchedulePreviewScreen(
                         Text(stringResource(R.string.no_classes_message2))
                     }
                 }
-                else -> {
+                entries?.isEmpty() == false -> {
                     LaunchedEffect(firstEntryIdx) {
                         lazyListState.animateScrollToItem(firstEntryIdx)
                     }
@@ -130,6 +120,7 @@ fun SchedulePreviewScreen(
                         timeNow = timeNow
                     )
                 }
+                else -> { /*DISPLAY NOTHING BEFORE FIRST SYNC*/ }
             }
         }
     }
