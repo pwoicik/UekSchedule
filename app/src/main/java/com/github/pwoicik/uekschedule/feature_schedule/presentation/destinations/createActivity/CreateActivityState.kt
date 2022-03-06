@@ -28,4 +28,13 @@ data class CreateActivityState(
         repeatActivity = !activity.isOneshot,
         repeatOnDaysOfWeek = activity.repeatOnDaysOfWeek?.toSet() ?: emptySet()
     )
+
+    val isInputValid: Boolean
+        get() {
+            val isNameValid = name.isNotBlank()
+            val isStartTimeValid = startTime != null
+            val isStartDateValid = if (repeatActivity) true else startDate != null
+            val isRepeatValid = if (repeatActivity) repeatOnDaysOfWeek.isNotEmpty() else true
+            return isNameValid && isStartTimeValid && isStartDateValid && isRepeatValid
+        }
 }

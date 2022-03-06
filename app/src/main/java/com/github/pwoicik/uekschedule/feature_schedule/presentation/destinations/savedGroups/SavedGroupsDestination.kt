@@ -1,13 +1,17 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SimpleList
@@ -19,6 +23,10 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination(navGraph = "mainScreen")
@@ -115,7 +123,29 @@ fun SavedGroupsDestination(
             1 -> {
                 SavedGroupsScreen(
                     items = savedActivities,
-                    itemTitle = { Text(it.name) },
+                    itemTitle = { activity ->
+                        Column {
+                            Text(activity.name)
+                            val time = activity.startDateTime.format(timeFormatter)
+                            val date = if (activity.isOneshot) {
+                                activity.startDateTime.format(dateFormatter)
+                            } else {
+                                activity.repeatOnDaysOfWeek!!
+                                    .sortedBy(DayOfWeek::ordinal)
+                                    .joinToString(separator = ", ") {
+                                    it.getDisplayName(
+                                        TextStyle.SHORT_STANDALONE,
+                                        Locale.getDefault()
+                                    )
+                                }
+                            }
+                            Text(
+                                text = "$time ($date)",
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    },
                     emptyListMessage = stringResource(R.string.no_activities),
                     onItemClick = { navigator.navigate(CreateActivityDestinationDestination(it.id)) },
                     itemActions = {
@@ -146,7 +176,8 @@ private fun <T> SavedGroupsScreen(
     itemActions: @Composable RowScope.(T) -> Unit,
 ) {
     when (items) {
-        null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/ }
+        null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
+        }
         else -> {
             SimpleList(
                 items = items,
@@ -158,3 +189,6 @@ private fun <T> SavedGroupsScreen(
         }
     }
 }
+
+private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+private val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
