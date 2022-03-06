@@ -1,13 +1,14 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups.components
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
+import com.google.accompanist.insets.navigationBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -16,7 +17,6 @@ fun SavedGroupsScaffold(
     onScreenChange: (Int) -> Unit,
     onAddItem: () -> Unit,
     snackbarHostState: SnackbarHostState,
-    contentPadding: PaddingValues,
     content: @Composable (Int) -> Unit
 ) {
     Scaffold(
@@ -30,18 +30,16 @@ fun SavedGroupsScaffold(
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { snackbarData ->
-                Snackbar(
-                    snackbarData = snackbarData,
-                    modifier = Modifier.padding(contentPadding)
-                )
+                Snackbar(snackbarData = snackbarData)
             }
-        }
+        },
+        modifier = Modifier
+            .navigationBarsPadding()
+            .padding(bottom = Constants.BottomBarHeight)
     ) { innerPadding ->
         Crossfade(
             targetState = currentScreen,
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(contentPadding),
+            modifier = Modifier.padding(innerPadding),
             content = content
         )
     }

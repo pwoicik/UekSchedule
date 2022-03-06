@@ -50,11 +50,13 @@ class ScheduleDestinationViewModel @Inject constructor(
         refreshJob = useCases.refreshClasses().onEach { response ->
             when (response) {
                 is Resource.Error -> {
+                    _eventFlow.emit(UiEvent.ShowErrorSnackbar)
                     _state.update { state ->
                         state.copy(isRefreshing = false)
                     }
                 }
                 is Resource.Loading -> {
+                    _eventFlow.emit(UiEvent.HideSnackbar)
                     _state.update { state ->
                         state.copy(isRefreshing = true)
                     }
@@ -88,6 +90,7 @@ class ScheduleDestinationViewModel @Inject constructor(
 
     sealed class UiEvent {
         object ShowErrorSnackbar : UiEvent()
+        object HideSnackbar : UiEvent()
         object ScrollToToday : UiEvent()
     }
 }

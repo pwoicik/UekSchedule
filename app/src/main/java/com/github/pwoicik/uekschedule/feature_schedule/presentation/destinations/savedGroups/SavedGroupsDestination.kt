@@ -1,23 +1,19 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SimpleList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.AllGroupsDestinationDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.CreateActivityDestinationDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.SchedulePreviewScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups.components.SavedGroupsScaffold
-import com.google.accompanist.insets.LocalWindowInsets
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
@@ -79,12 +75,6 @@ fun SavedGroupsDestination(
     }
 
     var currentScreen by rememberSaveable { mutableStateOf(0) }
-
-    val insets = LocalWindowInsets.current
-    val bottomPadding = with(LocalDensity.current) {
-        insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
-    }
-
     SavedGroupsScaffold(
         currentScreen = currentScreen,
         onScreenChange = { currentScreen = it },
@@ -95,8 +85,7 @@ fun SavedGroupsDestination(
                 else CreateActivityDestinationDestination()
             )
         },
-        snackbarHostState = snackbarHostState,
-        contentPadding = PaddingValues(bottom = bottomPadding)
+        snackbarHostState = snackbarHostState
     ) {
         when (currentScreen) {
             0 -> {

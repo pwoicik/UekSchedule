@@ -1,6 +1,5 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.createActivity
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
@@ -12,17 +11,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.createActivity.components.CreateActivityScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.createActivity.components.CreateActivityTextFiled
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.createActivity.components.RepeatActivityInputColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.createActivity.components.TimeInputField
-import com.google.accompanist.insets.LocalWindowInsets
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
@@ -53,16 +49,9 @@ fun CreateActivityDestination(
         }
     }
 
-    val insets = LocalWindowInsets.current
-    val bottomPadding = with(LocalDensity.current) {
-        insets.ime.bottom.toDp().coerceAtLeast(
-            insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
-        )
-    }
     CreateActivityScaffold(
         snackbarHostState = snackbarHostState,
-        onSaveChanges = { viewModel.event(CreateActivityEvent.SaveActivity) },
-        contentPadding = PaddingValues(bottom = bottomPadding)
+        onSaveChanges = { viewModel.event(CreateActivityEvent.SaveActivity) }
     ) {
         state?.let { state ->
             val focusRequester = remember { FocusRequester() }

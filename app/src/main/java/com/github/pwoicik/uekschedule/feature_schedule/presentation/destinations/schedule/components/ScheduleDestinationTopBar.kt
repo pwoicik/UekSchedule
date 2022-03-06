@@ -15,6 +15,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.S
 
 @Composable
 fun ScheduleDestinationTopBar(
+    hasGroups: Boolean,
     searchValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
     onRefreshButtonClick: () -> Unit,
@@ -22,6 +23,11 @@ fun ScheduleDestinationTopBar(
 ) {
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var isSearchFieldVisible by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(hasGroups) {
+        isSearchFieldVisible = false
+    }
+
     SmallTopBarWithSearch(
         title = { Text(stringResource(R.string.app_name)) },
         isSearchFieldVisible = isSearchFieldVisible,
@@ -32,7 +38,10 @@ fun ScheduleDestinationTopBar(
             isSearchFieldVisible = false
         },
         actions = {
-            IconButton(onClick = { isSearchFieldVisible = true }) {
+            IconButton(
+                enabled = hasGroups,
+                onClick = { isSearchFieldVisible = true }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = stringResource(R.string.search_entry)
@@ -48,6 +57,7 @@ fun ScheduleDestinationTopBar(
                     onDismissRequest = { isDropdownExpanded = false }
                 ) {
                     DropdownMenuItem(
+                        enabled = hasGroups,
                         text = { Text(stringResource(R.string.refresh_data)) },
                         leadingIcon = {
                             Icon(
