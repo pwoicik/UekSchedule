@@ -67,7 +67,7 @@ class AllGroupsViewModel @Inject constructor(
             is AllGroupsEvent.GroupSaveButtonClicked -> {
                 viewModelScope.launch {
                     _eventFlow.emit(UiEvent.HideSnackbar)
-                    useCases.addGroup(event.group)
+                    useCases.saveGroup(event.group)
                     _eventFlow.emit(UiEvent.ShowSavedGroupSnackbar(event.group))
                 }
             }

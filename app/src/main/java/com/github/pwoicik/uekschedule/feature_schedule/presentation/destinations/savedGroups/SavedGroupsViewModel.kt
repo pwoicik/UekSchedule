@@ -15,13 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SavedGroupsViewModel @Inject constructor(
-    private val scheduleUseCases: ScheduleUseCases
+    private val useCases: ScheduleUseCases
 ) : ViewModel() {
 
-    val savedGroups = scheduleUseCases.getSavedGroups()
+    val savedGroups = useCases.getSavedGroups()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    val savedActivities = scheduleUseCases.getAllActivities()
+    val savedActivities = useCases.getAllActivities()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
@@ -31,27 +31,27 @@ class SavedGroupsViewModel @Inject constructor(
         when (event) {
             is SavedGroupsEvent.DeleteActivityButtonClicked -> {
                 viewModelScope.launch {
-                    scheduleUseCases.deleteActivity(event.activity)
+                    useCases.deleteActivity(event.activity)
                     _eventFlow.emit(UiEvent.HideSnackbar)
                     _eventFlow.emit(UiEvent.ShowActivityDeletedSnackbar(event.activity))
                 }
             }
             is SavedGroupsEvent.UndoActivityDeletion -> {
                 viewModelScope.launch {
-                    scheduleUseCases.addActivity(event.activity)
+                    useCases.saveActivity(event.activity)
                     _eventFlow.emit(UiEvent.HideSnackbar)
                 }
             }
             is SavedGroupsEvent.DeleteGroupButtonClicked -> {
                 viewModelScope.launch {
-                    scheduleUseCases.deleteGroup(event.group)
+                    useCases.deleteGroup(event.group)
                     _eventFlow.emit(UiEvent.HideSnackbar)
                     _eventFlow.emit(UiEvent.ShowGroupDeletedSnackbar(event.group))
                 }
             }
             is SavedGroupsEvent.UndoGroupDeletion -> {
                 viewModelScope.launch {
-                    scheduleUseCases.addGroup(event.group)
+                    useCases.saveGroup(event.group)
                     _eventFlow.emit(UiEvent.HideSnackbar)
                 }
             }

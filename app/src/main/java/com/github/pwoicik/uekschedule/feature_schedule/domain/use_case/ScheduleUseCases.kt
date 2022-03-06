@@ -3,8 +3,6 @@ package com.github.pwoicik.uekschedule.feature_schedule.domain.use_case
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 
 data class ScheduleUseCases(
-    val addActivity: AddActivity,
-    val addGroup: AddGroup,
     val deleteActivity: DeleteActivity,
     val deleteGroup: DeleteGroup,
     val getActivity: GetActivity,
@@ -14,12 +12,12 @@ data class ScheduleUseCases(
     val getSavedGroups: GetSavedGroups,
     val getSavedGroupsCount: GetSavedGroupsCount,
     val getScheduleForGroup: GetScheduleForGroup,
-    val refreshClasses: RefreshClasses,
+    val saveActivity: SaveActivity,
+    val saveGroup: SaveGroup,
+    val updateClasses: UpdateClasses,
 ) {
 
     constructor(repository: ScheduleRepository) : this(
-        AddActivity(repository),
-        AddGroup(repository),
         DeleteActivity(repository),
         DeleteGroup(repository),
         GetActivity(repository),
@@ -29,6 +27,8 @@ data class ScheduleUseCases(
         GetSavedGroups(repository),
         GetSavedGroupsCount(repository),
         GetScheduleForGroup(repository),
-        RefreshClasses(repository),
+        SaveActivity(repository),
+        SaveGroup(repository),
+        UpdateClasses(repository),
     )
 }

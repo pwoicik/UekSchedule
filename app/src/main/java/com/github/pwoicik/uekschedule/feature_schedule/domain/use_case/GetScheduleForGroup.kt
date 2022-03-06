@@ -12,7 +12,7 @@ class GetScheduleForGroup(
     operator fun invoke(groupId: Long) = flow {
         emit(Resource.Loading())
         try {
-            val entries = repository.getSchedule(groupId)
+            val entries = repository.fetchSchedule(groupId)
             emit(Resource.Success(entries))
         } catch (e: Exception) {
             Timber.tag("group $groupId").e(e)

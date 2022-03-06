@@ -1,13 +1,13 @@
 package com.github.pwoicik.uekschedule.feature_schedule.domain.use_case
 
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 
-class AddGroup(
+class SaveActivity(
     private val repository: ScheduleRepository
 ) {
 
-    suspend operator fun invoke(group: Group) {
-        repository.addGroup(group)
+    suspend operator fun invoke(activity: Activity) {
+        repository.saveActivity(activity)
     }
 }

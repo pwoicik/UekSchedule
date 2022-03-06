@@ -7,10 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
 
-    suspend fun addActivity(activity: Activity)
-
-    suspend fun addGroup(group: Group)
-
     suspend fun deleteActivity(activity: Activity)
 
     suspend fun deleteGroup(group: Group)
@@ -23,11 +19,15 @@ interface ScheduleRepository {
 
     fun getAllScheduleEntries(): Flow<List<ScheduleEntry>>
 
-    suspend fun getSchedule(groupId: Long): List<ScheduleEntry>
-
     fun getSavedGroups(): Flow<List<Group>>
 
     fun getSavedGroupsCount(): Flow<Int>
 
-    suspend fun refetchSchedules()
+    suspend fun fetchSchedule(groupId: Long): List<ScheduleEntry>
+
+    suspend fun saveActivity(activity: Activity)
+
+    suspend fun saveGroup(group: Group)
+
+    suspend fun updateSchedules()
 }

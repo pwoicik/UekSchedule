@@ -6,18 +6,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
-class RefreshClasses(
+class UpdateClasses(
     private val repository: ScheduleRepository
 ) {
 
     operator fun invoke(): Flow<Resource<Unit>> = flow {
+        Timber.d("updating schedules")
         emit(Resource.Loading())
         try {
-            Timber.d("refetching schedules")
-            repository.refetchSchedules()
+            repository.updateSchedules()
             emit(Resource.Success(Unit))
         } catch (e: Exception) {
-            Timber.d("Error during refetching schedules")
+            Timber.d(e)
             emit(Resource.Error("Couldn't reach server."))
         }
     }

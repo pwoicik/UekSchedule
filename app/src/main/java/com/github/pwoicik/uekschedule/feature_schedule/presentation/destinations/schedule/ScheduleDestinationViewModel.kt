@@ -47,7 +47,7 @@ class ScheduleDestinationViewModel @Inject constructor(
     private var refreshJob: Job? = null
     private fun refreshData() {
         if (refreshJob?.isActive == true) return
-        refreshJob = useCases.refreshClasses().onEach { response ->
+        refreshJob = useCases.updateClasses().onEach { response ->
             when (response) {
                 is Resource.Error -> {
                     _eventFlow.emit(UiEvent.ShowErrorSnackbar)

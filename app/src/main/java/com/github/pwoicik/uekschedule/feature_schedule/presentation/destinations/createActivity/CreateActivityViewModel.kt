@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateActivityViewModel @Inject constructor(
-    private val scheduleUseCases: ScheduleUseCases,
+    private val useCases: ScheduleUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -37,7 +37,7 @@ class CreateActivityViewModel @Inject constructor(
             _state.value = CreateActivityState()
         } else {
             viewModelScope.launch {
-                _state.value = CreateActivityState(scheduleUseCases.getActivity(activityId))
+                _state.value = CreateActivityState(useCases.getActivity(activityId))
             }
         }
     }
@@ -117,7 +117,7 @@ class CreateActivityViewModel @Inject constructor(
                         )
                     }
 
-                    scheduleUseCases.addActivity(
+                    useCases.saveActivity(
                         Activity(
                             id = navArgs.activityId,
                             name = state.name,
