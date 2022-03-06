@@ -1,5 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
@@ -89,40 +90,38 @@ fun SavedGroupsDestination(
     ) {
         when (currentScreen) {
             0 -> {
-                SimpleList(
+                SavedGroupsScreen(
                     items = savedGroups,
-                    emptyListMessage = stringResource(R.string.no_saved_groups),
                     itemTitle = { Text(it.name) },
-                    itemActions = {
-                        IconButton(
-                            onClick = {
-                                viewModel.emit(SavedGroupsEvent.DeleteGroupButtonClicked(it))
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.delete_group)
-                            )
-                        }
-                    },
+                    emptyListMessage = stringResource(R.string.no_saved_groups),
                     onItemClick = {
                         parentNavigator.navigate(
                             SchedulePreviewScreenDestination(it.id, it.name)
                         )
+                    },
+                    itemActions = {
+                        IconButton(
+                            onClick = { viewModel.emit(SavedGroupsEvent.DeleteGroupButtonClicked(it)) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = stringResource(R.string.delete_group)
+                            )
+                        }
+
                     }
                 )
             }
             1 -> {
-                SimpleList(
+                SavedGroupsScreen(
                     items = savedActivities,
-                    emptyListMessage = stringResource(R.string.no_activities),
                     itemTitle = { Text(it.name) },
+                    emptyListMessage = stringResource(R.string.no_activities),
+                    onItemClick = { navigator.navigate(CreateActivityDestinationDestination(it.id)) },
                     itemActions = {
                         IconButton(
                             onClick = {
-                                viewModel.emit(
-                                    SavedGroupsEvent.DeleteActivityButtonClicked(it)
-                                )
+                                viewModel.emit(SavedGroupsEvent.DeleteActivityButtonClicked(it))
                             }
                         ) {
                             Icon(
@@ -130,11 +129,32 @@ fun SavedGroupsDestination(
                                 contentDescription = stringResource(R.string.delete_group)
                             )
                         }
-                    },
-                    onItemClick = { navigator.navigate(CreateActivityDestinationDestination(it.id)) }
+                    }
                 )
             }
             else -> throw(IllegalStateException("No such screen ($currentScreen)!"))
+        }
+    }
+}
+
+@Composable
+private fun <T> SavedGroupsScreen(
+    items: List<T>?,
+    itemTitle: @Composable (T) -> Unit,
+    onItemClick: (T) -> Unit,
+    emptyListMessage: String,
+    itemActions: @Composable RowScope.(T) -> Unit,
+) {
+    when (items) {
+        null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/ }
+        else -> {
+            SimpleList(
+                items = items,
+                itemTitle = itemTitle,
+                emptyListMessage = emptyListMessage,
+                itemActions = itemActions,
+                onItemClick = onItemClick
+            )
         }
     }
 }

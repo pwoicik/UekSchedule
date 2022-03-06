@@ -19,10 +19,10 @@ class SavedGroupsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val savedGroups = scheduleUseCases.getSavedGroups()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     val savedActivities = scheduleUseCases.getAllActivities()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
