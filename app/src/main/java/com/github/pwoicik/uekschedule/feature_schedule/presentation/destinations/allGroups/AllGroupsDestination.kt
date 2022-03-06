@@ -1,15 +1,16 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.allGroups
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -80,6 +81,7 @@ fun AllGroupsDestination(
     AllGroupsScaffold(
         searchFieldValue = state.searchValue,
         onSearchValueChange = { viewModel.emit(AllGroupsEvent.SearchTextChanged(it)) },
+        focus = state.groups != null,
         snackbarHostState = snackbarHostState
     ) { innerPadding ->
         Box(
@@ -88,22 +90,36 @@ fun AllGroupsDestination(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            AnimatedVisibility(
-                visible = state.groups != null,
-                enter = slideInVertically(),
-                exit = slideOutVertically()
-            ) {
-                val filteredGroups by derivedStateOf { state.filteredGroups }
-                AllGroupsColumn(
-                    groups = filteredGroups,
-                    onGroupClick = {
-                        parentNavigator.navigate(SchedulePreviewScreenDestination(it.id, it.name))
-                    },
-                    onGroupAddButtonClick = {
-                        viewModel.emit(AllGroupsEvent.GroupSaveButtonClicked(it))
-                    },
-                    modifier = Modifier.fillMaxSize()
-                )
+            Crossfade(targetState = state) { state ->
+                when {
+                    state.didTry && state.groups == null -> {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CloudOff,
+                                contentDescription = stringResource(R.string.couldnt_connect),
+                                tint = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                    }
+                    state.groups != null -> {
+                        val filteredGroups by derivedStateOf { state.filteredGroups }
+                        AllGroupsColumn(
+                            groups = filteredGroups,
+                            onGroupClick = {
+                                parentNavigator.navigate(SchedulePreviewScreenDestination(it.id, it.name))
+                            },
+                            onGroupAddButtonClick = {
+                                viewModel.emit(AllGroupsEvent.GroupSaveButtonClicked(it))
+                            },
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    else -> { /*DISPLAY NOTHING BEFORE FIRST SYNC*/ }
+                }
             }
             AnimatedVisibility(
                 visible = state.isLoading,

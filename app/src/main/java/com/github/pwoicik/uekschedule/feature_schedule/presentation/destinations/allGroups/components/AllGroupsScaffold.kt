@@ -23,12 +23,13 @@ import com.google.accompanist.insets.statusBarsPadding
 fun AllGroupsScaffold(
     searchFieldValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
+    focus: Boolean,
     snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+    LaunchedEffect(focus) {
+        if (focus) focusRequester.requestFocus()
     }
 
     val insets = LocalWindowInsets.current

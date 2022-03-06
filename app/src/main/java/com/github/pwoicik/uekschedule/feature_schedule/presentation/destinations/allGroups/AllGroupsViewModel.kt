@@ -32,7 +32,7 @@ class AllGroupsViewModel @Inject constructor(
             when (response) {
                 is Resource.Error -> {
                     _state.update { state ->
-                        state.copy(isLoading = false)
+                        state.copy(didTry = true, isLoading = false)
                     }
                     _eventFlow.emit(UiEvent.ShowErrorSnackbar)
                 }
@@ -45,6 +45,7 @@ class AllGroupsViewModel @Inject constructor(
                 is Resource.Success -> {
                     _state.update { state ->
                         state.copy(
+                            didTry = true,
                             isLoading = false,
                             groups = response.data
                         )
