@@ -84,9 +84,9 @@ fun SchedulePreviewScreen(
         isRefreshing = state.isRefreshing,
         snackbarHostState = snackbarHostState
     ) {
-        Crossfade(targetState = state.entries) { entries ->
+        Crossfade(state) { state ->
             when {
-                state.didTry && entries == null -> {
+                state.didTry && state.entries == null -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier.fillMaxSize()
@@ -99,7 +99,7 @@ fun SchedulePreviewScreen(
                         )
                     }
                 }
-                entries?.isEmpty() == true -> {
+                state.entries?.isEmpty() == true -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -109,7 +109,7 @@ fun SchedulePreviewScreen(
                         Text(stringResource(R.string.no_classes_message2))
                     }
                 }
-                entries?.isEmpty() == false -> {
+                state.entries?.isEmpty() == false -> {
                     LaunchedEffect(firstEntryIdx) {
                         lazyListState.animateScrollToItem(firstEntryIdx)
                     }
