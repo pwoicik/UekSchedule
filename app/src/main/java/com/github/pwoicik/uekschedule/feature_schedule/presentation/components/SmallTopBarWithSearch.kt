@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SmallTopAppBar
-import androidx.compose.material3.Surface
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -34,9 +32,8 @@ fun SmallTopBarWithSearch(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.surface,
-    titleContentColor: Color = MaterialTheme.colorScheme.onSurface,
-    navigationIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
-    actionIconContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    searchFieldIndicationColor: Color = MaterialTheme.colorScheme.primary,
+    colors: TopAppBarColors = TopAppBarDefaults.smallTopAppBarWithSearchColors()
 ) {
     Surface(
         color = containerColor,
@@ -51,12 +48,7 @@ fun SmallTopBarWithSearch(
                 title = title,
                 actions = actions,
                 navigationIcon = navigationIcon,
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = titleContentColor,
-                    navigationIconContentColor = navigationIconContentColor,
-                    actionIconContentColor = actionIconContentColor
-                )
+                colors = colors
             )
             AnimatedVisibility(
                 visible = isSearchFieldVisible,
@@ -67,11 +59,24 @@ fun SmallTopBarWithSearch(
                 LaunchedEffect(Unit) {
                     focusRequester.requestFocus()
                 }
+
+                val scrollFraction = 0f
+                val textColor by colors.titleContentColor(scrollFraction)
+                val leadingIconColor by colors.navigationIconContentColor(scrollFraction)
+                val trailingIconColor by colors.actionIconContentColor(scrollFraction)
                 SearchTextField(
                     value = searchValue,
                     onValueChange = onSearchValueChange,
                     onClearText = onSearchValueClear,
                     placeholder = stringResource(R.string.entry_search_placeholder),
+                    colors = TextFieldDefaults.searchTextFieldColors(
+                        backgroundColor = containerColor,
+                        textColor = textColor,
+                        leadingIconColor = leadingIconColor,
+                        trailingIconColor = trailingIconColor,
+                        cursorColor = searchFieldIndicationColor,
+                        focusedIndicatorColor = searchFieldIndicationColor
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp)
@@ -81,3 +86,15 @@ fun SmallTopBarWithSearch(
         }
     }
 }
+
+@Composable
+fun TopAppBarDefaults.smallTopAppBarWithSearchColors(
+    titleContentColor: Color = MaterialTheme.colorScheme.onSurface,
+    navigationIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
+    actionIconContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+) = smallTopAppBarColors(
+    containerColor = Color.Transparent,
+    titleContentColor = titleContentColor,
+    navigationIconContentColor = navigationIconContentColor,
+    actionIconContentColor = actionIconContentColor
+)

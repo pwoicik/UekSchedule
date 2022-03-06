@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.schedule.components.ScheduleDestinationScaffold
@@ -44,7 +45,7 @@ fun ScheduleDestination(
     val timeNow by viewModel.timeFlow.collectAsState()
 
     val filteredEntries by derivedStateOf {
-        state.filteredEntries
+        state.entries.filterEntries(state.searchValue.text)
     }
     val firstEntryIdx by derivedStateOf {
         filteredEntries?.firstVisibleItemIndex(timeNow.toLocalDate()) ?: 0

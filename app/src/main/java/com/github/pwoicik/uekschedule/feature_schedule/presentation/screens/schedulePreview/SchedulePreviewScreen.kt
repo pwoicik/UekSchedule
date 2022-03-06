@@ -21,12 +21,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedulePreview.components.SchedulePreviewScaffold
-import com.google.accompanist.insets.navigationBarsPadding
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
@@ -42,7 +41,15 @@ fun SchedulePreviewScreen(
     val state by viewModel.state.collectAsState()
     val timeNow by viewModel.timeFlow.collectAsState()
 
+    val filteredEntries by derivedStateOf {
+        state.entries.filterEntries(state.searchValue.text)
+    }
+    val firstEntryIdx by derivedStateOf {
+        filteredEntries?.firstVisibleItemIndex(timeNow.toLocalDate()) ?: 0
+    }
+
     val snackbarHostState = remember { SnackbarHostState() }
+    val lazyListState = rememberLazyListState()
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -60,9 +67,12 @@ fun SchedulePreviewScreen(
                             )
                         )
                         if (result == SnackbarResult.ActionPerformed) {
-                            viewModel.refreshData()
+                            viewModel.emit(SchedulePreviewEvent.RefreshButtonClicked)
                         }
                     }
+                }
+                SchedulePreviewViewModel.UiEvent.ScrollToToday -> {
+                    lazyListState.animateScrollToItem(firstEntryIdx)
                 }
             }
         }
@@ -70,9 +80,13 @@ fun SchedulePreviewScreen(
 
     SchedulePreviewScaffold(
         title = state.groupName,
+        searchValue = state.searchValue,
+        onSearchValueChange = { viewModel.emit(SchedulePreviewEvent.SearchTextChanged(it)) },
         onNavigateBack = { navigator.navigateUp() },
-        snackbarHostState = snackbarHostState,
-        isRefreshing = state.isRefreshing
+        isFabVisible = state.entries != null,
+        onFabClick = { viewModel.emit(SchedulePreviewEvent.FabClicked) },
+        isRefreshing = state.isRefreshing,
+        snackbarHostState = snackbarHostState
     ) {
         Crossfade(targetState = state.entries) { entries ->
             when {
@@ -106,24 +120,14 @@ fun SchedulePreviewScreen(
                     }
                 }
                 else -> {
-                    @Suppress("NAME_SHADOWING")
-                    val scheduleEntries by derivedStateOf {
-                        entries.groupBy(ScheduleEntry::startDate)
-                    }
-                    val firstEntryIdx by derivedStateOf {
-                        scheduleEntries.firstVisibleItemIndex(timeNow.toLocalDate())
-                    }
-
-                    val lazyListState = rememberLazyListState()
                     LaunchedEffect(firstEntryIdx) {
                         lazyListState.animateScrollToItem(firstEntryIdx)
                     }
 
                     ScheduleEntriesList(
                         lazyListState = lazyListState,
-                        scheduleEntries = scheduleEntries,
-                        timeNow = timeNow,
-                        modifier = Modifier.navigationBarsPadding()
+                        scheduleEntries = filteredEntries!!,
+                        timeNow = timeNow
                     )
                 }
             }
