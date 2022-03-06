@@ -27,30 +27,36 @@ class ScheduleDestinationViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LocalDateTime.now())
 
     init {
-        useCases
-            .getSavedGroupsCount()
-            .combine(useCases.getAllScheduleEntries()) { count, entries ->
-                _state.update { state ->
-                    state.copy(
-                        hasSavedGroups = count > 0,
-                        entries = entries
-                    )
+        combine(
+            useCases.getSavedGroupsCount(),
+            useCases.getAllScheduleEntries()
+        ) { count, entries ->
+            _state.update { state ->
+                if (state.entries == null) {
+                    refreshData()
                 }
-            }.launchIn(viewModelScope)
-
-        refreshData()
+                val hasGroups = count > 0
+                state.copy(
+                    hasSavedGroups = hasGroups,
+                    entries = if (hasGroups) entries else null
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
     private var refreshJob: Job? = null
     private fun refreshData() {
+        if (refreshJob?.isActive == true) return
         refreshJob = useCases.refreshClasses().onEach { response ->
             when (response) {
                 is Resource.Error -> {
+                    _eventFlow.emit(UiEvent.ShowErrorSnackbar)
                     _state.update { state ->
                         state.copy(isRefreshing = false)
                     }
                 }
                 is Resource.Loading -> {
+                    _eventFlow.emit(UiEvent.HideSnackbar)
                     _state.update { state ->
                         state.copy(isRefreshing = true)
                     }
@@ -77,7 +83,6 @@ class ScheduleDestinationViewModel @Inject constructor(
                 }
             }
             ScheduleDestinationEvent.RefreshButtonClicked -> {
-                if (refreshJob?.isActive == true) return
                 refreshData()
             }
         }
@@ -85,6 +90,7 @@ class ScheduleDestinationViewModel @Inject constructor(
 
     sealed class UiEvent {
         object ShowErrorSnackbar : UiEvent()
+        object HideSnackbar : UiEvent()
         object ScrollToToday : UiEvent()
     }
 }

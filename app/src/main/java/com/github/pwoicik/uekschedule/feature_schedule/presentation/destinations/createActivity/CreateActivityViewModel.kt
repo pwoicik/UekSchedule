@@ -98,20 +98,9 @@ class CreateActivityViewModel @Inject constructor(
                 )
             is CreateActivityEvent.SaveActivity -> {
                 viewModelScope.launch {
-                    if (state.name.isBlank()) {
+                    if (!state.isInputValid) {
                         _eventFlow.emit(UiEvent.ShowError)
                         return@launch
-                    }
-                    if (state.repeatActivity) {
-                        if (state.repeatOnDaysOfWeek.isEmpty()) {
-                            _eventFlow.emit(UiEvent.ShowError)
-                            return@launch
-                        }
-                    } else {
-                        if (state.startDate == null) {
-                            _eventFlow.emit(UiEvent.ShowError)
-                            return@launch
-                        }
                     }
 
                     val startDateTime = if (state.repeatActivity) {

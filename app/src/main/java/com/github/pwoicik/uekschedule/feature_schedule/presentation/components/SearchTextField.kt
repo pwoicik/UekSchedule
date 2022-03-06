@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
@@ -21,6 +22,7 @@ fun SearchTextField(
     placeholder: String? = null,
     singleLine: Boolean = true,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    colors: TextFieldColors = TextFieldDefaults.searchTextFieldColors(),
     placeholderTextStyle: TextStyle = textStyle
 ) {
     TextField(
@@ -44,18 +46,29 @@ fun SearchTextField(
                 )
             }
         },
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colorScheme.onBackground,
-            placeholderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-            backgroundColor = MaterialTheme.colorScheme.background,
-            cursorColor = MaterialTheme.colorScheme.primary,
-            leadingIconColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-            trailingIconColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-        ),
+        colors = colors,
         textStyle = MaterialTheme.typography.bodyLarge,
         modifier = modifier
     )
-
 }
+
+@Composable
+fun TextFieldDefaults.searchTextFieldColors(
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
+    placeholderColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    cursorColor: Color = MaterialTheme.colorScheme.primary,
+    leadingIconColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+    trailingIconColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+    focusedIndicatorColor: Color = MaterialTheme.colorScheme.primary,
+    unfocusedIndicatorColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+) = textFieldColors(
+    textColor = textColor,
+    placeholderColor = placeholderColor,
+    backgroundColor = backgroundColor,
+    cursorColor = cursorColor,
+    leadingIconColor = leadingIconColor,
+    trailingIconColor = trailingIconColor,
+    focusedIndicatorColor = focusedIndicatorColor,
+    unfocusedIndicatorColor = unfocusedIndicatorColor
+)

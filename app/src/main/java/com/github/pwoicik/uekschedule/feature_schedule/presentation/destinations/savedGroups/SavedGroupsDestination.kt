@@ -1,27 +1,32 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SimpleList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.AllGroupsDestinationDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.CreateActivityDestinationDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.SchedulePreviewScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups.components.SavedGroupsScaffold
-import com.google.accompanist.insets.LocalWindowInsets
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination(navGraph = "mainScreen")
@@ -79,12 +84,6 @@ fun SavedGroupsDestination(
     }
 
     var currentScreen by rememberSaveable { mutableStateOf(0) }
-
-    val insets = LocalWindowInsets.current
-    val bottomPadding = with(LocalDensity.current) {
-        insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
-    }
-
     SavedGroupsScaffold(
         currentScreen = currentScreen,
         onScreenChange = { currentScreen = it },
@@ -95,45 +94,64 @@ fun SavedGroupsDestination(
                 else CreateActivityDestinationDestination()
             )
         },
-        snackbarHostState = snackbarHostState,
-        contentPadding = PaddingValues(bottom = bottomPadding)
+        snackbarHostState = snackbarHostState
     ) {
         when (currentScreen) {
             0 -> {
-                SimpleList(
+                SavedGroupsScreen(
                     items = savedGroups,
-                    emptyListMessage = stringResource(R.string.no_saved_groups),
                     itemTitle = { Text(it.name) },
-                    itemActions = {
-                        IconButton(
-                            onClick = {
-                                viewModel.emit(SavedGroupsEvent.DeleteGroupButtonClicked(it))
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.delete_group)
-                            )
-                        }
-                    },
+                    emptyListMessage = stringResource(R.string.no_saved_groups),
                     onItemClick = {
                         parentNavigator.navigate(
                             SchedulePreviewScreenDestination(it.id, it.name)
                         )
+                    },
+                    itemActions = {
+                        IconButton(
+                            onClick = { viewModel.emit(SavedGroupsEvent.DeleteGroupButtonClicked(it)) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = stringResource(R.string.delete_group)
+                            )
+                        }
+
                     }
                 )
             }
             1 -> {
-                SimpleList(
+                SavedGroupsScreen(
                     items = savedActivities,
+                    itemTitle = { activity ->
+                        Column {
+                            Text(activity.name)
+                            val time = activity.startDateTime.format(timeFormatter)
+                            val date = if (activity.isOneshot) {
+                                activity.startDateTime.format(dateFormatter)
+                            } else {
+                                activity.repeatOnDaysOfWeek!!
+                                    .sortedBy(DayOfWeek::ordinal)
+                                    .joinToString(separator = ", ") {
+                                    it.getDisplayName(
+                                        TextStyle.SHORT_STANDALONE,
+                                        Locale.getDefault()
+                                    )
+                                }
+                            }
+                            Text(
+                                text = "$time ($date)",
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    },
                     emptyListMessage = stringResource(R.string.no_activities),
-                    itemTitle = { Text(it.name) },
+                    onItemClick = { navigator.navigate(CreateActivityDestinationDestination(it.id)) },
                     itemActions = {
                         IconButton(
                             onClick = {
-                                viewModel.emit(
-                                    SavedGroupsEvent.DeleteActivityButtonClicked(it)
-                                )
+                                viewModel.emit(SavedGroupsEvent.DeleteActivityButtonClicked(it))
                             }
                         ) {
                             Icon(
@@ -141,11 +159,36 @@ fun SavedGroupsDestination(
                                 contentDescription = stringResource(R.string.delete_group)
                             )
                         }
-                    },
-                    onItemClick = { navigator.navigate(CreateActivityDestinationDestination(it.id)) }
+                    }
                 )
             }
             else -> throw(IllegalStateException("No such screen ($currentScreen)!"))
         }
     }
 }
+
+@Composable
+private fun <T> SavedGroupsScreen(
+    items: List<T>?,
+    itemTitle: @Composable (T) -> Unit,
+    onItemClick: (T) -> Unit,
+    emptyListMessage: String,
+    itemActions: @Composable RowScope.(T) -> Unit,
+) {
+    when (items) {
+        null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
+        }
+        else -> {
+            SimpleList(
+                items = items,
+                itemTitle = itemTitle,
+                emptyListMessage = emptyListMessage,
+                itemActions = itemActions,
+                onItemClick = onItemClick
+            )
+        }
+    }
+}
+
+private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+private val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
