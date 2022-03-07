@@ -12,7 +12,7 @@ fun ScheduleDto.toGroupWithClasses(): GroupWithClasses {
         groupName
     )
 
-    val classes = classes?.map { it.toClass(groupId) } ?: emptyList()
+    val classes = classes?.toClasses(groupId) ?: emptyList()
 
     return GroupWithClasses(schedule, classes)
 }
