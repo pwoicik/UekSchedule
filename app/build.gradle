@@ -24,10 +24,10 @@ android {
         applicationId "com.github.pwoicik.uekschedule"
         minSdk 26
         targetSdk 32
-        versionCode 10
-        versionName "1.2.1"
+        versionCode 12
+        versionName "1.2.1-hotfix"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.github.pwoicik.uekschedule.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -111,6 +111,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+    // Hilt - testing
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 }

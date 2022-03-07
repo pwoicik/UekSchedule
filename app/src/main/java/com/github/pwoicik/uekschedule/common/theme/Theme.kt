@@ -69,7 +69,7 @@ private val DarkThemeColors = darkColorScheme(
 @Composable
 fun UEKScheduleTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    useDynamicColor: Boolean = true,
+    useDynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colors = if (useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

@@ -7,7 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,7 +26,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntr
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.xml.parsers.DocumentBuilderFactory
 
 @Composable
 fun ScheduleEntriesList(
@@ -109,11 +108,13 @@ fun ScheduleEntriesListItem(
                 LocalTextStyle provides MaterialTheme.typography.bodyMedium,
                 LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
             ) {
-                if (scheduleEntry.teachers != null) {
-                    scheduleEntry.teachers.forEach { teacher ->
-                        Text(teacher)
+                scheduleEntry.teachers?.let { teachers ->
+                    if (teachers.isNotEmpty()) {
+                        scheduleEntry.teachers.forEach { teacher ->
+                            Text(teacher)
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
                 }
 
                 if (scheduleEntry.details == null) {
@@ -129,39 +130,32 @@ fun ScheduleEntriesListItem(
 
                 if (scheduleEntry.location != null) {
                     Spacer(modifier = Modifier.height(4.dp))
-                    if (scheduleEntry.location.matches("<.+(/>|</\\w+>)".toRegex())) {
-                        val inputStream = scheduleEntry.location
-                            .toByteArray()
-                            .inputStream()
-                        val node = DocumentBuilderFactory.newInstance()
-                            .newDocumentBuilder()
-                            .parse(inputStream)
-                            .documentElement
-
-                        val text = node.textContent.trim()
-                        val link = node.getAttribute("href")
+                    val match = htmlAnchorRegex.find(scheduleEntry.location)
+                    if (match != null) {
+                        val url = match.groupValues[1]
+                        val text = match.groupValues[2].trim()
 
                         val intent = remember {
-                            Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                            Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         }
                         Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
                             modifier = Modifier
                                 .clickable {
                                     context.startActivity(intent)
                                 }
                         ) {
+                            Icon(
+                                imageVector = Icons.Default.OpenInNew,
+                                contentDescription = stringResource(R.string.open_in_browser),
+                                modifier = Modifier.size(20.dp)
+                            )
                             Text(
                                 text = text,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
-                                textDecoration = link?.let { TextDecoration.Underline },
-                                modifier = Modifier
-                                    .align(Alignment.Bottom)
-                                    .padding(end = 4.dp)
-                            )
-                            Icon(
-                                imageVector = Icons.Default.OpenInBrowser,
-                                contentDescription = stringResource(R.string.open_in_browser)
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.align(Alignment.Bottom)
                             )
                         }
                     } else {
@@ -234,3 +228,5 @@ fun ScheduleEntriesListItem(
 
 private val dateFormatter = DateTimeFormatter.ofPattern("eee dd MMM yyyy")
 private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+private val htmlAnchorRegex = """<a href="(.+)">(.+)</a>""".toRegex()
