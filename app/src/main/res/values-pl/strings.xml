@@ -46,6 +46,14 @@
     <string name="activity_deleted">Usunięto zajęcia \"%s\"</string>
     <string name="go_back">Cofnij</string>
     <string name="no_classes_message2">Brak zajęć dla tej grupy!</string>
+    <string name="theme_auto">Systemowy</string>
+    <string name="theme_light">Jasny</string>
+    <string name="theme_dark">Ciemny</string>
+    <string name="theme_amoled">AMOLED</string>
+    <string name="dynamic_theme">Dynamiczny motyw</string>
+    <string name="dynamic_theme_description">Kolory bazują na twojej tapecie</string>
+    <string name="requires_sdk_31">(Wymagany Android 12+)</string>
+    <string name="select_theme">Wybierz motyw</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>
