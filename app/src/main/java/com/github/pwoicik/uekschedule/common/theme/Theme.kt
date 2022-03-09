@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 
 private val LightThemeColors = lightColorScheme(
-
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -40,7 +39,6 @@ private val LightThemeColors = lightColorScheme(
 )
 
 private val DarkThemeColors = darkColorScheme(
-
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -72,15 +70,20 @@ private val DarkThemeColors = darkColorScheme(
 private val AmoledThemeColors = DarkThemeColors.copy(
     background = Color.Black,
     surface = Color.Black,
-    inverseOnSurface = Color.Black
+    inverseOnSurface = Color.Black,
+    primaryContainer = Color.Black,
+    secondaryContainer = Color(0xFF222222),
+    tertiaryContainer = Color.Black
 )
 
-private fun dynamicAmoledColorScheme(context: Context) =
-    dynamicDarkColorScheme(context).copy(
-        background = Color.Black,
-        surface = Color.Black,
-        inverseOnSurface = Color.Black
-    )
+private fun dynamicAmoledColorScheme(context: Context) = dynamicDarkColorScheme(context).copy(
+    background = Color.Black,
+    surface = Color.Black,
+    inverseOnSurface = Color.Black,
+    primaryContainer = Color.Black,
+    secondaryContainer = Color(0xFF222222),
+    tertiaryContainer = Color.Black
+)
 
 @Composable
 fun UEKScheduleTheme(

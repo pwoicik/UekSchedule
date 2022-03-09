@@ -24,7 +24,7 @@ fun PreferencesScaffold(
     Scaffold(
         topBar = {
             Surface(
-                color = MaterialTheme.colorScheme.secondaryContainer
+                color = MaterialTheme.colorScheme.primaryContainer
             ) {
                 CenterAlignedTopAppBar(
                     title = { Text("Preferences") },
@@ -38,8 +38,8 @@ fun PreferencesScaffold(
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Color.Transparent,
-                        titleContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     modifier = Modifier.statusBarsPadding()
                 )

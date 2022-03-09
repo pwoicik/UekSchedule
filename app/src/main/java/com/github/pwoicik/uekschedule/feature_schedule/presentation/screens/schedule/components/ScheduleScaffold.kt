@@ -106,7 +106,10 @@ fun ScheduleScaffold(
                                 contentDescription = stringResource(R.string.preferences)
                             )
                         },
-                        onClick = onPreferencesButtonClick
+                        onClick = {
+                            isDropdownExpanded = false
+                            onPreferencesButtonClick()
+                        }
                     )
                 }
             }
