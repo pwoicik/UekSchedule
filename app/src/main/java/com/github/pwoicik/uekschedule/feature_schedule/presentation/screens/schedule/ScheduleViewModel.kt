@@ -32,9 +32,6 @@ class ScheduleViewModel @Inject constructor(
             useCases.getAllScheduleEntries()
         ) { count, entries ->
             _state.update { state ->
-                if (state.entries == null) {
-                    refreshData()
-                }
                 val hasGroups = count > 0
                 state.copy(
                     hasSavedGroups = hasGroups,
@@ -42,6 +39,8 @@ class ScheduleViewModel @Inject constructor(
                 )
             }
         }.launchIn(viewModelScope)
+
+        refreshData()
     }
 
     private var refreshJob: Job? = null

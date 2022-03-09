@@ -69,13 +69,13 @@ fun SavedGroupsScreen(
                         val result = snackbarHostState.showSnackbar(
                             message = context.resources.getString(
                                 R.string.group_deleted,
-                                event.group.name
+                                event.gwc.group.name
                             ),
                             actionLabel = snackbarActionLabel,
                             duration = SnackbarDuration.Long
                         )
                         if (result == SnackbarResult.ActionPerformed) {
-                            viewModel.emit(SavedGroupsEvent.UndoGroupDeletion(event.group))
+                            viewModel.emit(SavedGroupsEvent.UndoGroupDeletion(event.gwc))
                         }
                     }
                 }

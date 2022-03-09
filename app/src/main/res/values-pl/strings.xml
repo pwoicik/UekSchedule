@@ -54,6 +54,7 @@
     <string name="dynamic_theme_description">Kolory bazują na twojej tapecie</string>
     <string name="requires_sdk_31">(Wymagany Android 12+)</string>
     <string name="select_theme">Wybierz motyw</string>
+    <string name="saving_group">Zapisywanie grupy \"%s\"…</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>

@@ -3,7 +3,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sav
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.GroupWithClasses
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -44,14 +44,15 @@ class SavedGroupsViewModel @Inject constructor(
             }
             is SavedGroupsEvent.DeleteGroupButtonClicked -> {
                 viewModelScope.launch {
+                    val gwc = useCases.getGroupWithClasses(event.group)
                     useCases.deleteGroup(event.group)
                     _eventFlow.emit(UiEvent.HideSnackbar)
-                    _eventFlow.emit(UiEvent.ShowGroupDeletedSnackbar(event.group))
+                    _eventFlow.emit(UiEvent.ShowGroupDeletedSnackbar(gwc))
                 }
             }
             is SavedGroupsEvent.UndoGroupDeletion -> {
                 viewModelScope.launch {
-                    useCases.saveGroup(event.group)
+                    useCases.saveGroupWithClasses(event.gwc)
                     _eventFlow.emit(UiEvent.HideSnackbar)
                 }
             }
@@ -60,7 +61,7 @@ class SavedGroupsViewModel @Inject constructor(
 
     sealed class UiEvent {
         data class ShowActivityDeletedSnackbar(val activity: Activity) : UiEvent()
-        data class ShowGroupDeletedSnackbar(val group: Group) : UiEvent()
+        data class ShowGroupDeletedSnackbar(val gwc: GroupWithClasses) : UiEvent()
         object HideSnackbar : UiEvent()
     }
 }

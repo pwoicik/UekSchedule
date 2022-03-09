@@ -70,6 +70,10 @@ class ScheduleRepositoryImpl(
         }
     }
 
+    override suspend fun getGroupWithClasses(group: Group): GroupWithClasses {
+        return groupDao.getGroupWithClasses(group.id)
+    }
+
     override fun getSavedGroups(): Flow<List<Group>> {
         return groupDao.getAllGroups()
     }
@@ -83,7 +87,18 @@ class ScheduleRepositoryImpl(
     }
 
     override suspend fun saveGroup(group: Group) {
-        groupDao.insertGroup(group)
+        val gwc = fetchSchedule(group)
+        scheduleDatabase.withTransaction {
+            groupDao.insertGroup(gwc.group)
+            classDao.insertAllClasses(gwc.classes)
+        }
+    }
+
+    override suspend fun saveGroupWithClasses(gwc: GroupWithClasses) {
+        scheduleDatabase.withTransaction {
+            groupDao.insertGroup(gwc.group)
+            classDao.insertAllClasses(gwc.classes)
+        }
     }
 
     override suspend fun updateSchedules() {

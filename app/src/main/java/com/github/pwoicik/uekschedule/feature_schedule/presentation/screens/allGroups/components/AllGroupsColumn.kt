@@ -22,6 +22,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 fun AllGroupsColumn(
     groups: List<Group>,
     onGroupClick: (Group) -> Unit,
+    areGroupAddButtonsEnabled: Boolean,
     onGroupAddButtonClick: (Group) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -32,7 +33,10 @@ fun AllGroupsColumn(
         items(groups) { group ->
             Surface(
                 modifier = Modifier
-                    .clickable(onClickLabel = stringResource(R.string.preview_group)) {
+                    .clickable(
+                        enabled = areGroupAddButtonsEnabled,
+                        onClickLabel = stringResource(R.string.preview_group)
+                    ) {
                         onGroupClick(group)
                     }
                     .padding(vertical = 8.dp)

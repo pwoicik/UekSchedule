@@ -7,6 +7,7 @@ data class AllGroupsState(
 
     val isLoading: Boolean = false,
     val didTry: Boolean = false,
+    val isSaving: Boolean = false,
     val groups: List<Group>? = null,
     val searchValue: TextFieldValue = TextFieldValue()
 ) {

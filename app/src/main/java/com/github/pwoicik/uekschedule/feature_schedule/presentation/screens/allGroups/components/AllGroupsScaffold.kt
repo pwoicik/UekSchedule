@@ -65,6 +65,8 @@ fun AllGroupsScaffold(
                         SnackbarWithError(snackbarData = snackbarData)
                     is SnackbarVisualsWithSuccess ->
                         SnackbarWithSuccess(snackbarData = snackbarData)
+                    is SnackbarVisualsWithLoading ->
+                        SnackbarWithLoading(snackbarData = snackbarData)
                 }
             }
         },

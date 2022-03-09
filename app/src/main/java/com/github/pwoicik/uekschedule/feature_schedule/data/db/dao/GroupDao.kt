@@ -2,6 +2,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.data.db.dao
 
 import androidx.room.*
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.GroupWithClasses
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -9,6 +10,10 @@ interface GroupDao {
 
     @Query("select * from groups order by name")
     fun getAllGroups(): Flow<List<Group>>
+
+    @Transaction
+    @Query("select * from groups where id = :groupId")
+    suspend fun getGroupWithClasses(groupId: Long): GroupWithClasses
 
     @Query(
         """

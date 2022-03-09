@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.CircularProgressIndicator
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.components.AllGroupsColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.components.AllGroupsScaffold
@@ -40,8 +41,6 @@ fun AllGroupsScreen(
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val snackbarErrorMessage = stringResource(R.string.couldnt_connect)
-    val snackbarErrorActionLabel = stringResource(R.string.retry)
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -49,21 +48,36 @@ fun AllGroupsScreen(
                 AllGroupsViewModel.UiEvent.HideSnackbar -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
                 }
-                AllGroupsViewModel.UiEvent.ShowErrorSnackbar -> {
+                is AllGroupsViewModel.UiEvent.ShowErrorSnackbar -> {
                     launch {
+                        snackbarHostState.currentSnackbarData?.dismiss()
                         val result = snackbarHostState.showSnackbar(
                             visuals = SnackbarVisualsWithError(
-                                message = snackbarErrorMessage,
-                                actionLabel = snackbarErrorActionLabel
+                                message = context.resources.getString(R.string.couldnt_connect),
+                                actionLabel = context.resources.getString(R.string.retry)
                             )
                         )
                         if (result == SnackbarResult.ActionPerformed) {
-                            viewModel.emit(AllGroupsEvent.RetryGroupsFetch)
+                            viewModel.emit(event.eventToRepeat)
                         }
+                    }
+                }
+                is AllGroupsViewModel.UiEvent.ShowSavingGroupSnackbar -> {
+                    launch {
+                        snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarHostState.showSnackbar(
+                            visuals = SnackbarVisualsWithLoading(
+                                message = context.resources.getString(
+                                    R.string.saving_group,
+                                    event.group.name
+                                )
+                            )
+                        )
                     }
                 }
                 is AllGroupsViewModel.UiEvent.ShowSavedGroupSnackbar -> {
                     launch {
+                        snackbarHostState.currentSnackbarData?.dismiss()
                         snackbarHostState.showSnackbar(
                             visuals = SnackbarVisualsWithSuccess(
                                 message = context.resources.getString(
@@ -112,6 +126,7 @@ fun AllGroupsScreen(
                             onGroupClick = {
                                 parentNavigator.navigate(SingleGroupSchedulePreviewScreenDestination(it.id, it.name))
                             },
+                            areGroupAddButtonsEnabled = !state.isSaving,
                             onGroupAddButtonClick = {
                                 viewModel.emit(AllGroupsEvent.GroupSaveButtonClicked(it))
                             },

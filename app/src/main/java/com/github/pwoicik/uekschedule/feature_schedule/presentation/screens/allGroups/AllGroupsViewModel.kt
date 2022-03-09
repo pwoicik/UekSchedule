@@ -34,7 +34,11 @@ class AllGroupsViewModel @Inject constructor(
                     _state.update { state ->
                         state.copy(didTry = true, isLoading = false)
                     }
-                    _eventFlow.emit(UiEvent.ShowErrorSnackbar)
+                    _eventFlow.emit(
+                        UiEvent.ShowErrorSnackbar(
+                            AllGroupsEvent.RetryGroupsFetch
+                        )
+                    )
                 }
                 is Resource.Loading -> {
                     _state.update { state ->
@@ -67,8 +71,32 @@ class AllGroupsViewModel @Inject constructor(
             is AllGroupsEvent.GroupSaveButtonClicked -> {
                 viewModelScope.launch {
                     _eventFlow.emit(UiEvent.HideSnackbar)
-                    useCases.saveGroup(event.group)
-                    _eventFlow.emit(UiEvent.ShowSavedGroupSnackbar(event.group))
+                    useCases.saveGroup(event.group).collect { result ->
+                        when (result) {
+                            is Resource.Error -> {
+                                _state.update { state ->
+                                    state.copy(isSaving = false)
+                                }
+                                _eventFlow.emit(
+                                    UiEvent.ShowErrorSnackbar(
+                                        AllGroupsEvent.GroupSaveButtonClicked(event.group)
+                                    )
+                                )
+                            }
+                            is Resource.Loading -> {
+                                _state.update { state ->
+                                    state.copy(isSaving = true)
+                                }
+                                _eventFlow.emit(UiEvent.ShowSavingGroupSnackbar(event.group))
+                            }
+                            is Resource.Success -> {
+                                _state.update { state ->
+                                    state.copy(isSaving = false)
+                                }
+                                _eventFlow.emit(UiEvent.ShowSavedGroupSnackbar(event.group))
+                            }
+                        }
+                    }
                 }
             }
             AllGroupsEvent.RetryGroupsFetch -> {
@@ -82,8 +110,9 @@ class AllGroupsViewModel @Inject constructor(
     }
 
     sealed class UiEvent {
-        object ShowErrorSnackbar : UiEvent()
+        data class ShowErrorSnackbar(val eventToRepeat: AllGroupsEvent) : UiEvent()
         object HideSnackbar : UiEvent()
+        data class ShowSavingGroupSnackbar(val group: Group) : UiEvent()
         data class ShowSavedGroupSnackbar(val group: Group) : UiEvent()
     }
 }

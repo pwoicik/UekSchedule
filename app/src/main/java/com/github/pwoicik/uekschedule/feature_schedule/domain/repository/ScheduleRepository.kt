@@ -2,6 +2,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.domain.repository
 
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.GroupWithClasses
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import kotlinx.coroutines.flow.Flow
 
@@ -19,6 +20,8 @@ interface ScheduleRepository {
 
     fun getAllScheduleEntries(): Flow<List<ScheduleEntry>>
 
+    suspend fun getGroupWithClasses(group: Group): GroupWithClasses
+
     fun getSavedGroups(): Flow<List<Group>>
 
     fun getSavedGroupsCount(): Flow<Int>
@@ -28,6 +31,8 @@ interface ScheduleRepository {
     suspend fun saveActivity(activity: Activity)
 
     suspend fun saveGroup(group: Group)
+
+    suspend fun saveGroupWithClasses(gwc: GroupWithClasses)
 
     suspend fun updateSchedules()
 }
