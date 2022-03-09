@@ -59,7 +59,8 @@ fun ScheduleScaffold(
         snackbarHostState = snackbarHostState,
         colors = ScheduleEntriesListScaffoldColors.default(
             topBarColors = SmallTopBarWithSearchColors.default(
-                indicatorsColor = MaterialTheme.colorScheme.secondaryContainer
+                titleColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                indicatorsColor = MaterialTheme.colorScheme.secondary
             ),
             fabContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             fabContentColor = MaterialTheme.colorScheme.onSecondaryContainer

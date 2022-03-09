@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,14 +55,14 @@ fun SearchTextField(
 
 @Composable
 fun TextFieldDefaults.searchTextFieldColors(
-    textColor: Color = MaterialTheme.colorScheme.onBackground,
-    placeholderColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
     backgroundColor: Color = MaterialTheme.colorScheme.background,
+    textColor: Color = MaterialTheme.colorScheme.contentColorFor(backgroundColor),
     cursorColor: Color = MaterialTheme.colorScheme.primary,
-    leadingIconColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-    trailingIconColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-    focusedIndicatorColor: Color = MaterialTheme.colorScheme.primary,
-    unfocusedIndicatorColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+    placeholderColor: Color = textColor.copy(alpha = 0.7f),
+    leadingIconColor: Color = placeholderColor,
+    trailingIconColor: Color = placeholderColor,
+    focusedIndicatorColor: Color = cursorColor,
+    unfocusedIndicatorColor: Color = placeholderColor
 ) = textFieldColors(
     textColor = textColor,
     placeholderColor = placeholderColor,

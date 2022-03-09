@@ -71,10 +71,7 @@ fun SmallTopBarWithSearch(
                     colors = TextFieldDefaults.searchTextFieldColors(
                         backgroundColor = colors.containerColor,
                         textColor = colors.titleColor,
-                        leadingIconColor = colors.leadingIconColor,
-                        trailingIconColor = colors.trailingIconsColor,
-                        cursorColor = colors.indicatorsColor,
-                        focusedIndicatorColor = colors.indicatorsColor
+                        cursorColor = colors.indicatorsColor
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
