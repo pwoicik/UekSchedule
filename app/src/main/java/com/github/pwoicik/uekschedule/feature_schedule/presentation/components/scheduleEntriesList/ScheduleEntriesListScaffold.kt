@@ -15,10 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.CircularProgressIndicator
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearch
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarWithError
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.smallTopAppBarWithSearchColors
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,9 +32,7 @@ fun ScheduleEntriesListScaffold(
     onSearchValueClear: () -> Unit = { onSearchValueChange(TextFieldValue()) },
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    containerColor: Color = MaterialTheme.colorScheme.surface,
-    searchFieldIndicationColor: Color = MaterialTheme.colorScheme.primary,
-    colors: TopAppBarColors = TopAppBarDefaults.smallTopAppBarWithSearchColors(),
+    colors: ScheduleEntriesListScaffoldColors = ScheduleEntriesListScaffoldColors.default(),
     content: @Composable BoxScope.() -> Unit
 ) {
     Scaffold(
@@ -50,14 +45,16 @@ fun ScheduleEntriesListScaffold(
                 onSearchValueClear = onSearchValueClear,
                 navigationIcon = navigationIcon,
                 actions = actions,
-                containerColor = containerColor,
-                searchFieldIndicationColor = searchFieldIndicationColor,
-                colors = colors
+                colors = colors.topBarColors
             )
         },
         floatingActionButton = {
             if (isFabVisible) {
-                FloatingActionButton(onClick = onFabClick) {
+                FloatingActionButton(
+                    containerColor = colors.fabContainerColor,
+                    contentColor = colors.fabContentColor,
+                    onClick = onFabClick
+                ) {
                     Icon(
                         imageVector = Icons.Default.VerticalAlignCenter,
                         contentDescription = stringResource(R.string.scroll_to_today)
@@ -86,11 +83,28 @@ fun ScheduleEntriesListScaffold(
             ) {
                 CircularProgressIndicator(
                     isSpinning = isRefreshing,
-                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    containerColor = colors.fabContainerColor,
+                    contentColor = colors.fabContentColor,
                     modifier = Modifier.padding(top = 24.dp)
                 )
             }
         }
+    }
+}
+
+data class ScheduleEntriesListScaffoldColors(
+    val topBarColors: SmallTopBarWithSearchColors,
+    val fabContainerColor: Color,
+    val fabContentColor: Color
+) {
+    companion object {
+        @Composable
+        fun default(
+            topBarColors: SmallTopBarWithSearchColors = SmallTopBarWithSearchColors.default(),
+            fabContainerColor: Color = topBarColors.containerColor,
+            fabContentColor: Color = topBarColors.titleColor
+        ): ScheduleEntriesListScaffoldColors = ScheduleEntriesListScaffoldColors(
+            topBarColors, fabContainerColor, fabContentColor
+        )
     }
 }

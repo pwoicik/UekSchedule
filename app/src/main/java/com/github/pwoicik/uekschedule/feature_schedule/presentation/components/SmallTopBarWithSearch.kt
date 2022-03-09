@@ -31,12 +31,10 @@ fun SmallTopBarWithSearch(
     onSearchValueClear: () -> Unit = { onSearchValueChange(TextFieldValue()) },
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    containerColor: Color = MaterialTheme.colorScheme.surface,
-    searchFieldIndicationColor: Color = MaterialTheme.colorScheme.primary,
-    colors: TopAppBarColors = TopAppBarDefaults.smallTopAppBarWithSearchColors()
+    colors: SmallTopBarWithSearchColors = SmallTopBarWithSearchColors.default()
 ) {
     Surface(
-        color = containerColor,
+        color = colors.containerColor,
         modifier = modifier
     ) {
         Box(
@@ -48,7 +46,12 @@ fun SmallTopBarWithSearch(
                 title = title,
                 actions = actions,
                 navigationIcon = navigationIcon,
-                colors = colors
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = Color.Transparent,
+                    navigationIconContentColor = colors.leadingIconColor,
+                    actionIconContentColor = colors.trailingIconsColor,
+                    titleContentColor = colors.titleColor
+                )
             )
             AnimatedVisibility(
                 visible = isSearchFieldVisible,
@@ -60,22 +63,18 @@ fun SmallTopBarWithSearch(
                     focusRequester.requestFocus()
                 }
 
-                val scrollFraction = 0f
-                val textColor by colors.titleContentColor(scrollFraction)
-                val leadingIconColor by colors.navigationIconContentColor(scrollFraction)
-                val trailingIconColor by colors.actionIconContentColor(scrollFraction)
                 SearchTextField(
                     value = searchValue,
                     onValueChange = onSearchValueChange,
                     onClearText = onSearchValueClear,
                     placeholder = stringResource(R.string.entry_search_placeholder),
                     colors = TextFieldDefaults.searchTextFieldColors(
-                        backgroundColor = containerColor,
-                        textColor = textColor,
-                        leadingIconColor = leadingIconColor,
-                        trailingIconColor = trailingIconColor,
-                        cursorColor = searchFieldIndicationColor,
-                        focusedIndicatorColor = searchFieldIndicationColor
+                        backgroundColor = colors.containerColor,
+                        textColor = colors.titleColor,
+                        leadingIconColor = colors.leadingIconColor,
+                        trailingIconColor = colors.trailingIconsColor,
+                        cursorColor = colors.indicatorsColor,
+                        focusedIndicatorColor = colors.indicatorsColor
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -87,14 +86,23 @@ fun SmallTopBarWithSearch(
     }
 }
 
-@Composable
-fun TopAppBarDefaults.smallTopAppBarWithSearchColors(
-    titleContentColor: Color = MaterialTheme.colorScheme.onSurface,
-    navigationIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
-    actionIconContentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-) = smallTopAppBarColors(
-    containerColor = Color.Transparent,
-    titleContentColor = titleContentColor,
-    navigationIconContentColor = navigationIconContentColor,
-    actionIconContentColor = actionIconContentColor
-)
+data class SmallTopBarWithSearchColors(
+    val containerColor: Color,
+    val leadingIconColor: Color,
+    val titleColor: Color,
+    val trailingIconsColor: Color,
+    val indicatorsColor: Color
+) {
+    companion object {
+        @Composable
+        fun default(
+            containerColor: Color = MaterialTheme.colorScheme.surface,
+            leadingIconColor: Color = MaterialTheme.colorScheme.onSurface,
+            titleColor: Color = MaterialTheme.colorScheme.onSurface,
+            trailingIconsColor: Color = MaterialTheme.colorScheme.onSurface,
+            indicatorsColor: Color = MaterialTheme.colorScheme.primary
+        ) = SmallTopBarWithSearchColors(
+            containerColor, leadingIconColor, titleColor, trailingIconsColor, indicatorsColor
+        )
+    }
+}

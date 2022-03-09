@@ -13,11 +13,11 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleDestinationViewModel @Inject constructor(
+class ScheduleViewModel @Inject constructor(
     private val useCases: ScheduleUseCases
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ScheduleDestinationState())
+    private val _state = MutableStateFlow(ScheduleState())
     val state = _state.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<UiEvent>(replay = 1)
@@ -70,19 +70,19 @@ class ScheduleDestinationViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun emit(event: ScheduleDestinationEvent) {
+    fun emit(event: ScheduleEvent) {
         when (event) {
-            ScheduleDestinationEvent.FabClicked -> {
+            ScheduleEvent.FabClicked -> {
                 viewModelScope.launch { _eventFlow.emit(UiEvent.ScrollToToday) }
             }
-            is ScheduleDestinationEvent.SearchTextChanged -> {
+            is ScheduleEvent.SearchTextChanged -> {
                 _state.update { state ->
                     state.copy(
                         searchValue = event.newValue.copy()
                     )
                 }
             }
-            ScheduleDestinationEvent.RefreshButtonClicked -> {
+            ScheduleEvent.RefreshButtonClicked -> {
                 refreshData()
             }
         }

@@ -13,8 +13,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.smallTopAppBarWithSearchColors
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,11 +45,16 @@ fun SchedulePreviewScaffold(
         onFabClick = onFabClick,
         isRefreshing = isRefreshing,
         snackbarHostState = snackbarHostState,
-        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-        searchFieldIndicationColor = MaterialTheme.colorScheme.tertiary,
-        colors = TopAppBarDefaults.smallTopAppBarWithSearchColors(
-            titleContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            navigationIconContentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        colors = ScheduleEntriesListScaffoldColors.default(
+            topBarColors = SmallTopBarWithSearchColors.default(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                leadingIconColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                titleColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                trailingIconsColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                indicatorsColor = MaterialTheme.colorScheme.tertiary
+            ),
+            fabContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            fabContentColor = MaterialTheme.colorScheme.onTertiaryContainer
         ),
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {

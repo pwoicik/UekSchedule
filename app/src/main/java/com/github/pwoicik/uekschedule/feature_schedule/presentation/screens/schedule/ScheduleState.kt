@@ -3,7 +3,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sch
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 
-data class ScheduleDestinationState(
+data class ScheduleState(
 
     val hasSavedGroups: Boolean? = null,
     val entries: List<ScheduleEntry>? = null,

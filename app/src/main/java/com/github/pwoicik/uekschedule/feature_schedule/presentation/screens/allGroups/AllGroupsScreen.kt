@@ -128,8 +128,8 @@ fun AllGroupsScreen(
             ) {
                 CircularProgressIndicator(
                     isSpinning = state.isLoading,
-                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.padding(top = 24.dp)
                 )
             }

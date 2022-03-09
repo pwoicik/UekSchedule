@@ -25,7 +25,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.s
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.PreferencesScreenDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components.ScheduleDestinationScaffold
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components.ScheduleScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ScheduleScreen(
     parentNavigator: DestinationsNavigator,
-    viewModel: ScheduleDestinationViewModel = hiltViewModel()
+    viewModel: ScheduleViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val timeNow by viewModel.timeFlow.collectAsState()
@@ -62,10 +62,10 @@ fun ScheduleScreen(
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                ScheduleDestinationViewModel.UiEvent.ScrollToToday -> {
+                ScheduleViewModel.UiEvent.ScrollToToday -> {
                     listState.animateScrollToItem(firstEntryIdx)
                 }
-                ScheduleDestinationViewModel.UiEvent.ShowErrorSnackbar -> {
+                ScheduleViewModel.UiEvent.ShowErrorSnackbar -> {
                     launch {
                         val result = snackbarHostState.showSnackbar(
                             visuals = SnackbarVisualsWithError(
@@ -74,11 +74,11 @@ fun ScheduleScreen(
                             )
                         )
                         if (result == SnackbarResult.ActionPerformed) {
-                            viewModel.emit(ScheduleDestinationEvent.RefreshButtonClicked)
+                            viewModel.emit(ScheduleEvent.RefreshButtonClicked)
                         }
                     }
                 }
-                ScheduleDestinationViewModel.UiEvent.HideSnackbar -> {
+                ScheduleViewModel.UiEvent.HideSnackbar -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
                 }
             }
@@ -86,14 +86,14 @@ fun ScheduleScreen(
     }
 
     val hasEntries = state.entries?.isEmpty() == false
-    ScheduleDestinationScaffold(
+    ScheduleScaffold(
         isSearchButtonEnabled = hasEntries,
         searchValue = state.searchValue,
-        onSearchValueChange = { viewModel.emit(ScheduleDestinationEvent.SearchTextChanged(it)) },
+        onSearchValueChange = { viewModel.emit(ScheduleEvent.SearchTextChanged(it)) },
         isFabVisible = hasEntries,
-        onFabClick = { viewModel.emit(ScheduleDestinationEvent.FabClicked) },
+        onFabClick = { viewModel.emit(ScheduleEvent.FabClicked) },
         isRefreshing = state.isRefreshing,
-        onRefreshButtonClick = { viewModel.emit(ScheduleDestinationEvent.RefreshButtonClicked) },
+        onRefreshButtonClick = { viewModel.emit(ScheduleEvent.RefreshButtonClicked) },
         onPreferencesButtonClick = {
             parentNavigator.navigate(PreferencesScreenDestination)
         },

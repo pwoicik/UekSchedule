@@ -24,14 +24,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CircularProgressIndicator(
     modifier: Modifier = Modifier,
-    color: Color = LocalContentColor.current,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = LocalContentColor.current,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
     isSpinning: Boolean = true
 ) {
     Surface(
         tonalElevation = 4.dp,
         shadowElevation = 8.dp,
-        color = backgroundColor,
+        color = containerColor,
         shape = RoundedCornerShape(50f),
         modifier = modifier.progressSemantics()
     ) {
@@ -54,7 +54,7 @@ fun CircularProgressIndicator(
         Icon(
             imageVector = Icons.Default.Refresh,
             contentDescription = null,
-            tint = color,
+            tint = contentColor,
             modifier = Modifier
                 .padding(6.dp)
                 .rotate(spin.value)

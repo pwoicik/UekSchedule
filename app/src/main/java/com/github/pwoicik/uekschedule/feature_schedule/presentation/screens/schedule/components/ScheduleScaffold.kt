@@ -16,12 +16,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
 import com.google.accompanist.insets.LocalWindowInsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScheduleDestinationScaffold(
+fun ScheduleScaffold(
     isSearchButtonEnabled: Boolean,
     searchValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
@@ -55,6 +57,13 @@ fun ScheduleDestinationScaffold(
         onFabClick = onFabClick,
         isRefreshing = isRefreshing,
         snackbarHostState = snackbarHostState,
+        colors = ScheduleEntriesListScaffoldColors.default(
+            topBarColors = SmallTopBarWithSearchColors.default(
+                indicatorsColor = MaterialTheme.colorScheme.secondaryContainer
+            ),
+            fabContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            fabContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+        ),
         actions = {
             IconButton(
                 enabled = isSearchButtonEnabled,
