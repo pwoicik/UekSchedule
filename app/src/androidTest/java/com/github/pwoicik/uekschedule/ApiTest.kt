@@ -40,7 +40,7 @@ class ApiTest {
                 var error: Boolean
                 do {
                     error = try {
-                        repo.getSchedule(group.id)
+                        repo.fetchSchedule(group.id)
                         Log.d("fetching finished", group.name)
                         false
                     } catch (e: Exception) {
