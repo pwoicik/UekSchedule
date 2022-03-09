@@ -18,8 +18,7 @@ fun List<ClassDto>.toClasses(groupId: Long): List<Class> = this
             endDateTime = convertDateTime(dto.date!!, endTime),
             type = dto.type ?: "Nieokreślone",
             details = dto.details,
-            teachers = dto.teachers,
+            teachers = if (dto.teachers?.isEmpty() == true) null else dto.teachers,
             location = dto.location
         )
-
     }

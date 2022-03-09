@@ -9,7 +9,7 @@ data class ScheduleEntry(
     val endDateTime: LocalDateTime,
     val type: String?,
     val details: String?,
-    val teachers: List<String>?,
+    val teachers: List<String>,
     val location: String?,
 ) {
 

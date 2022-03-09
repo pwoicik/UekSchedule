@@ -71,8 +71,6 @@ fun ScheduleEntriesListItem(
     scheduleEntry: ScheduleEntry,
     status: ScheduleEntryStatus
 ) {
-    val context = LocalContext.current
-
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -82,144 +80,181 @@ fun ScheduleEntriesListItem(
             )
             .padding(10.dp)
     ) {
-        Column {
-            val startAlpha = if (status is ScheduleEntryStatus.InProgress) 0.6f else 1f
-            val endAlpha = if (status is ScheduleEntryStatus.NotStarted) 0.6f else 1f
-            Text(
-                text = scheduleEntry.startDateTime.format(timeFormatter),
-                modifier = Modifier.alpha(startAlpha)
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = scheduleEntry.endDateTime.format(timeFormatter),
-                modifier = Modifier.alpha(endAlpha)
-            )
-        }
+        ScheduleEntryTimesColumn(
+            status = status,
+            startDateTime = scheduleEntry.startDateTime,
+            endDateTime = scheduleEntry.endDateTime
+        )
+        ScheduleEntrySummaryColumn(
+            name = scheduleEntry.name,
+            teachers = scheduleEntry.teachers,
+            details = scheduleEntry.details,
+            type = scheduleEntry.type,
+            location = scheduleEntry.location
+        )
+        ScheduleEntryStatusColumn(status)
+    }
+}
 
-        Column(
-            modifier = Modifier
-                .weight(0.6f, fill = true)
-                .padding(horizontal = 16.dp)
+@Composable
+private fun ScheduleEntryTimesColumn(
+    status: ScheduleEntryStatus,
+    startDateTime: LocalDateTime,
+    endDateTime: LocalDateTime
+) {
+    Column {
+        val startAlpha = if (status is ScheduleEntryStatus.InProgress) 0.6f else 1f
+        val endAlpha = if (status is ScheduleEntryStatus.NotStarted) 0.6f else 1f
+        Text(
+            text = startDateTime.format(timeFormatter),
+            modifier = Modifier.alpha(startAlpha)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = endDateTime.format(timeFormatter),
+            modifier = Modifier.alpha(endAlpha)
+        )
+    }
+}
+
+@Composable
+private fun RowScope.ScheduleEntrySummaryColumn(
+    name: String,
+    teachers: List<String>,
+    details: String?,
+    type: String?,
+    location: String?
+) {
+    val context = LocalContext.current
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier
+            .weight(0.6f, fill = true)
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(name)
+
+        CompositionLocalProvider(
+            LocalTextStyle provides MaterialTheme.typography.bodyMedium,
+            LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
         ) {
-            Text(scheduleEntry.name)
-            Spacer(modifier = Modifier.height(4.dp))
-
-            CompositionLocalProvider(
-                LocalTextStyle provides MaterialTheme.typography.bodyMedium,
-                LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
-            ) {
-                scheduleEntry.teachers?.let { teachers ->
-                    if (teachers.isNotEmpty()) {
-                        scheduleEntry.teachers.forEach { teacher ->
-                            Text(teacher)
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
-                    }
+            if (teachers.isNotEmpty()) {
+                Box {
+                    teachers.forEach { Text(it) }
                 }
+            }
 
-                if (scheduleEntry.details == null) {
-                    if (scheduleEntry.type != null) Text(scheduleEntry.type)
-                } else {
-                    CompositionLocalProvider(
-                        LocalContentColor provides MaterialTheme.colorScheme.tertiary
-                    ) {
-                        Text(scheduleEntry.type!!)
-                        Text(scheduleEntry.details)
-                    }
+            if (details == null) {
+                if (type != null) {
+                    Text(type)
                 }
-
-                if (scheduleEntry.location != null) {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    val match = htmlAnchorRegex.find(scheduleEntry.location)
-                    if (match != null) {
-                        val url = match.groupValues[1]
-                        val text = match.groupValues[2].trim()
-
-                        val intent = remember {
-                            Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        }
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
-                            modifier = Modifier
-                                .clickable {
-                                    context.startActivity(intent)
-                                }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.OpenInNew,
-                                contentDescription = stringResource(R.string.open_in_browser),
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Text(
-                                text = text,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                textDecoration = TextDecoration.Underline,
-                                modifier = Modifier.align(Alignment.Bottom)
-                            )
-                        }
-                    } else {
-                        Text(
-                            text = scheduleEntry.location,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+            } else {
+                CompositionLocalProvider(
+                    LocalContentColor provides MaterialTheme.colorScheme.tertiary
+                ) {
+                    Column {
+                        type?.let { Text(it) }
+                        Text(details)
                     }
                 }
             }
-        }
 
-        Column(horizontalAlignment = Alignment.End) {
-            ProvideTextStyle(MaterialTheme.typography.bodyMedium) {
-                when (status) {
-                    is ScheduleEntryStatus.NotStarted -> {
-                        val startsIn = status.minutesToStart
-                        val text = when {
-                            startsIn < 1 ->
-                                stringResource(R.string.class_starts_in_less_than_1_min)
-                            startsIn < 60 ->
-                                stringResource(R.string.class_starts_in_minutes, startsIn)
-                            startsIn > 1440 -> {
-                                val days = startsIn / 1440
-                                context
-                                    .resources
-                                    .getQuantityString(
-                                        R.plurals.class_starts_in_days,
-                                        days.toInt(),
-                                        days
-                                    )
+            if (location != null) {
+                val match = htmlAnchorRegex.find(location)
+                if (match != null) {
+                    val url = match.groupValues[1]
+                    val text = match.groupValues[2].trim()
+
+                    val intent = remember {
+                        Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier
+                            .clickable {
+                                context.startActivity(intent)
                             }
-                            else ->
-                                stringResource(
-                                    R.string.class_starts_in_hours,
-                                    startsIn / 60
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.OpenInNew,
+                            contentDescription = stringResource(R.string.open_in_browser),
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Text(
+                            text = text,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            textDecoration = TextDecoration.Underline,
+                            modifier = Modifier.align(Alignment.Bottom)
+                        )
+                    }
+                } else {
+                    Text(
+                        text = location,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScheduleEntryStatusColumn(
+    status: ScheduleEntryStatus
+) {
+    val context = LocalContext.current
+    Column(horizontalAlignment = Alignment.End) {
+        ProvideTextStyle(MaterialTheme.typography.bodyMedium) {
+            when (status) {
+                is ScheduleEntryStatus.NotStarted -> {
+                    val startsIn = status.minutesToStart
+                    val text = when {
+                        startsIn < 1 ->
+                            stringResource(R.string.class_starts_in_less_than_1_min)
+                        startsIn < 60 ->
+                            stringResource(R.string.class_starts_in_minutes, startsIn)
+                        startsIn > 1440 -> {
+                            val days = startsIn / 1440
+                            context
+                                .resources
+                                .getQuantityString(
+                                    R.plurals.class_starts_in_days,
+                                    days.toInt(),
+                                    days
                                 )
                         }
+                        else ->
+                            stringResource(
+                                R.string.class_starts_in_hours,
+                                startsIn / 60
+                            )
+                    }
 
-                        Text(
-                            text = text,
-                            textAlign = TextAlign.End
-                        )
+                    Text(
+                        text = text,
+                        textAlign = TextAlign.End
+                    )
+                }
+                is ScheduleEntryStatus.InProgress -> {
+                    val endsIn = status.minutesRemaining
+                    val text = when {
+                        endsIn < 1 -> stringResource(R.string.class_ends_in_less_than_1_min)
+                        else -> stringResource(R.string.class_ends_in_minutes, endsIn)
                     }
-                    is ScheduleEntryStatus.InProgress -> {
-                        val endsIn = status.minutesRemaining
-                        val text = when {
-                            endsIn < 1 -> stringResource(R.string.class_ends_in_less_than_1_min)
-                            else -> stringResource(R.string.class_ends_in_minutes, endsIn)
-                        }
 
-                        Text(
-                            text = text,
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.End
-                        )
-                    }
-                    is ScheduleEntryStatus.Ended -> {
-                        Text(
-                            text = stringResource(R.string.class_ended),
-                            textAlign = TextAlign.End
-                        )
-                    }
+                    Text(
+                        text = text,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.End
+                    )
+                }
+                is ScheduleEntryStatus.Ended -> {
+                    Text(
+                        text = stringResource(R.string.class_ended),
+                        textAlign = TextAlign.End
+                    )
                 }
             }
         }

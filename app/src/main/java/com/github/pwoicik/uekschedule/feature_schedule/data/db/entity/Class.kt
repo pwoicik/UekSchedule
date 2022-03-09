@@ -34,7 +34,7 @@ data class Class(
 
     val details: String? = null,
 
-    val teachers: List<String>?,
+    val teachers: List<String>? = null,
 
     val location: String? = null
 )
