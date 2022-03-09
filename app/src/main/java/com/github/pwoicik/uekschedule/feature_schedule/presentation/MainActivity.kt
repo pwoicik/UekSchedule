@@ -18,6 +18,7 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
 import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.PreferencesManager
+import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import timber.log.Timber
@@ -36,30 +37,29 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val preferredTheme by preferences.theme.collectAsState(null)
-            preferredTheme?.let { theme ->
-                UEKScheduleTheme(theme) {
-                    ProvideWindowInsets {
-                        val uiController = rememberSystemUiController()
+            val preferredTheme by preferences.theme.collectAsState(Preferences.Defaults.THEME)
+            UEKScheduleTheme(preferredTheme) {
+                ProvideWindowInsets {
+                    val uiController = rememberSystemUiController()
 
-                        val isDarkMode = isSystemInDarkTheme()
-                        uiController.setSystemBarsColor(
-                            color = Color.Transparent,
-                            darkIcons = !isDarkMode
-                        )
+                    val isDarkMode = isSystemInDarkTheme()
+                    uiController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = !isDarkMode
+                    )
 
-                        val navController = rememberNavController()
-                        val currentDestination = navController.currentBackStackEntryAsState()
-                            .value?.navDestination
-                        LaunchedEffect(currentDestination) {
-                            Timber.tag("root navGraph destination")
-                                .d(currentDestination?.route.toString())
-                        }
-                        DestinationsNavHost(
-                            navGraph = NavGraphs.root,
-                            navController = navController
-                        )
+                    val navController = rememberNavController()
+                    val currentDestination = navController.currentBackStackEntryAsState()
+                        .value?.navDestination
+                    LaunchedEffect(currentDestination) {
+                        Timber
+                            .tag("root navGraph destination")
+                            .d(currentDestination?.route.toString())
                     }
+                    DestinationsNavHost(
+                        navGraph = NavGraphs.root,
+                        navController = navController
+                    )
                 }
             }
         }
