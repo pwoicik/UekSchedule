@@ -18,6 +18,8 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
 import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
 import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.PreferencesManager
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import timber.log.Timber
 import javax.inject.Inject
 
