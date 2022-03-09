@@ -3,7 +3,6 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.pre
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.PreferencesManager
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -22,7 +21,7 @@ class PreferencesViewModel @Inject constructor(
             _state.update { state ->
                 state.copy(
                     isDynamicTheme = theme.isDynamic,
-                    theme = theme
+                    theme = ThemePreference.fromPreferencesTheme(theme)
                 )
             }
         }.launchIn(viewModelScope)
@@ -31,21 +30,26 @@ class PreferencesViewModel @Inject constructor(
     fun setDynamicTheme(isDynamic: Boolean) {
         viewModelScope.launch {
             _state.update { state ->
-                state.copy(
-                    isDynamicTheme = isDynamic,
-                    theme = if (isDynamic) Preferences.Defaults.DYNAMIC_THEME else Preferences.Defaults.THEME
-                )
+                state.copy(isDynamicTheme = isDynamic)
             }
-            preferences.setTheme(state.value.theme)
+            applyTheme()
         }
     }
 
-    fun setTheme(theme: Preferences.Theme) {
+    fun setTheme(theme: ThemePreference) {
         viewModelScope.launch {
             _state.update { state ->
                 state.copy(theme = theme)
             }
-            preferences.setTheme(state.value.theme)
+            applyTheme()
+        }
+    }
+
+    private fun applyTheme() {
+        viewModelScope.launch {
+            val isDynamic = state.value.isDynamicTheme
+            val theme = state.value.theme.toPreferencesTheme(isDynamic)
+            preferences.setTheme(theme)
         }
     }
 }

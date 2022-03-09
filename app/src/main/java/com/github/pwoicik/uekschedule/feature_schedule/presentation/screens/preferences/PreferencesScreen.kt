@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.preferences.components.PreferencesScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -75,7 +74,7 @@ fun PreferencesScreen(
                     onDismissRequest = { isDropdownExpanded = false },
                     modifier = Modifier.selectableGroup()
                 ) {
-                    for (theme in Preferences.Theme.values(state.isDynamicTheme)) {
+                    for (theme in ThemePreference.values()) {
                         DropdownMenuItem(
                             text = {
                                 Text(
