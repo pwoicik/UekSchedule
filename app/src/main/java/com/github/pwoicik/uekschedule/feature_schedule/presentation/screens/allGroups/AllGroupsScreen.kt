@@ -95,7 +95,7 @@ fun AllGroupsScreen(
     AllGroupsScaffold(
         searchFieldValue = state.searchValue,
         onSearchValueChange = { viewModel.emit(AllGroupsEvent.SearchTextChanged(it)) },
-        focus = state.groups != null,
+        isSearchFieldFocused = state.groups != null,
         snackbarHostState = snackbarHostState
     ) { innerPadding ->
         Box(

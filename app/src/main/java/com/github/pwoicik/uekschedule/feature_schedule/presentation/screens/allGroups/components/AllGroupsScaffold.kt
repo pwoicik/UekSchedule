@@ -24,13 +24,13 @@ import com.google.accompanist.insets.statusBarsPadding
 fun AllGroupsScaffold(
     searchFieldValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
-    focus: Boolean,
+    isSearchFieldFocused: Boolean,
     snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(focus) {
-        if (focus) focusRequester.requestFocus()
+    LaunchedEffect(isSearchFieldFocused) {
+        if (isSearchFieldFocused) focusRequester.requestFocus()
     }
 
     val insets = LocalWindowInsets.current
@@ -44,6 +44,7 @@ fun AllGroupsScaffold(
             Surface {
                 SearchTextField(
                     value = searchFieldValue,
+                    leadingIconDescription = stringResource(R.string.search_groups),
                     onValueChange = onSearchValueChange,
                     singleLine = true,
                     placeholder = stringResource(R.string.search_groups),
@@ -58,18 +59,7 @@ fun AllGroupsScaffold(
                 )
             }
         },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { snackbarData ->
-                when (snackbarData.visuals) {
-                    is SnackbarVisualsWithError ->
-                        SnackbarWithError(snackbarData = snackbarData)
-                    is SnackbarVisualsWithSuccess ->
-                        SnackbarWithSuccess(snackbarData = snackbarData)
-                    is SnackbarVisualsWithLoading ->
-                        SnackbarWithLoading(snackbarData = snackbarData)
-                }
-            }
-        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = Modifier.padding(bottom = bottomPadding),
         content = content
     )
