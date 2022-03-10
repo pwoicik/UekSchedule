@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -39,12 +41,13 @@ class MainActivity : AppCompatActivity() {
             UEKScheduleTheme(preferredTheme) {
                 ProvideWindowInsets {
                     val uiController = rememberSystemUiController()
-
-                    val isDarkMode = isSystemInDarkTheme()
-                    uiController.setSystemBarsColor(
-                        color = Color.Transparent,
-                        darkIcons = !isDarkMode
-                    )
+                    val backgroundColor = MaterialTheme.colorScheme.background
+                    LaunchedEffect(preferredTheme) {
+                        uiController.setSystemBarsColor(
+                            color = Color.Transparent,
+                            darkIcons = backgroundColor.luminance() >= 0.5
+                        )
+                    }
 
                     val navController = rememberNavController()
                     val currentDestination = navController.currentBackStackEntryAsState()
