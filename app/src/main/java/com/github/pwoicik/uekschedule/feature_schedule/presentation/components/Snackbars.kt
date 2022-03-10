@@ -8,23 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SnackbarHost(
-    hostState: SnackbarHostState
-) {
-    SnackbarHost(hostState = hostState) { snackbarData ->
-        when (snackbarData.visuals) {
-            is SnackbarVisualsWithError ->
-                SnackbarWithError(snackbarData = snackbarData)
-            is SnackbarVisualsWithSuccess ->
-                SnackbarWithSuccess(snackbarData = snackbarData)
-            is SnackbarVisualsWithLoading ->
-                SnackbarWithLoading(snackbarData = snackbarData)
-        }
-    }
-
-}
-
-@Composable
 fun SnackbarWithError(
     snackbarData: SnackbarData
 ) {
