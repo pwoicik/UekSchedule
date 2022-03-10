@@ -51,7 +51,7 @@
     <string name="theme_dark">Ciemny</string>
     <string name="theme_amoled">AMOLED</string>
     <string name="dynamic_theme">Dynamiczny motyw</string>
-    <string name="dynamic_theme_description">Kolory bazują na twojej tapecie</string>
+    <string name="dynamic_theme_description">Kolory bazują na podstawie twojej tapety</string>
     <string name="requires_sdk_31">(Wymagany Android 12+)</string>
     <string name="select_theme">Wybierz motyw</string>
     <string name="saving_group">Zapisywanie grupy \"%s\"…</string>
