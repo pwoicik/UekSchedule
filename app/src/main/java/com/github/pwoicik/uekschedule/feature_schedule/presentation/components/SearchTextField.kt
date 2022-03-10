@@ -18,6 +18,7 @@ import com.github.pwoicik.uekschedule.R
 fun SearchTextField(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
+    leadingIconDescription: String,
     modifier: Modifier = Modifier,
     onClearText: () -> Unit = { onValueChange(TextFieldValue("")) },
     placeholder: String? = null,
@@ -36,7 +37,7 @@ fun SearchTextField(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = stringResource(R.string.search_groups)
+                contentDescription = leadingIconDescription
             )
         },
         trailingIcon = {
