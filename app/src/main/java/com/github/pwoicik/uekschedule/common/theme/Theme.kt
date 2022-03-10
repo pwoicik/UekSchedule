@@ -1,13 +1,15 @@
 package com.github.pwoicik.uekschedule.common.theme
 
+import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 
 private val LightThemeColors = lightColorScheme(
-
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -37,7 +39,6 @@ private val LightThemeColors = lightColorScheme(
 )
 
 private val DarkThemeColors = darkColorScheme(
-
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -66,17 +67,66 @@ private val DarkThemeColors = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
+private val AmoledThemeColors = DarkThemeColors.copy(
+    background = Color.Black,
+    surface = Color.Black,
+    inverseOnSurface = Color.Black,
+    primaryContainer = Color.Black,
+    secondaryContainer = Color(0xFF222222),
+    tertiaryContainer = Color.Black
+)
+
+private fun dynamicAmoledColorScheme(context: Context) = dynamicDarkColorScheme(context).copy(
+    background = Color.Black,
+    surface = Color.Black,
+    inverseOnSurface = Color.Black,
+    primaryContainer = Color.Black,
+    secondaryContainer = Color(0xFF222222),
+    tertiaryContainer = Color.Black
+)
+
 @Composable
 fun UEKScheduleTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
-    useDynamicColor: Boolean = false,
+    theme: Preferences.Theme,
     content: @Composable () -> Unit
 ) {
-    val colors = if (useDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val context = LocalContext.current
-        if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    } else {
-        if (useDarkTheme) DarkThemeColors else LightThemeColors
+    val context = LocalContext.current
+    val colors = when (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        true -> {
+            when (theme) {
+                Preferences.Theme.AUTO ->
+                    if (isSystemInDarkTheme()) DarkThemeColors
+                    else LightThemeColors
+                Preferences.Theme.LIGHT ->
+                    LightThemeColors
+                Preferences.Theme.DARK ->
+                    DarkThemeColors
+                Preferences.Theme.AMOLED ->
+                    AmoledThemeColors
+                Preferences.Theme.DYNAMIC_AUTO ->
+                    if (isSystemInDarkTheme()) dynamicDarkColorScheme(context)
+                    else dynamicLightColorScheme(context)
+                Preferences.Theme.DYNAMIC_LIGHT ->
+                    dynamicLightColorScheme(context)
+                Preferences.Theme.DYNAMIC_DARK ->
+                    dynamicDarkColorScheme(context)
+                Preferences.Theme.DYNAMIC_AMOLED ->
+                    dynamicAmoledColorScheme(context)
+            }
+        }
+        false -> {
+            when (theme) {
+                Preferences.Theme.AUTO, Preferences.Theme.DYNAMIC_AUTO ->
+                    if (isSystemInDarkTheme()) DarkThemeColors
+                    else LightThemeColors
+                Preferences.Theme.LIGHT, Preferences.Theme.DYNAMIC_LIGHT ->
+                    LightThemeColors
+                Preferences.Theme.DARK, Preferences.Theme.DYNAMIC_DARK ->
+                    DarkThemeColors
+                Preferences.Theme.AMOLED, Preferences.Theme.DYNAMIC_AMOLED ->
+                    AmoledThemeColors
+            }
+        }
     }
 
     MaterialTheme(

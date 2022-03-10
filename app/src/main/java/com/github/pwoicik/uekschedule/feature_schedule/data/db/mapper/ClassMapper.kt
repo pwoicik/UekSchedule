@@ -10,7 +10,7 @@ fun Class.toScheduleEntry(): ScheduleEntry {
         endDateTime = endDateTime.toLocalDateTime(),
         type = type,
         details = details,
-        teachers = teachers,
+        teachers = teachers ?: emptyList(),
         location = location
     )
 }

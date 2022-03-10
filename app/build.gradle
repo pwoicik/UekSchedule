@@ -24,8 +24,8 @@ android {
         applicationId "com.github.pwoicik.uekschedule"
         minSdk 26
         targetSdk 32
-        versionCode 12
-        versionName "1.2.1-hotfix"
+        versionCode 14
+        versionName "1.2.2"
 
         testInstrumentationRunner "com.github.pwoicik.uekschedule.CustomTestRunner"
         vectorDrawables {
@@ -94,6 +94,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

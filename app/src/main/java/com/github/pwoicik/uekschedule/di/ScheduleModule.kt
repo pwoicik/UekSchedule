@@ -1,16 +1,19 @@
 package com.github.pwoicik.uekschedule.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.github.pwoicik.uekschedule.feature_schedule.common.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.data.api.ScheduleApi
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.ScheduleDatabase
+import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.PreferencesManager
 import com.github.pwoicik.uekschedule.feature_schedule.data.repository.ScheduleRepositoryImpl
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -52,5 +55,11 @@ object ScheduleModule {
     @Singleton
     fun provideScheduleUseCases(repository: ScheduleRepository): ScheduleUseCases {
         return ScheduleUseCases(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreferencesManager(@ApplicationContext context: Context): PreferencesManager {
+        return PreferencesManager(context)
     }
 }

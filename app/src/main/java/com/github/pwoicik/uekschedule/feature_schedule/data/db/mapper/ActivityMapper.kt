@@ -20,7 +20,7 @@ fun Activity.toScheduleEntries(): List<ScheduleEntry> {
                     endDateTime = startDateTime.plusMinutes(durationMinutes),
                     type = type,
                     details = null,
-                    teachers = teacher?.let { listOf(teacher) },
+                    teachers = listOfNotNull(teacher),
                     location = location
                 )
             )
@@ -49,7 +49,7 @@ fun Activity.toScheduleEntries(): List<ScheduleEntry> {
                             endDateTime = newDate.plusMinutes(durationMinutes),
                             type = type,
                             details = null,
-                            teachers = teacher?.let { listOf(teacher) },
+                            teachers = listOfNotNull(teacher),
                             location = location
                         )
                     )

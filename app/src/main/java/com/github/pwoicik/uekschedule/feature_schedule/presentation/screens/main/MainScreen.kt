@@ -4,15 +4,15 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.NavGraphs
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.AllGroupsDestinationDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.SavedGroupsDestinationDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.ScheduleDestinationDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.allGroups.AllGroupsDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.savedGroups.SavedGroupsDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.destinations.schedule.ScheduleDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.navDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.AllGroupsScreen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AllGroupsScreenDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SavedGroupsScreenDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.ScheduleScreenDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsScreen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.MainScreenScaffold
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
@@ -50,11 +50,11 @@ fun MainScreen(
             navGraph = NavGraphs.mainScreen,
             navController = navController
         ) {
-            composable(ScheduleDestinationDestination) {
-                ScheduleDestination(parentNavigator = parentNavigator)
+            composable(ScheduleScreenDestination) {
+                ScheduleScreen(parentNavigator = parentNavigator)
             }
-            composable(SavedGroupsDestinationDestination) {
-                SavedGroupsDestination(
+            composable(SavedGroupsScreenDestination) {
+                SavedGroupsScreen(
                     parentNavigator = parentNavigator,
                     navigator = DestinationsNavController(
                         navController = navController,
@@ -62,8 +62,8 @@ fun MainScreen(
                     )
                 )
             }
-            composable(AllGroupsDestinationDestination) {
-                AllGroupsDestination(parentNavigator = parentNavigator)
+            composable(AllGroupsScreenDestination) {
+                AllGroupsScreen(parentNavigator = parentNavigator)
             }
         }
     }

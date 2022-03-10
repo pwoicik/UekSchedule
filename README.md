@@ -12,5 +12,6 @@ You can download the app from Google Play store using this link:
 - Kotlin
 - Jetpack Compose
 - Hilt
+- DataStore
 - Room
 - Retrofit
