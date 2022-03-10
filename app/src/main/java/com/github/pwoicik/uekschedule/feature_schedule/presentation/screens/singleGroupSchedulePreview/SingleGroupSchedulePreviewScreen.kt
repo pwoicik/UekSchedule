@@ -85,7 +85,10 @@ fun SingleGroupSchedulePreviewScreen(
         isRefreshing = state.isRefreshing,
         snackbarHostState = snackbarHostState
     ) {
-        Crossfade(targetState = state) { state ->
+        Crossfade(
+            targetState = state,
+            modifier = Modifier.navigationBarsWithImePadding()
+        ) { state ->
             when {
                 state.didTry && state.entries == null -> {
                     Box(

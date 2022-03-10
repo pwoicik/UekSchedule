@@ -40,7 +40,6 @@ fun ScheduleEntriesListScaffold(
             SmallTopBarWithSearch(
                 title = { Text(title) },
                 isSearchFieldVisible = isSearchFieldVisible,
-                searchFieldLeadingIconDescription = stringResource(R.string.search_class),
                 searchValue = searchValue,
                 onSearchValueChange = onSearchValueChange,
                 onSearchValueClear = onSearchValueClear,
