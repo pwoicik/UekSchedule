@@ -114,6 +114,7 @@ fun CreateActivityScreen(
                 onValueChange = { viewModel.emit(CreateActivityEvent.DurationMinutesChanged(it)) },
                 label = stringResource(R.string.duration),
                 isRequired = true,
+                keyboardType = KeyboardType.Number,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
