@@ -1,9 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity
 
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.*
 
 data class CreateActivityState(
 
@@ -34,7 +32,38 @@ data class CreateActivityState(
             val isNameValid = name.isNotBlank()
             val isStartTimeValid = startTime != null
             val isStartDateValid = if (repeatActivity) true else startDate != null
+            val isDurationValid = durationMinutes.isNotBlank()
             val isRepeatValid = if (repeatActivity) repeatOnDaysOfWeek.isNotEmpty() else true
-            return isNameValid && isStartTimeValid && isStartDateValid && isRepeatValid
+            return isNameValid && isStartTimeValid && isStartDateValid && isRepeatValid && isDurationValid
         }
+
+    fun toActivity(id: Long): Activity {
+        val startDateTime = if (repeatActivity) {
+            ZonedDateTime.of(
+                LocalDate.now(),
+                startTime,
+                ZoneId.systemDefault()
+            )
+        } else {
+            ZonedDateTime.of(
+                startDate,
+                startTime,
+                ZoneId.systemDefault()
+            )
+        }
+        return Activity(
+            id = id,
+            name = name,
+            location = location.ifBlankThenNull(),
+            type = type.ifBlankThenNull(),
+            teacher = teacher.ifBlankThenNull(),
+            repeatOnDaysOfWeek = if (repeatActivity) {
+                repeatOnDaysOfWeek.toList()
+            } else null,
+            startDateTime = startDateTime,
+            durationMinutes = durationMinutes.toLong()
+        )
+    }
 }
+
+private fun String.ifBlankThenNull() = ifBlank { null }

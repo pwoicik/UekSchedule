@@ -12,11 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.CreateActivityScaffold
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.CreateActivityTextFiled
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.CreateActivityTextField
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.RepeatActivityInputColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.TimeInputField
 import com.ramcosta.composedestinations.annotation.Destination
@@ -51,7 +52,7 @@ fun CreateActivityScreen(
 
     CreateActivityScaffold(
         snackbarHostState = snackbarHostState,
-        onSaveChanges = { viewModel.event(CreateActivityEvent.SaveActivity) }
+        onSaveChanges = { viewModel.emit(CreateActivityEvent.SaveActivity) }
     ) {
         state?.let { state ->
             val focusRequester = remember { FocusRequester() }
@@ -59,9 +60,9 @@ fun CreateActivityScreen(
                 focusRequester.requestFocus()
             }
 
-            CreateActivityTextFiled(
+            CreateActivityTextField(
                 value = state.name,
-                onValueChange = { viewModel.event(CreateActivityEvent.NameChanged(it)) },
+                onValueChange = { viewModel.emit(CreateActivityEvent.NameChanged(it)) },
                 label = stringResource(R.string.activity_name),
                 isRequired = true,
                 modifier = Modifier
@@ -70,9 +71,9 @@ fun CreateActivityScreen(
                     .padding(horizontal = 16.dp)
             )
 
-            CreateActivityTextFiled(
+            CreateActivityTextField(
                 value = state.location,
-                onValueChange = { viewModel.event(CreateActivityEvent.LocationChanged(it)) },
+                onValueChange = { viewModel.emit(CreateActivityEvent.LocationChanged(it)) },
                 label = stringResource(R.string.location),
                 placeholder = stringResource(R.string.optional),
                 modifier = Modifier
@@ -80,9 +81,9 @@ fun CreateActivityScreen(
                     .padding(horizontal = 16.dp)
             )
 
-            CreateActivityTextFiled(
+            CreateActivityTextField(
                 value = state.type,
-                onValueChange = { viewModel.event(CreateActivityEvent.TypeChanged(it)) },
+                onValueChange = { viewModel.emit(CreateActivityEvent.TypeChanged(it)) },
                 label = stringResource(R.string.activity_type),
                 placeholder = stringResource(R.string.optional),
                 modifier = Modifier
@@ -90,9 +91,9 @@ fun CreateActivityScreen(
                     .padding(horizontal = 16.dp)
             )
 
-            CreateActivityTextFiled(
+            CreateActivityTextField(
                 value = state.teacher,
-                onValueChange = { viewModel.event(CreateActivityEvent.TeacherChanged(it)) },
+                onValueChange = { viewModel.emit(CreateActivityEvent.TeacherChanged(it)) },
                 label = stringResource(R.string.teacher),
                 placeholder = stringResource(R.string.optional),
                 modifier = Modifier
@@ -102,17 +103,18 @@ fun CreateActivityScreen(
 
             TimeInputField(
                 time = state.startTime,
-                onTimeSelected = { lt -> viewModel.event(CreateActivityEvent.StartTimeChanged(lt)) },
+                onTimeSelected = { lt -> viewModel.emit(CreateActivityEvent.StartTimeChanged(lt)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             )
 
-            CreateActivityTextFiled(
+            CreateActivityTextField(
                 value = state.durationMinutes,
-                onValueChange = { viewModel.event(CreateActivityEvent.DurationMinutesChanged(it)) },
+                onValueChange = { viewModel.emit(CreateActivityEvent.DurationMinutesChanged(it)) },
                 label = stringResource(R.string.duration),
                 isRequired = true,
+                keyboardType = KeyboardType.Number,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -125,11 +127,11 @@ fun CreateActivityScreen(
             )
             RepeatActivityInputColumn(
                 state = state,
-                onRepeatActivityChange = { viewModel.event(CreateActivityEvent.RepeatActivityChanged) },
-                onStartDateSelect = { viewModel.event(CreateActivityEvent.StartDateChanged(it)) },
-                onSelectDayToRepeat = { viewModel.event(CreateActivityEvent.AddDayOfWeekToRepeat(it)) },
+                onRepeatActivityChange = { viewModel.emit(CreateActivityEvent.RepeatActivityChanged) },
+                onStartDateSelect = { viewModel.emit(CreateActivityEvent.StartDateChanged(it)) },
+                onSelectDayToRepeat = { viewModel.emit(CreateActivityEvent.AddDayOfWeekToRepeat(it)) },
                 onUnselectDayToRepeat = {
-                    viewModel.event(
+                    viewModel.emit(
                         CreateActivityEvent.RemoveDayOfWeekToRepeat(
                             it
                         )

@@ -42,25 +42,21 @@ fun <T> SimpleList(
                                 shape = RoundedCornerShape(24.dp),
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(24.dp))
-                                        .clickable {
-                                            onItemClick(item)
-                                        }
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 8.dp, horizontal = 16.dp)
-                                            .padding(start = 8.dp)
-                                    ) {
-                                        itemTitle(item)
-                                        itemActions(item)
+                                    .clip(RoundedCornerShape(24.dp))
+                                    .clickable {
+                                        onItemClick(item)
                                     }
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp, horizontal = 16.dp)
+                                        .padding(start = 8.dp)
+                                ) {
+                                    itemTitle(item)
+                                    itemActions(item)
                                 }
                             }
                         }

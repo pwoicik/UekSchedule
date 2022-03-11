@@ -10,7 +10,7 @@ interface ActivityDao {
     @Query("select * from activities where id = :id")
     suspend fun getActivity(id: Long): Activity
 
-    @Query("select * from activities order by name")
+    @Query("select * from activities order by id desc")
     fun getAllActivities(): Flow<List<Activity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
