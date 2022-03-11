@@ -46,7 +46,7 @@ class CreateActivityViewModel @Inject constructor(
     val eventFlow: SharedFlow<UiEvent>
         get() = _eventFlow
 
-    fun event(event: CreateActivityEvent) {
+    fun emit(event: CreateActivityEvent) {
         val state = _state.value!!
         when (event) {
             is CreateActivityEvent.NameChanged ->
@@ -102,36 +102,7 @@ class CreateActivityViewModel @Inject constructor(
                         _eventFlow.emit(UiEvent.ShowError)
                         return@launch
                     }
-
-                    val startDateTime = if (state.repeatActivity) {
-                        ZonedDateTime.of(
-                            LocalDate.now(),
-                            state.startTime,
-                            ZoneId.systemDefault()
-                        )
-                    } else {
-                        ZonedDateTime.of(
-                            state.startDate,
-                            state.startTime,
-                            ZoneId.systemDefault()
-                        )
-                    }
-
-                    useCases.saveActivity(
-                        Activity(
-                            id = navArgs.activityId,
-                            name = state.name,
-                            location = state.location.ifBlankThenNull(),
-                            type = state.type.ifBlankThenNull(),
-                            teacher = state.teacher.ifBlankThenNull(),
-                            repeatOnDaysOfWeek = if (state.repeatActivity) {
-                                state.repeatOnDaysOfWeek.toList()
-                            } else null,
-                            startDateTime = startDateTime,
-                            durationMinutes = state.durationMinutes.toLong()
-                        )
-                    )
-
+                    useCases.saveActivity(state.toActivity(navArgs.activityId))
                     _eventFlow.emit(UiEvent.ActivitySaved)
                 }
             }
@@ -144,4 +115,4 @@ class CreateActivityViewModel @Inject constructor(
     }
 }
 
-private fun String.ifBlankThenNull() = ifBlank { null }
+

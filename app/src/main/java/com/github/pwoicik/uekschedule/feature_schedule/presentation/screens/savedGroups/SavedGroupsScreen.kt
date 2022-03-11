@@ -176,8 +176,7 @@ private fun <T> SavedGroupsScreen(
     itemActions: @Composable RowScope.(T) -> Unit,
 ) {
     when (items) {
-        null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
-        }
+        null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/ }
         else -> {
             SimpleList(
                 items = items,
