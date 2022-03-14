@@ -38,7 +38,9 @@ class ScheduleViewModel @Inject constructor(
                     entries = if (hasGroups) entries else null
                 )
             }
-        }.launchIn(viewModelScope)
+        }
+            .conflate()
+            .launchIn(viewModelScope)
 
         refreshData()
     }

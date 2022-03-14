@@ -109,8 +109,8 @@ class ScheduleRepositoryImpl(
             fetchSchedule(group)
         }
         scheduleDatabase.withTransaction {
+            classDao.deleteAllClasses()
             groupsWithClasses.forEach { (_, classes) ->
-                classDao.deleteAllClasses()
                 classDao.insertAllClasses(classes)
             }
         }
