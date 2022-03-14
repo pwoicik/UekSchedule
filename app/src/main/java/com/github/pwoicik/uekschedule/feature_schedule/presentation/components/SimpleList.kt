@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 fun <T> SimpleList(
     items: List<T>,
     emptyListMessage: String,
-    itemTitle: @Composable (T) -> Unit,
+    itemTitle: @Composable RowScope.(T) -> Unit,
     itemActions: @Composable RowScope.(T) -> Unit,
     modifier: Modifier = Modifier,
     onItemClick: (T) -> Unit,
@@ -39,10 +39,9 @@ fun <T> SimpleList(
                         items(items) { item ->
                             Surface(
                                 tonalElevation = 8.dp,
-                                shape = RoundedCornerShape(24.dp),
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
-                                    .clip(RoundedCornerShape(24.dp))
+                                    .clip(RoundedCornerShape(12.dp))
                                     .clickable {
                                         onItemClick(item)
                                     }
