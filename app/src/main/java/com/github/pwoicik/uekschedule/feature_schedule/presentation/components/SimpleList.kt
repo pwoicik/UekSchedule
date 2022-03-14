@@ -20,8 +20,9 @@ fun <T> SimpleList(
     emptyListMessage: String,
     itemTitle: @Composable RowScope.(T) -> Unit,
     itemActions: @Composable RowScope.(T) -> Unit,
-    modifier: Modifier = Modifier,
     onItemClick: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    onClickLabel: String? = null,
 ) {
     Surface(modifier = modifier) {
         Crossfade(items.isEmpty()) {
@@ -42,7 +43,7 @@ fun <T> SimpleList(
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
                                     .clip(RoundedCornerShape(12.dp))
-                                    .clickable {
+                                    .clickable(onClickLabel = onClickLabel) {
                                         onItemClick(item)
                                     }
                             ) {

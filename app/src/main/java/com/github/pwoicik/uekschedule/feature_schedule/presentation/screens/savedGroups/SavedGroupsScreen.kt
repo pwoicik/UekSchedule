@@ -104,6 +104,7 @@ fun SavedGroupsScreen(
             SavedGroupsSection.SavedGroups -> {
                 SavedGroupsScreen(
                     items = savedGroups,
+                    onClickLabel = stringResource(R.string.preview_group),
                     itemTitle = {
                         Text(
                             text = it.name,
@@ -138,7 +139,7 @@ fun SavedGroupsScreen(
                             Box(modifier = Modifier.padding(4.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.ArrowForwardIos,
-                                    contentDescription = stringResource(R.string.show_schedule)
+                                    contentDescription = stringResource(R.string.preview_group)
                                 )
                             }
                         }
@@ -148,6 +149,7 @@ fun SavedGroupsScreen(
             SavedGroupsSection.OtherActivities -> {
                 SavedGroupsScreen(
                     items = savedActivities,
+                    onClickLabel = stringResource(R.string.edit_activity),
                     itemTitle = { activity ->
                         Column(
                             verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -180,29 +182,30 @@ fun SavedGroupsScreen(
                         }
                     },
                     emptyListMessage = stringResource(R.string.no_activities),
-                    onItemClick = { navigator.navigate(CreateActivityScreenDestination(it.id)) }
-                ) {
-                    IconButton(
-                        onClick = {
-                            viewModel.emit(SavedGroupsEvent.DeleteActivityButtonClicked(it))
+                    onItemClick = { navigator.navigate(CreateActivityScreenDestination(it.id)) },
+                    itemActions = {
+                        IconButton(
+                            onClick = {
+                                viewModel.emit(SavedGroupsEvent.DeleteActivityButtonClicked(it))
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = stringResource(R.string.delete_group),
+                                modifier = Modifier
+                                    .size(22.dp)
+                                    .alpha(0.7f)
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Delete,
-                            contentDescription = stringResource(R.string.delete_group),
-                            modifier = Modifier
-                                .size(22.dp)
-                                .alpha(0.7f)
-                        )
+                        Box {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.edit_activity),
+                                modifier = Modifier.size(22.dp)
+                            )
+                        }
                     }
-                    Box {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.edit_activity),
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                }
+                )
             }
         }
     }
@@ -212,9 +215,10 @@ fun SavedGroupsScreen(
 private fun <T> SavedGroupsScreen(
     items: List<T>?,
     itemTitle: @Composable RowScope.(T) -> Unit,
+    itemActions: @Composable RowScope.(T) -> Unit,
     onItemClick: (T) -> Unit,
     emptyListMessage: String,
-    itemActions: @Composable RowScope.(T) -> Unit,
+    onClickLabel: String? = null
 ) {
     when (items) {
         null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
@@ -225,7 +229,8 @@ private fun <T> SavedGroupsScreen(
                 itemTitle = itemTitle,
                 emptyListMessage = emptyListMessage,
                 itemActions = itemActions,
-                onItemClick = onItemClick
+                onItemClick = onItemClick,
+                onClickLabel = onClickLabel
             )
         }
     }
