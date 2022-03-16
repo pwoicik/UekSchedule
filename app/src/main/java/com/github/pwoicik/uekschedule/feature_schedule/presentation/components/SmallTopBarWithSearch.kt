@@ -24,7 +24,6 @@ import com.google.accompanist.insets.statusBarsPadding
 @Composable
 fun SmallTopBarWithSearch(
     title: @Composable () -> Unit,
-    searchFieldLeadingIconDescription: String,
     isSearchFieldVisible: Boolean,
     searchValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
@@ -67,7 +66,6 @@ fun SmallTopBarWithSearch(
                 SearchTextField(
                     value = searchValue,
                     onValueChange = onSearchValueChange,
-                    leadingIconDescription = searchFieldLeadingIconDescription,
                     onClearText = onSearchValueClear,
                     placeholder = stringResource(R.string.entry_search_placeholder),
                     colors = TextFieldDefaults.searchTextFieldColors(
