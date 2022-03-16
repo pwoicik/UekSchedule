@@ -1,9 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Class
 import kotlinx.coroutines.flow.Flow
 

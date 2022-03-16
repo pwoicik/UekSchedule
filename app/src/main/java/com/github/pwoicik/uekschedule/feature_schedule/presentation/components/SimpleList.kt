@@ -18,10 +18,11 @@ import androidx.compose.ui.unit.dp
 fun <T> SimpleList(
     items: List<T>,
     emptyListMessage: String,
-    itemTitle: @Composable (T) -> Unit,
+    itemTitle: @Composable RowScope.(T) -> Unit,
     itemActions: @Composable RowScope.(T) -> Unit,
-    modifier: Modifier = Modifier,
     onItemClick: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    onClickLabel: String? = null,
 ) {
     Surface(modifier = modifier) {
         Crossfade(items.isEmpty()) {
@@ -39,28 +40,23 @@ fun <T> SimpleList(
                         items(items) { item ->
                             Surface(
                                 tonalElevation = 8.dp,
-                                shape = RoundedCornerShape(24.dp),
                                 modifier = Modifier
                                     .padding(vertical = 16.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(24.dp))
-                                        .clickable {
-                                            onItemClick(item)
-                                        }
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(vertical = 8.dp, horizontal = 16.dp)
-                                            .padding(start = 8.dp)
-                                    ) {
-                                        itemTitle(item)
-                                        itemActions(item)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .clickable(onClickLabel = onClickLabel) {
+                                        onItemClick(item)
                                     }
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp, horizontal = 16.dp)
+                                        .padding(start = 8.dp)
+                                ) {
+                                    itemTitle(item)
+                                    itemActions(item)
                                 }
                             }
                         }

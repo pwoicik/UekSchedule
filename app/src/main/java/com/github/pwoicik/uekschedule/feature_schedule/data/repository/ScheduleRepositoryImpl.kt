@@ -2,6 +2,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.data.repository
 
 import androidx.room.withTransaction
 import com.github.pwoicik.uekschedule.feature_schedule.data.api.ScheduleApi
+import com.github.pwoicik.uekschedule.feature_schedule.data.api.dto.GroupDto
 import com.github.pwoicik.uekschedule.feature_schedule.data.api.mapper.toGroup
 import com.github.pwoicik.uekschedule.feature_schedule.data.api.mapper.toGroupWithClasses
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.ScheduleDatabase
@@ -52,7 +53,7 @@ class ScheduleRepositoryImpl(
     }
 
     override suspend fun getAllGroups(): List<Group> {
-        return scheduleApi.getGroups().groups!!.map { it.toGroup() }
+        return scheduleApi.getGroups().groups!!.map(GroupDto::toGroup)
     }
 
     override fun getAllScheduleEntries(): Flow<List<ScheduleEntry>> {
@@ -108,8 +109,8 @@ class ScheduleRepositoryImpl(
             fetchSchedule(group)
         }
         scheduleDatabase.withTransaction {
+            classDao.deleteAllClasses()
             groupsWithClasses.forEach { (_, classes) ->
-                classDao.deleteAllClasses()
                 classDao.insertAllClasses(classes)
             }
         }

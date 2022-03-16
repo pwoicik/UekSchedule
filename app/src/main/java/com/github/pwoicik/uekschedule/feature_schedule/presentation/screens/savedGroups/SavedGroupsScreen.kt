@@ -1,16 +1,19 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
@@ -83,24 +86,33 @@ fun SavedGroupsScreen(
         }
     }
 
-    var currentScreen by rememberSaveable { mutableStateOf(0) }
+    var currentScreen by rememberSaveable { mutableStateOf(SavedGroupsSection.SavedGroups) }
     SavedGroupsScaffold(
         currentScreen = currentScreen,
         onScreenChange = { currentScreen = it },
         onAddItem = {
             navigator.navigate(
-                if (currentScreen == 0)
-                    AllGroupsScreenDestination
-                else CreateActivityScreenDestination()
+                when (currentScreen) {
+                    SavedGroupsSection.SavedGroups -> AllGroupsScreenDestination
+                    SavedGroupsSection.OtherActivities -> CreateActivityScreenDestination()
+                }
             )
         },
         snackbarHostState = snackbarHostState
     ) {
         when (currentScreen) {
-            0 -> {
+            SavedGroupsSection.SavedGroups -> {
                 SavedGroupsScreen(
                     items = savedGroups,
-                    itemTitle = { Text(it.name) },
+                    onClickLabel = stringResource(R.string.preview_group),
+                    itemTitle = {
+                        Text(
+                            text = it.name,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = true)
+                        )
+                    },
                     emptyListMessage = stringResource(R.string.no_saved_groups),
                     onItemClick = {
                         parentNavigator.navigate(
@@ -113,19 +125,41 @@ fun SavedGroupsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.delete_group)
+                                contentDescription = stringResource(R.string.delete_group),
+                                modifier = Modifier
+                                    .size(22.dp)
+                                    .alpha(0.7f)
                             )
                         }
-
+                        Surface(
+                            shadowElevation = 8.dp,
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                        ) {
+                            Box(modifier = Modifier.padding(4.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForwardIos,
+                                    contentDescription = stringResource(R.string.preview_group)
+                                )
+                            }
+                        }
                     }
                 )
             }
-            1 -> {
+            SavedGroupsSection.OtherActivities -> {
                 SavedGroupsScreen(
                     items = savedActivities,
+                    onClickLabel = stringResource(R.string.edit_activity),
                     itemTitle = { activity ->
-                        Column {
-                            Text(activity.name)
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier.weight(1f, fill = true)
+                        ) {
+                            Text(
+                                text = activity.name,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                             val time = activity.startDateTime.format(timeFormatter)
                             val date = if (activity.isOneshot) {
                                 activity.startDateTime.format(dateFormatter)
@@ -142,7 +176,8 @@ fun SavedGroupsScreen(
                             Text(
                                 text = "$time ($date)",
                                 style = MaterialTheme.typography.bodySmall,
-                                modifier = Modifier.padding(top = 4.dp)
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     },
@@ -156,13 +191,22 @@ fun SavedGroupsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.delete_group)
+                                contentDescription = stringResource(R.string.delete_group),
+                                modifier = Modifier
+                                    .size(22.dp)
+                                    .alpha(0.7f)
+                            )
+                        }
+                        Box {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.edit_activity),
+                                modifier = Modifier.size(22.dp)
                             )
                         }
                     }
                 )
             }
-            else -> throw(IllegalStateException("No such screen ($currentScreen)!"))
         }
     }
 }
@@ -170,10 +214,11 @@ fun SavedGroupsScreen(
 @Composable
 private fun <T> SavedGroupsScreen(
     items: List<T>?,
-    itemTitle: @Composable (T) -> Unit,
+    itemTitle: @Composable RowScope.(T) -> Unit,
+    itemActions: @Composable RowScope.(T) -> Unit,
     onItemClick: (T) -> Unit,
     emptyListMessage: String,
-    itemActions: @Composable RowScope.(T) -> Unit,
+    onClickLabel: String? = null
 ) {
     when (items) {
         null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
@@ -184,7 +229,8 @@ private fun <T> SavedGroupsScreen(
                 itemTitle = itemTitle,
                 emptyListMessage = emptyListMessage,
                 itemActions = itemActions,
-                onItemClick = onItemClick
+                onItemClick = onItemClick,
+                onClickLabel = onClickLabel
             )
         }
     }

@@ -55,6 +55,9 @@
     <string name="requires_sdk_31">(Requires Android 12+)</string>
     <string name="select_theme">Select theme</string>
     <string name="saving_group">Saving group \"%s\"…</string>
+    <string name="search_class">Search for class</string>
+    <string name="show_schedule">Show group\'s schedule</string>
+    <string name="edit_activity">Edit activity</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">STARTS IN\n%d DAY</item>
         <item quantity="other">STARTS IN\n%d DAYS</item>

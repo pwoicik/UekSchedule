@@ -24,8 +24,8 @@ android {
         applicationId "com.github.pwoicik.uekschedule"
         minSdk 26
         targetSdk 32
-        versionCode 14
-        versionName "1.2.2"
+        versionCode 15
+        versionName "1.2.2.1"
 
         testInstrumentationRunner "com.github.pwoicik.uekschedule.CustomTestRunner"
         vectorDrawables {
@@ -77,7 +77,7 @@ dependencies {
     // Material
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha06"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha07"
 
     // Destinations
     implementation "io.github.raamcosta.compose-destinations:animations-core:$destinations_version"

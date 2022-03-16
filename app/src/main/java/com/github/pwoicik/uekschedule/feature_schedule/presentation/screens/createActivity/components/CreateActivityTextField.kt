@@ -8,7 +8,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.FormTextField
 
 @Composable
-fun CreateActivityTextFiled(
+fun CreateActivityTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,

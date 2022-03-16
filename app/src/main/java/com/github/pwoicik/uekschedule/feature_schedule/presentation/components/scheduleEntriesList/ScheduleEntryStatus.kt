@@ -3,8 +3,6 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.components.
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 sealed class ScheduleEntryStatus {
     data class NotStarted(val minutesToStart: Long) : ScheduleEntryStatus()

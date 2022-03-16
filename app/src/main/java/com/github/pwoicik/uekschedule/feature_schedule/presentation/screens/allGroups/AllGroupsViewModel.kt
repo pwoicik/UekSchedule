@@ -28,6 +28,7 @@ class AllGroupsViewModel @Inject constructor(
 
     private var fetchJob: Job? = null
     private fun fetchGroups() {
+        if (fetchJob?.isActive == true) return
         fetchJob = useCases.getAllGroups().onEach { response ->
             when (response) {
                 is Resource.Error -> {
@@ -100,7 +101,6 @@ class AllGroupsViewModel @Inject constructor(
                 }
             }
             AllGroupsEvent.RetryGroupsFetch -> {
-                if (fetchJob?.isActive == true) return
                 viewModelScope.launch {
                     _eventFlow.emit(UiEvent.HideSnackbar)
                     fetchGroups()
