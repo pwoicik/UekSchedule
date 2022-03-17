@@ -10,7 +10,7 @@ You can download the app from Google Play store using this link:
 
 ## Technologies used
 - Kotlin
-- Jetpack Compose
+- Compose
 - Hilt
 - DataStore
 - Room
