@@ -1,33 +1,34 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.api.dto
 
-import org.simpleframework.xml.Element
-import org.simpleframework.xml.ElementList
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.PropertyElement
+import com.tickaroo.tikxml.annotation.Xml
+import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
 
-@Root(name = "zajecia", strict = false)
+@Xml(name = "zajecia")
 data class ClassDto(
 
-    @field:Element(name = "przedmiot", required = false)
-    var subject: String? = null,
+    @PropertyElement(name = "przedmiot")
+    val subject: String? = null,
 
-    @field:Element(name = "termin", required = false)
-    var date: String? = null,
+    @PropertyElement(name = "termin")
+    val date: String,
 
-    @field:Element(name = "od-godz", required = false)
-    var startTime: String? = null,
+    @PropertyElement(name = "od-godz")
+    val startTime: String,
 
-    @field:Element(name = "do-godz", required = false)
-    var endTime: String? = null,
+    @PropertyElement(name = "do-godz")
+    val endTime: String,
 
-    @field:Element(name = "typ", required = false)
-    var type: String? = null,
+    @PropertyElement(name = "typ")
+    val type: String,
 
-    @field:Element(name = "uwagi", required = false)
-    var details: String? = null,
+    @PropertyElement(name = "uwagi")
+    val details: String? = null,
 
-    @field:ElementList(entry = "nauczyciel", inline = true, required = false)
-    var teachers: List<String>? = null,
+    @Element
+    val teachers: List<TeacherDto>,
 
-    @field:Element(name = "sala", required = false)
-    var location: String? = null,
+    @PropertyElement(name = "sala", converter = HtmlEscapeStringConverter::class)
+    val location: String,
 )

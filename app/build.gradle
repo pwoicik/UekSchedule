@@ -102,6 +102,16 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-simplexml:$retrofit_version"
 
+    // TikXML
+    //noinspection GradleDependency
+    implementation "com.tickaroo.tikxml:core:$tikxml_version"
+    //noinspection GradleDependency
+    kapt "com.tickaroo.tikxml:processor:$tikxml_version"
+    //noinspection GradleDependency
+    implementation "com.tickaroo.tikxml:retrofit-converter:$tikxml_version"
+    implementation "com.tickaroo.tikxml:annotation:$tikxml_version"
+    implementation "com.tickaroo.tikxml:converter-htmlescape:$tikxml_version"
+
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"

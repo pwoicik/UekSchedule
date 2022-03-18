@@ -1,18 +1,18 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.api.dto
 
-import org.simpleframework.xml.Attribute
-import org.simpleframework.xml.ElementList
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Xml
 
-@Root(name = "plan-zajec", strict = false)
-data class ScheduleDto @JvmOverloads constructor(
+@Xml(name = "plan-zajec")
+data class ScheduleDto(
 
-    @field:Attribute(name = "id")
-    var groupId: String = "",
+    @Attribute(name = "id")
+    val groupId: String,
 
-    @field:Attribute(name = "nazwa")
-    var groupName: String = "",
+    @Attribute(name = "nazwa")
+    val groupName: String,
 
-    @field:ElementList(name = "zajecia", inline = true, required = false)
-    var classes: List<ClassDto>? = null,
+    @Element
+    val classes: List<ClassDto>? = null,
 )

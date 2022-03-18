@@ -1,11 +1,11 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.api.dto
 
-import org.simpleframework.xml.ElementList
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Xml
 
-@Root(name = "plan-zajec", strict = false)
-data class GroupsDto @JvmOverloads constructor(
+@Xml(name = "plan-zajec")
+data class GroupsDto(
 
-    @field:ElementList(name = "zasob", inline = true)
-    var groups: List<GroupDto>? = null
+    @Element
+    val groups: List<GroupDto>? = null
 )

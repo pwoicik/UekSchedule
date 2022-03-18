@@ -10,6 +10,9 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.Preferen
 import com.github.pwoicik.uekschedule.feature_schedule.data.repository.ScheduleRepositoryImpl
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
+import com.tickaroo.tikxml.TikXml
+import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
+import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +30,11 @@ object ScheduleModule {
     fun provideScheduleApi(): ScheduleApi {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(@Suppress("DEPRECATION") retrofit2.converter.simplexml.SimpleXmlConverterFactory.create())
+            .addConverterFactory(
+                TikXmlConverterFactory.create(
+                    TikXml.Builder().exceptionOnUnreadXml(false).build()
+                )
+            )
             .build()
             .create(ScheduleApi::class.java)
     }

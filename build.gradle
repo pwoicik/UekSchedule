@@ -8,6 +8,7 @@ buildscript {
         lifecycle_version = '2.4.1'
         retrofit_version = '2.9.0'
         room_version = '2.4.2'
+        tikxml_version = "0.8.13"
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
