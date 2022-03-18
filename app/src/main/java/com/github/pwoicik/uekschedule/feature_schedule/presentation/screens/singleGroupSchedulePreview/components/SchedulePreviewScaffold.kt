@@ -10,14 +10,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
+import com.google.accompanist.insets.navigationBarsWithImePadding
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulePreviewScaffold(
     title: String,
@@ -72,6 +73,7 @@ fun SchedulePreviewScaffold(
                 )
             }
         },
+        modifier = Modifier.navigationBarsWithImePadding(),
         content = content
     )
 }
