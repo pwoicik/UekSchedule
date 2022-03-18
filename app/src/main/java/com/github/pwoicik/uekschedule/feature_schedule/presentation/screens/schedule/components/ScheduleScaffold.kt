@@ -3,10 +3,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sch
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -21,7 +18,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.s
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
 import com.google.accompanist.insets.LocalWindowInsets
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScaffold(
     isSearchButtonEnabled: Boolean,

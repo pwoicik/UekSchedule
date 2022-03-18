@@ -15,11 +15,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.*
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.searchTextFieldColors
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 
-@OptIn(ExperimentalMaterial3Api::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllGroupsScaffold(
     searchFieldValue: TextFieldValue,
@@ -58,18 +61,7 @@ fun AllGroupsScaffold(
                 )
             }
         },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { snackbarData ->
-                when (snackbarData.visuals) {
-                    is SnackbarVisualsWithError ->
-                        SnackbarWithError(snackbarData = snackbarData)
-                    is SnackbarVisualsWithSuccess ->
-                        SnackbarWithSuccess(snackbarData = snackbarData)
-                    is SnackbarVisualsWithLoading ->
-                        SnackbarWithLoading(snackbarData = snackbarData)
-                }
-            }
-        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier.padding(bottom = bottomPadding),
         content = content
     )

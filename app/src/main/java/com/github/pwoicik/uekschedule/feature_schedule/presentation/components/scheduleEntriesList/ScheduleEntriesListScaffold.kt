@@ -62,11 +62,7 @@ fun ScheduleEntriesListScaffold(
                 }
             }
         },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { snackbarData ->
-                SnackbarWithError(snackbarData = snackbarData)
-            }
-        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier
     ) { innerPadding ->
         Box(

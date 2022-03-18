@@ -31,7 +31,6 @@ import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination(navGraph = "mainScreen")
 @Composable
 fun SavedGroupsScreen(

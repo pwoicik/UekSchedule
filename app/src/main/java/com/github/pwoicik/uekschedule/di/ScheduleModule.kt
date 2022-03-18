@@ -11,7 +11,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.repository.ScheduleR
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import com.tickaroo.tikxml.TikXml
-import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import dagger.Module
 import dagger.Provides

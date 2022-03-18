@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarWithError
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -50,13 +49,7 @@ fun CreateActivityScaffold(
                 )
             }
         },
-        snackbarHost = {
-            SnackbarHost(snackbarHostState) { snackbarData ->
-                SnackbarWithError(
-                    snackbarData = snackbarData
-                )
-            }
-        },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier.padding(bottom = bottomPadding)
     ) { innerPadding ->
         Surface(modifier = Modifier.padding(innerPadding)) {
