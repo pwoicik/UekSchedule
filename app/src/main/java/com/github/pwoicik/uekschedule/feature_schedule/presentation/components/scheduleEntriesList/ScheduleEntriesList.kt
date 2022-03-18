@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import java.time.LocalDate
@@ -132,68 +133,94 @@ private fun RowScope.ScheduleEntrySummaryColumn(
             .weight(0.6f, fill = true)
             .padding(horizontal = 16.dp)
     ) {
-        Text(name)
+        Text(
+            text = name,
+            lineHeight = 21.sp,
+            modifier = Modifier.padding(bottom = 2.dp)
+        )
 
         CompositionLocalProvider(
             LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
         ) {
             if (teachers.isNotEmpty()) {
-                Box {
-                    teachers.forEach { Text(it) }
-                }
-            }
-
-            if (details == null) {
-                if (type != null) {
-                    Text(type)
-                }
-            } else {
-                CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.tertiary
-                ) {
-                    Column {
-                        type?.let { Text(it) }
-                        Text(details)
-                    }
-                }
-            }
-
-            if (location != null) {
-                val match = htmlAnchorRegex.find(location)
-                if (match != null) {
-                    val url = match.groupValues[1]
-                    val text = match.groupValues[2].trim()
-
-                    val intent = remember {
-                        Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier
-                            .clickable {
-                                context.startActivity(intent)
-                            }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.OpenInNew,
-                            contentDescription = stringResource(R.string.open_in_browser),
-                            modifier = Modifier.size(20.dp)
-                        )
+                Column {
+                    teachers.forEach { teacher ->
                         Text(
-                            text = text,
+                            text = teacher,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textDecoration = TextDecoration.Underline,
-                            modifier = Modifier.align(Alignment.Bottom)
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalContentColor provides
+                        if (type == "Przeniesienie zajęć")
+                            MaterialTheme.colorScheme.tertiary
+                        else
+                            MaterialTheme.colorScheme.onSurfaceVariant
+            ) {
+                if (details == null) {
+                    if (type != null) {
+                        Text(
+                            text = type,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 } else {
-                    Text(
-                        text = location,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    CompositionLocalProvider(
+                        LocalContentColor provides MaterialTheme.colorScheme.tertiary
+                    ) {
+                        Column {
+                            if (type != null) {
+                                Text(
+                                    text = type,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                            Text(details)
+                        }
+                    }
+                }
+
+                if (location != null) {
+                    val match = htmlAnchorRegex.find(location)
+                    if (match != null) {
+                        val url = match.groupValues[1]
+                        val text = match.groupValues[2].trim()
+
+                        val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(url)) }
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier
+                                .clickable {
+                                    context.startActivity(intent)
+                                }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.OpenInNew,
+                                contentDescription = stringResource(R.string.open_in_browser),
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                text = text,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.align(Alignment.Bottom)
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = location,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }
