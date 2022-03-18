@@ -45,10 +45,10 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch {
+            delay(5.seconds)
             val currentAppVersion = BuildConfig.VERSION_CODE
             val lastUsedAppVersion = preferences.lastUsedAppVersion.first()
             if (lastUsedAppVersion != currentAppVersion) {
-                delay(5.seconds)
                 requestReview(this@MainActivity)
                 preferences.setLastUsedAppVersion(currentAppVersion)
             }
