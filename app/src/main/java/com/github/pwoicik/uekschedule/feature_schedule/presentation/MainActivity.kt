@@ -48,8 +48,9 @@ class MainActivity : AppCompatActivity() {
             delay(5.seconds)
             val currentAppVersion = BuildConfig.VERSION_CODE
             val lastUsedAppVersion = preferences.lastUsedAppVersion.first()
-            if (lastUsedAppVersion != currentAppVersion) {
+            if (lastUsedAppVersion == currentAppVersion) {
                 requestReview(this@MainActivity)
+            } else {
                 preferences.setLastUsedAppVersion(currentAppVersion)
             }
         }
