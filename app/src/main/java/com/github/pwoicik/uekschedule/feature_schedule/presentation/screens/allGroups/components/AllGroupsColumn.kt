@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllGroupsColumn(
     groups: List<Group>,
@@ -50,18 +51,17 @@ fun AllGroupsColumn(
                         modifier = Modifier.weight(1f, fill = true)
                     )
 
-                    IconButton(onClick = { onGroupAddButtonClick(group) }) {
-                        Surface(
-                            shape = RoundedCornerShape(50),
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.save_group),
-                                modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp)
-                            )
-                        }
+                    Surface(
+                        shape = RoundedCornerShape(50),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        onClick = { onGroupAddButtonClick(group) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.save_group),
+                            modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp)
+                        )
                     }
 
                     Box(modifier = Modifier.padding(start = 4.dp)) {
