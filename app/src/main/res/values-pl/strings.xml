@@ -61,6 +61,16 @@
     <string name="update_install">Instaluj</string>
     <string name="update_failed">Aktualizacja nie powiodła się!</string>
     <string name="update_pending">Oczekiwanie na aktualizację…</string>
+    <string name="rate_app">Oceń aplikację</string>
+    <string name="about_app">O aplikacji</string>
+    <string name="google_play_page">Przejdź do Google Play</string>
+    <string name="github_page">Przejdź do GitHub\'a</string>
+    <string name="about_section1_title">Dla użytkowników</string>
+    <string name="about_section1_part1">Jeżeli podoba ci się ta aplikacja, wyraź swoją opinię na</string>
+    <string name="about_section1_part2">Jeżeli podczas użytkowania aplikacji natrafiłeś(-aś) na jakiekolwiek błędy lub masz sugestie co do ulepszeń lub dalszego rozwoju aplikacji możesz skontaktować się z twórcą aplikacji poprzez</string>
+    <string name="google_play_review">recenzję na Google Play</string>
+    <string name="about_section1_part3">lub bezpośrednio poprzez</string>
+    <string name="about_section2_title">Dla programistów</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>
