@@ -9,11 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.searchTextFieldColors
@@ -32,12 +30,6 @@ fun AllGroupsScaffold(
         if (focus) focusRequester.requestFocus()
     }
 
-    val bottomPadding = with(LocalDensity.current) {
-        val insets = WindowInsets
-        insets.ime.getBottom(this).toDp().coerceAtLeast(
-            insets.navigationBars.getBottom(this).toDp() + Constants.BottomBarHeight
-        )
-    }
     Scaffold(
         topBar = {
             Surface {
@@ -58,7 +50,6 @@ fun AllGroupsScaffold(
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier.padding(bottom = bottomPadding),
         content = content
     )
 }

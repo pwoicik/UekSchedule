@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                         .tag("root navGraph destination")
                         .d(currentDestination?.route.toString())
                 }
+
                 DestinationsNavHost(
                     navGraph = NavGraphs.root,
                     navController = navController

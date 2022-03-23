@@ -1,13 +1,13 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -16,7 +16,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
 
 @Composable
 fun ScheduleScaffold(
@@ -34,12 +33,6 @@ fun ScheduleScaffold(
     var isSearchFieldVisible by rememberSaveable { mutableStateOf(false) }
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
-    val bottomPadding = with(LocalDensity.current) {
-        val insets = WindowInsets
-        insets.ime.getBottom(this).toDp().coerceAtLeast(
-            insets.navigationBars.getBottom(this).toDp() + LocalBottomBarHeight.current
-        )
-    }
     ScheduleEntriesListScaffold(
         title = stringResource(R.string.app_name),
         isSearchFieldVisible = isSearchFieldVisible,
@@ -110,7 +103,6 @@ fun ScheduleScaffold(
                 }
             }
         },
-        content = content,
-        modifier = Modifier.padding(bottom = bottomPadding)
+        content = content
     )
 }

@@ -2,15 +2,17 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.mai
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess
@@ -24,9 +26,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openPlayStorePage
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.updateApp
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.*
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
@@ -124,12 +124,15 @@ fun MainScreen(
         )
     }
 
-    CompositionLocalProvider(LocalBottomBarHeight provides Constants.BottomBarHeight) {
+    CompositionLocalProvider(LocalBottomBarHeight provides 75.dp) {
         MainScreenScaffold(
             snackbarHostState = snackbarHostState,
             currentDestination = currentDestination,
             onDestinationClick = { destination ->
-                navController.popBackStack(NavGraphs.mainScreen.startRoute.route, inclusive = false)
+                navController.popBackStack(
+                    NavGraphs.mainScreen.startRoute.route,
+                    inclusive = false
+                )
                 navController.navigateTo(destination.direction) {
                     launchSingleTop = true
                 }
@@ -137,7 +140,8 @@ fun MainScreen(
         ) {
             DestinationsNavHost(
                 navGraph = NavGraphs.mainScreen,
-                navController = navController
+                navController = navController,
+                modifier = Modifier.padding(WindowInsets.combinedBottomPaddingValues())
             ) {
                 composable(ScheduleScreenDestination) {
                     ScheduleScreen(parentNavigator = parentNavigator)
@@ -158,3 +162,9 @@ fun MainScreen(
         }
     }
 }
+
+@Composable
+private fun WindowInsets.Companion.combinedBottomPaddingValues() = ime
+    .union(navigationBars.add(WindowInsets(bottom = LocalBottomBarHeight.current)))
+    .only(WindowInsetsSides.Bottom)
+    .asPaddingValues()

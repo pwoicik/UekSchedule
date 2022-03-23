@@ -17,7 +17,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsSection
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,10 +90,7 @@ fun SavedGroupsScaffold(
                 )
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier
-            .navigationBarsPadding()
-            .padding(bottom = Constants.BottomBarHeight)
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Crossfade(
             targetState = currentScreen,

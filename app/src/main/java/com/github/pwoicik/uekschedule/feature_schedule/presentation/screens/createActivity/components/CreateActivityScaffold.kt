@@ -8,11 +8,9 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,12 +19,6 @@ fun CreateActivityScaffold(
     onSaveChanges: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val bottomPadding = with(LocalDensity.current) {
-        val insets = WindowInsets
-        insets.ime.getBottom(this).toDp().coerceAtLeast(
-            insets.navigationBars.getBottom(this).toDp() + Constants.BottomBarHeight
-        )
-    }
     Scaffold(
         topBar = {
             Surface {
@@ -47,8 +39,7 @@ fun CreateActivityScaffold(
                 )
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier.padding(bottom = bottomPadding)
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Surface(modifier = Modifier.padding(innerPadding)) {
             Column(
