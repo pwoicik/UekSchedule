@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
@@ -27,7 +28,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navD
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.*
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -50,7 +50,7 @@ import kotlin.time.ExperimentalTime
 fun MainScreen(
     parentNavigator: DestinationsNavigator
 ) {
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
     val currentDestination = navController.currentBackStackEntryAsState()
         .value?.navDestination
 
