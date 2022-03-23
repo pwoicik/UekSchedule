@@ -24,8 +24,8 @@ android {
         applicationId "com.github.pwoicik.uekschedule"
         minSdk 26
         targetSdk 32
-        versionCode 15
-        versionName "1.2.2.1"
+        versionCode 22
+        versionName "1.2.3"
 
         testInstrumentationRunner "com.github.pwoicik.uekschedule.CustomTestRunner"
         vectorDrawables {
