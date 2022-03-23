@@ -24,7 +24,7 @@ fun inlineClickableText(
 ) = id to InlineTextContent(
     placeholder = Placeholder(
         width = 8.sp * (text.length + 2),
-        height = 22.sp,
+        height = 20.sp,
         placeholderVerticalAlign = PlaceholderVerticalAlign.Bottom
     )
 ) {
