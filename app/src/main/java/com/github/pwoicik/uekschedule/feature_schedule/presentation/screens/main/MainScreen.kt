@@ -1,20 +1,16 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main
 
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess
@@ -28,6 +24,8 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openPlayStorePage
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.updateApp
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -104,10 +102,7 @@ fun MainScreen(
                         )
                     )
                     if (result == SnackbarResult.ActionPerformed) {
-                        val appPackage = context.packageName
-                        val storePageUri = Uri.parse("market://details?id=$appPackage")
-                        val storePageIntent = Intent(Intent.ACTION_VIEW, storePageUri)
-                        context.startActivity(storePageIntent)
+                        context.openPlayStorePage()
                     }
                 }
             },
@@ -129,34 +124,36 @@ fun MainScreen(
         )
     }
 
-    MainScreenScaffold(
-        snackbarHostState = snackbarHostState,
-        currentDestination = currentDestination,
-        onDestinationClick = { destination ->
-            navController.popBackStack(NavGraphs.mainScreen.startRoute.route, inclusive = false)
-            navController.navigateTo(destination.direction) {
-                launchSingleTop = true
+    CompositionLocalProvider(LocalBottomBarHeight provides Constants.BottomBarHeight) {
+        MainScreenScaffold(
+            snackbarHostState = snackbarHostState,
+            currentDestination = currentDestination,
+            onDestinationClick = { destination ->
+                navController.popBackStack(NavGraphs.mainScreen.startRoute.route, inclusive = false)
+                navController.navigateTo(destination.direction) {
+                    launchSingleTop = true
+                }
             }
-        }
-    ) {
-        DestinationsNavHost(
-            navGraph = NavGraphs.mainScreen,
-            navController = navController
         ) {
-            composable(ScheduleScreenDestination) {
-                ScheduleScreen(parentNavigator = parentNavigator)
-            }
-            composable(SavedGroupsScreenDestination) {
-                SavedGroupsScreen(
-                    parentNavigator = parentNavigator,
-                    navigator = DestinationsNavController(
-                        navController = navController,
-                        navBackStackEntry = navBackStackEntry
+            DestinationsNavHost(
+                navGraph = NavGraphs.mainScreen,
+                navController = navController
+            ) {
+                composable(ScheduleScreenDestination) {
+                    ScheduleScreen(parentNavigator = parentNavigator)
+                }
+                composable(SavedGroupsScreenDestination) {
+                    SavedGroupsScreen(
+                        parentNavigator = parentNavigator,
+                        navigator = DestinationsNavController(
+                            navController = navController,
+                            navBackStackEntry = navBackStackEntry
+                        )
                     )
-                )
-            }
-            composable(AllGroupsScreenDestination) {
-                AllGroupsScreen(parentNavigator = parentNavigator)
+                }
+                composable(AllGroupsScreenDestination) {
+                    AllGroupsScreen(parentNavigator = parentNavigator)
+                }
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.singleGroupSchedulePreview.components
 
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Search
@@ -17,7 +19,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
-import com.google.accompanist.insets.navigationBarsWithImePadding
 
 @Composable
 fun SchedulePreviewScaffold(
@@ -73,7 +74,9 @@ fun SchedulePreviewScaffold(
                 )
             }
         },
-        modifier = Modifier.navigationBarsWithImePadding(),
+        modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding(),
         content = content
     )
 }

@@ -3,10 +3,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sav
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsSection
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,7 +1,5 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +9,6 @@ import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -24,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openInBrowser
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -193,13 +191,10 @@ private fun RowScope.ScheduleEntrySummaryColumn(
                         val url = match.groupValues[1]
                         val text = match.groupValues[2].trim()
 
-                        val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(url)) }
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                             modifier = Modifier
-                                .clickable {
-                                    context.startActivity(intent)
-                                }
+                                .clickable { context.openInBrowser(url) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.OpenInNew,

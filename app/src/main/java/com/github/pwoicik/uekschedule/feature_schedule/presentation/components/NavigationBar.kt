@@ -8,8 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.navigationBarsPadding
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
 
 @Composable
 fun NavigationBar(
@@ -27,10 +26,10 @@ fun NavigationBar(
     ) {
         Row(
             modifier = Modifier
+                .navigationBarsPadding()
                 .fillMaxWidth()
-                .navigationBarsHeight(Constants.BottomBarHeight)
-                .selectableGroup()
-                .navigationBarsPadding(),
+                .height(LocalBottomBarHeight.current)
+                .selectableGroup(),
             horizontalArrangement = Arrangement.SpaceBetween,
             content = content
         )

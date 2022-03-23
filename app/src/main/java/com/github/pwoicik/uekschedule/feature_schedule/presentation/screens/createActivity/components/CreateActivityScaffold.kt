@@ -13,8 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,10 +21,10 @@ fun CreateActivityScaffold(
     onSaveChanges: () -> Unit,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val insets = LocalWindowInsets.current
     val bottomPadding = with(LocalDensity.current) {
-        insets.ime.bottom.toDp().coerceAtLeast(
-            insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
+        val insets = WindowInsets
+        insets.ime.getBottom(this).toDp().coerceAtLeast(
+            insets.navigationBars.getBottom(this).toDp() + Constants.BottomBarHeight
         )
     }
     Scaffold(

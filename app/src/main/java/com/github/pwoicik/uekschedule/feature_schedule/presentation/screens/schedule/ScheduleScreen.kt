@@ -24,11 +24,11 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.S
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AboutAppScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components.ScheduleScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,8 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.components
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -19,8 +17,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.C
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.searchTextFieldColors
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,10 +32,10 @@ fun AllGroupsScaffold(
         if (focus) focusRequester.requestFocus()
     }
 
-    val insets = LocalWindowInsets.current
     val bottomPadding = with(LocalDensity.current) {
-        insets.ime.bottom.toDp().coerceAtLeast(
-            insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
+        val insets = WindowInsets
+        insets.ime.getBottom(this).toDp().coerceAtLeast(
+            insets.navigationBars.getBottom(this).toDp() + Constants.BottomBarHeight
         )
     }
     Scaffold(

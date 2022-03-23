@@ -1,9 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.aboutApp.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -15,8 +13,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.github.pwoicik.uekschedule.R
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,9 +54,7 @@ fun AboutScreenScaffold(
             modifier = Modifier
                 .padding(innerPadding)
                 .navigationBarsPadding()
-                .verticalScroll(
-                    rememberScrollState()
-                )
+                .verticalScroll(rememberScrollState())
         ) { content() }
     }
 }

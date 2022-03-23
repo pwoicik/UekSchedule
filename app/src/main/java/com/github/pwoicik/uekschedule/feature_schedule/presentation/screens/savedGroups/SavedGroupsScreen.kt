@@ -24,7 +24,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.dest
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.components.SavedGroupsScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter

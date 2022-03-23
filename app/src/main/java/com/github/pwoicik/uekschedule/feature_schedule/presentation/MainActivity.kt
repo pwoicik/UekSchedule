@@ -20,7 +20,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.requestReview
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,29 +57,27 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val preferredTheme by preferences.theme.collectAsState(Preferences.Defaults.THEME)
             UEKScheduleTheme(preferredTheme) {
-                ProvideWindowInsets {
-                    val uiController = rememberSystemUiController()
-                    val backgroundColor = MaterialTheme.colorScheme.background
-                    LaunchedEffect(preferredTheme) {
-                        uiController.setSystemBarsColor(
-                            color = Color.Transparent,
-                            darkIcons = backgroundColor.luminance() >= 0.5
-                        )
-                    }
-
-                    val navController = rememberNavController()
-                    val currentDestination = navController.currentBackStackEntryAsState()
-                        .value?.navDestination
-                    LaunchedEffect(currentDestination) {
-                        Timber
-                            .tag("root navGraph destination")
-                            .d(currentDestination?.route.toString())
-                    }
-                    DestinationsNavHost(
-                        navGraph = NavGraphs.root,
-                        navController = navController
+                val uiController = rememberSystemUiController()
+                val backgroundColor = MaterialTheme.colorScheme.background
+                LaunchedEffect(preferredTheme) {
+                    uiController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = backgroundColor.luminance() >= 0.5
                     )
                 }
+
+                val navController = rememberNavController()
+                val currentDestination = navController.currentBackStackEntryAsState()
+                    .value?.navDestination
+                LaunchedEffect(currentDestination) {
+                    Timber
+                        .tag("root navGraph destination")
+                        .d(currentDestination?.route.toString())
+                }
+                DestinationsNavHost(
+                    navGraph = NavGraphs.root,
+                    navController = navController
+                )
             }
         }
     }
