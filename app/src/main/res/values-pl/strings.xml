@@ -71,6 +71,7 @@
     <string name="google_play_review">recenzję na Google Play</string>
     <string name="about_section1_part3">lub bezpośrednio poprzez</string>
     <string name="about_section2_title">Dla programistów</string>
+    <string name="moodle">e-uczelnia</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">ZA\n%d DZIEŃ</item>
         <item quantity="few">ZA\n%d DNI</item>

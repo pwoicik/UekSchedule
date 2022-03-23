@@ -26,6 +26,8 @@ fun ScheduleScaffold(
     onFabClick: () -> Unit,
     isRefreshing: Boolean,
     onRefreshButtonClick: () -> Unit,
+    onMoodleButtonClick: () -> Unit,
+    onAboutAppButtonClick: () -> Unit,
     onPreferencesButtonClick: () -> Unit,
     snackbarHostState: SnackbarHostState,
     content: @Composable BoxScope.() -> Unit
@@ -86,6 +88,30 @@ fun ScheduleScaffold(
                             onRefreshButtonClick()
                             isDropdownExpanded = false
                         }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.moodle)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_moodle),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        },
+                        onClick = {
+                            onMoodleButtonClick()
+                            isDropdownExpanded = false
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.about_app)) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = stringResource(R.string.about_app)
+                            )
+                        },
+                        onClick = onAboutAppButtonClick
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.preferences)) },

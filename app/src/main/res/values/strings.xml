@@ -76,6 +76,7 @@
     <string name="about_section2_title">For developers</string>
     <string name="about_section2_part1" translatable="false">If you are an app developer and are interested in contributing to the project you can find the source code of this application on</string>
     <string name="about_section2_part2" translatable="false">Feel free to fork the repository and change whatever you like. If you make changes that you consider valuable to the project then create a pull request. In case of any questions or problems you can open an issue or discussion or contact me directly via</string>
+    <string name="moodle">Moodle</string>
     <plurals name="class_starts_in_days">
         <item quantity="one">STARTS IN\n%d DAY</item>
         <item quantity="other">STARTS IN\n%d DAYS</item>

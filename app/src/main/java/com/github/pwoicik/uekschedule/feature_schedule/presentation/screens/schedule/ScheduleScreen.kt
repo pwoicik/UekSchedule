@@ -96,9 +96,9 @@ fun ScheduleScreen(
         onFabClick = { viewModel.emit(ScheduleEvent.FabClicked) },
         isRefreshing = state.isRefreshing,
         onRefreshButtonClick = { viewModel.emit(ScheduleEvent.RefreshButtonClicked) },
-        onPreferencesButtonClick = {
-            parentNavigator.navigate(PreferencesScreenDestination)
-        },
+        onMoodleButtonClick = { context.openInBrowser(Constants.MOODLE_URL) },
+        onAboutAppButtonClick = { parentNavigator.navigate(AboutAppScreenDestination) },
+        onPreferencesButtonClick = { parentNavigator.navigate(PreferencesScreenDestination) },
         snackbarHostState = snackbarHostState
     ) {
         Crossfade(state) { state ->
