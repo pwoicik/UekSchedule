@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         lifecycleScope.launch {
-            delay(5.seconds)
+            delay(2.seconds)
             val currentAppVersion = BuildConfig.VERSION_CODE
             val lastUsedAppVersion = preferences.lastUsedAppVersion.first()
             if (lastUsedAppVersion == currentAppVersion) {
@@ -62,7 +62,8 @@ class MainActivity : AppCompatActivity() {
                 LaunchedEffect(preferredTheme) {
                     uiController.setSystemBarsColor(
                         color = Color.Transparent,
-                        darkIcons = backgroundColor.luminance() >= 0.5
+                        darkIcons = backgroundColor.luminance() >= 0.5,
+                        isNavigationBarContrastEnforced = false
                     )
                 }
 
