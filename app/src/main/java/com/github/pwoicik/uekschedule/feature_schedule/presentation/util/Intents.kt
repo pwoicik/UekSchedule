@@ -20,7 +20,7 @@ fun Context.openPlayStorePage() {
 fun Context.openComposeEmailToSupport() {
     val sendEmailIntent = Intent(Intent.ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")
-        putExtra(Intent.EXTRA_EMAIL, Constants.CONTACT_EMAIL)
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(Constants.CONTACT_EMAIL))
     }
     startActivity(sendEmailIntent)
 }
