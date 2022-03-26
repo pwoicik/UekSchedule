@@ -28,14 +28,13 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allG
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination(navGraph = "mainScreen")
 @Composable
 fun AllGroupsScreen(
-    parentNavigator: DestinationsNavigator,
+    rootNavigator: DestinationsNavigator,
     viewModel: AllGroupsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -124,7 +123,9 @@ fun AllGroupsScreen(
                         AllGroupsColumn(
                             groups = filteredGroups,
                             onGroupClick = {
-                                parentNavigator.navigate(SingleGroupSchedulePreviewScreenDestination(it.id, it.name))
+                                rootNavigator.navigate(
+                                    SingleGroupSchedulePreviewScreenDestination(it.id, it.name)
+                                )
                             },
                             areGroupAddButtonsEnabled = !state.isSaving,
                             onGroupAddButtonClick = {
@@ -138,8 +139,8 @@ fun AllGroupsScreen(
             }
             AnimatedVisibility(
                 visible = state.isLoading,
-                enter = slideInVertically(),
-                exit = slideOutVertically()
+                enter = slideInVertically { -it },
+                exit = slideOutVertically { -it }
             ) {
                 CircularProgressIndicator(
                     isSpinning = state.isLoading,
