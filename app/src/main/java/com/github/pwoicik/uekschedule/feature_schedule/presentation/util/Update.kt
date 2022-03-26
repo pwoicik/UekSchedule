@@ -1,6 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.util
 
-import android.app.Activity
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
@@ -9,25 +10,23 @@ import com.google.android.play.core.ktx.requestUpdateFlow
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 
-suspend fun updateApp(
-    activity: Activity,
-    onUpdatePending: () -> Unit,
-    onUpdateDownloading: (progress: StateFlow<Float>) -> Unit,
-    onUpdateFailed: () -> Unit,
-    onUpdateDownloaded: (restartApp: suspend () -> Unit) -> Unit
-) {
+suspend fun Context.updateApp(): Flow<UpdateStatus> {
     val log = Timber.tag("app update")
-    val manager = AppUpdateManagerFactory.create(activity.applicationContext)
+
     val downloadProgressFlow = MutableStateFlow(0f)
-    manager.requestUpdateFlow()
-        .onEach { result ->
+
+    return AppUpdateManagerFactory.create(this.applicationContext)
+        .requestUpdateFlow()
+        .catch { log.d(it) }
+        .mapNotNull { result ->
+            var emission: UpdateStatus? = null
             when (result) {
                 AppUpdateResult.NotAvailable -> log.d("not available")
                 is AppUpdateResult.Available -> {
                     log.d("available version code: ${result.updateInfo.availableVersionCode()}")
                     if (result.updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                         log.d("can update")
-                        result.startFlexibleUpdate(activity, 500)
+                        result.startFlexibleUpdate(this as AppCompatActivity, 500)
                     }
                     result.updateInfo.installStatus()
                 }
@@ -35,32 +34,41 @@ suspend fun updateApp(
                     when (result.installState.installStatus()) {
                         InstallStatus.CANCELED -> {
                             log.d("canceled")
+                            emission = UpdateStatus.Canceled
                         }
                         InstallStatus.PENDING -> {
                             log.d("pending")
-                            onUpdatePending()
+                            emission = UpdateStatus.Pending
                         }
                         InstallStatus.DOWNLOADING -> {
                             log.d("downloading")
-                            val progress = result.installState.bytesDownloaded().toFloat() /
-                                    result.installState.totalBytesToDownload().toFloat() *
-                                    100f
+                            val progress = (result.installState.bytesDownloaded()
+                                    / result.installState.totalBytesToDownload()
+                                    * 100f)
                             downloadProgressFlow.value = progress
-                            onUpdateDownloading(downloadProgressFlow)
+                            emission = UpdateStatus.Downloading(downloadProgressFlow)
                         }
                         InstallStatus.FAILED -> {
                             log.d("failed error code: ${result.installState.installErrorCode()}")
-                            onUpdateFailed()
+                            emission = UpdateStatus.Failed
                         }
                         else -> {}
                     }
                 }
                 is AppUpdateResult.Downloaded -> {
                     log.d("downloaded")
-                    onUpdateDownloaded { result.completeUpdate() }
+                    emission = UpdateStatus.Downloaded { result.completeUpdate() }
                 }
             }
-        }.catch {
-            log.d(it)
-        }.collect()
+            emission
+        }
+        .distinctUntilChanged { old, new -> old::class == new::class }
+}
+
+sealed class UpdateStatus {
+    object Pending : UpdateStatus()
+    object Canceled : UpdateStatus()
+    object Failed : UpdateStatus()
+    data class Downloading(val progress: StateFlow<Float>) : UpdateStatus()
+    data class Downloaded(val restartApp: suspend () -> Unit) : UpdateStatus()
 }
