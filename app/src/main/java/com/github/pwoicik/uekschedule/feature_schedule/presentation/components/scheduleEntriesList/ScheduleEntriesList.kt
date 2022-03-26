@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.pwoicik.uekschedule.R
@@ -42,7 +43,7 @@ fun ScheduleEntriesList(
             scheduleEntriesListStickyHeader(date)
             items(items = entries) { entry ->
                 ScheduleEntriesListItem(scheduleEntry = entry, status = entry.status(timeNow))
-                Divider(modifier = Modifier.alpha(0.5f))
+                Divider(thickness = Dp.Hairline, modifier = Modifier.alpha(0.5f))
             }
         }
     }

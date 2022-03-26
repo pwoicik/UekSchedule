@@ -1,11 +1,9 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
 
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,21 +53,15 @@ fun SearchTextField(
 
 @Composable
 fun TextFieldDefaults.searchTextFieldColors(
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
-    textColor: Color = MaterialTheme.colorScheme.contentColorFor(backgroundColor),
-    cursorColor: Color = MaterialTheme.colorScheme.primary,
-    placeholderColor: Color = textColor.copy(alpha = 0.7f),
-    leadingIconColor: Color = placeholderColor,
-    trailingIconColor: Color = placeholderColor,
-    focusedIndicatorColor: Color = cursorColor,
-    unfocusedIndicatorColor: Color = placeholderColor
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    placeholderColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    cursorColor: Color = MaterialTheme.colorScheme.primary
 ) = textFieldColors(
     textColor = textColor,
     placeholderColor = placeholderColor,
     backgroundColor = backgroundColor,
     cursorColor = cursorColor,
-    leadingIconColor = leadingIconColor,
-    trailingIconColor = trailingIconColor,
-    focusedIndicatorColor = focusedIndicatorColor,
-    unfocusedIndicatorColor = unfocusedIndicatorColor
+    focusedIndicatorColor = cursorColor,
+    unfocusedIndicatorColor = placeholderColor
 )
