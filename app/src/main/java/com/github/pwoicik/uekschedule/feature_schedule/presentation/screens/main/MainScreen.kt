@@ -1,10 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.*
@@ -16,18 +13,21 @@ import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.AllGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AllGroupsScreenDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SavedGroupsScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.ScheduleScreenDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.YourGroupsScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.MainScreenScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.SnackbarVisualsWithPending
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.SnackbarVisualsWithSuccess
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.*
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.yourGroups.YourGroupsScreen
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.UpdateStatus
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openPlayStorePage
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.updateApp
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -35,16 +35,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavController
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.navigateTo
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
-@OptIn(
-    ExperimentalAnimationApi::class,
-    ExperimentalTime::class,
-    ExperimentalMaterial3Api::class
-)
+@OptIn(ExperimentalMaterial3Api::class)
 @Destination(start = true)
 @Composable
 fun MainScreen(
@@ -63,36 +59,19 @@ fun MainScreen(
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         delay(2.seconds)
-        updateApp(
-            activity = context as AppCompatActivity,
-            onUpdatePending = {
-                launch {
-                    if (snackbarHostState.currentSnackbarData?.visuals is SnackbarVisualsWithPending) return@launch
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(
-                        visuals = SnackbarVisualsWithPending(
-                            message = context.resources.getString(R.string.update_pending)
-                        )
-                    )
-                }
-            },
-            onUpdateDownloading = { progress ->
-                launch {
-                    if (
-                        snackbarHostState.currentSnackbarData?.visuals is SnackbarVisualsWithLoading
-                        && snackbarHostState.currentSnackbarData?.visuals !is SnackbarVisualsWithPending
-                    ) return@launch
+        context.updateApp().collectLatest { status ->
+            when (status) {
+                UpdateStatus.Canceled -> Unit
+                is UpdateStatus.Downloading -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
                         visuals = SnackbarVisualsWithLoading(
                             message = context.resources.getString(R.string.updating_app),
-                            progress = progress
+                            progress = status.progress
                         )
                     )
                 }
-            },
-            onUpdateFailed = {
-                launch {
+                UpdateStatus.Failed -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     val result = snackbarHostState.showSnackbar(
                         visuals = SnackbarVisualsWithError(
@@ -105,23 +84,28 @@ fun MainScreen(
                         context.openPlayStorePage()
                     }
                 }
-            },
-            onUpdateDownloaded = { restartApp ->
-                launch {
+                UpdateStatus.Pending -> launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(
+                        visuals = SnackbarVisualsWithPending(
+                            message = context.resources.getString(R.string.update_pending)
+                        )
+                    )
+                }
+                is UpdateStatus.Downloaded -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     val result = snackbarHostState.showSnackbar(
                         visuals = SnackbarVisualsWithSuccess(
                             message = context.resources.getString(R.string.update_ready),
-                            duration = SnackbarDuration.Indefinite,
                             actionLabel = context.resources.getString(R.string.update_install)
                         )
                     )
                     if (result == SnackbarResult.ActionPerformed) {
-                        restartApp()
+                        status.restartApp()
                     }
                 }
             }
-        )
+        }
     }
 
     CompositionLocalProvider(LocalBottomBarHeight provides 75.dp) {
