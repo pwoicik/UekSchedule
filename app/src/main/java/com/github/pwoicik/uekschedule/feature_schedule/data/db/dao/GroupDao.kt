@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GroupDao {
 
-    @Query("select * from groups order by name")
+    @Query("select * from groups order by is_favorite desc, name")
     fun getAllGroups(): Flow<List<Group>>
 
     @Transaction
@@ -17,17 +17,21 @@ interface GroupDao {
 
     @Query(
         """
-        select sum(count) from (
-            select count(*) count from groups
-            union all
+        select sum(count)
+        from (
             select count(*) count
-                from activities
-                where 
-                    repeat_on_days_of_week is not null
-                    or
-                    start_datetime >= strftime('%s', date(strftime('now')))
+            from groups
+            
+            union all
+            
+            select count(*) count
+            from activities
+            where 
+                repeat_on_days_of_week is not null
+                or
+                start_datetime >= strftime('%s', date(strftime('now')))
         )
-    """
+        """
     )
     fun getGroupsCount(): Flow<Int>
 
