@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun ScheduleScreen(
-    parentNavigator: DestinationsNavigator,
+    rootNavigator: DestinationsNavigator,
     viewModel: ScheduleViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -97,8 +97,8 @@ fun ScheduleScreen(
         isRefreshing = state.isRefreshing,
         onRefreshButtonClick = { viewModel.emit(ScheduleEvent.RefreshButtonClicked) },
         onMoodleButtonClick = { context.openInBrowser(Constants.MOODLE_URL) },
-        onAboutAppButtonClick = { parentNavigator.navigate(AboutAppScreenDestination) },
-        onPreferencesButtonClick = { parentNavigator.navigate(PreferencesScreenDestination) },
+        onAboutAppButtonClick = { rootNavigator.navigate(AboutAppScreenDestination) },
+        onPreferencesButtonClick = { rootNavigator.navigate(PreferencesScreenDestination) },
         snackbarHostState = snackbarHostState
     ) {
         Crossfade(state) { state ->
