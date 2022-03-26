@@ -7,8 +7,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarWithLoading
+
+@Composable
+fun MainScreenSnackbarHost(hostState: SnackbarHostState) {
+    SnackbarHost(hostState) {
+        when(it.visuals) {
+            is SnackbarVisualsWithPending -> MainScreenSnackbarWithLoading(it)
+            is SnackbarVisualsWithSuccess -> MainScreenDismissibleActionSnackbar(it)
+            is SnackbarVisualsWithLoading -> MainScreenSnackbarWithLoading(it)
+            is SnackbarVisualsWithError -> MainScreenDismissibleActionSnackbar(
+                snackbarData = it,
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            )
+        }
+    }
+}
 
 @Composable
 fun MainScreenSnackbarWithLoading(snackbarData: SnackbarData) {
@@ -50,6 +67,13 @@ fun MainScreenDismissibleActionSnackbar(
     }
 }
 
-class SnackbarVisualsWithPending(
+class SnackbarVisualsWithSuccess(
     message: String,
-) : SnackbarVisualsWithLoading(message = message)
+    override val actionLabel: String? = null
+) : com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess(message) {
+    override val duration: SnackbarDuration = SnackbarDuration.Indefinite
+}
+
+class SnackbarVisualsWithPending(
+    override val message: String,
+) : SnackbarVisualsWithLoading(message)

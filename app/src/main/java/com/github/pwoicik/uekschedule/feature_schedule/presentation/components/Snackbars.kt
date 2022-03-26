@@ -1,5 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
 
+import android.content.Context
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.github.pwoicik.uekschedule.R
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -20,6 +23,7 @@ fun SnackbarHost(hostState: SnackbarHostState) {
             is SnackbarVisualsWithError -> SnackbarWithError(snackbarData)
             is SnackbarVisualsWithLoading -> SnackbarWithLoading(snackbarData)
             is SnackbarVisualsWithSuccess -> SnackbarWithSuccess(snackbarData)
+            is SnackbarVisualsWithUndo -> SnackbarWithUndo(snackbarData)
         }
     }
 }
@@ -39,9 +43,7 @@ fun SnackbarWithError(
 @Composable
 fun SnackbarWithSuccess(
     snackbarData: SnackbarData
-) {
-    Snackbar(snackbarData)
-}
+) = Snackbar(snackbarData)
 
 @Composable
 fun SnackbarWithLoading(
@@ -54,11 +56,13 @@ fun SnackbarWithLoading(
         modifier = Modifier.padding(padding)
     ) {
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(snackbarData.visuals.message)
+            Text(
+                text = snackbarData.visuals.message,
+                modifier = Modifier.weight(1f)
+            )
 
             val visuals = snackbarData.visuals as SnackbarVisualsWithLoading
             if (visuals.progress == null) {
@@ -69,8 +73,9 @@ fun SnackbarWithLoading(
                 )
             } else {
                 val progress by visuals.progress.collectAsState()
+                val animatedProgress by animateFloatAsState(progress.coerceAtLeast(0.1f))
                 CircularProgressIndicator(
-                    progress = progress.coerceAtLeast(0.1f),
+                    progress = animatedProgress,
                     strokeWidth = 3.dp,
                     color = MaterialTheme.colorScheme.inverseOnSurface,
                     modifier = Modifier.size(20.dp)
@@ -80,24 +85,41 @@ fun SnackbarWithLoading(
     }
 }
 
-class SnackbarVisualsWithError(
+@Composable
+fun SnackbarWithUndo(
+    snackbarData: SnackbarData
+) = Snackbar(snackbarData)
+
+open class SnackbarVisualsWithError(
     override val message: String,
     override val actionLabel: String?,
-    override val duration: SnackbarDuration = SnackbarDuration.Indefinite,
     override val withDismissAction: Boolean = false
-) : SnackbarVisuals
+) : SnackbarVisuals {
+    override val duration: SnackbarDuration = SnackbarDuration.Indefinite
+}
 
-class SnackbarVisualsWithSuccess(
-    override val message: String,
-    override val duration: SnackbarDuration = SnackbarDuration.Short,
-    override val actionLabel: String? = null,
+open class SnackbarVisualsWithSuccess(
+    override val message: String
+) : SnackbarVisuals {
+    override val duration: SnackbarDuration = SnackbarDuration.Short
+    override val actionLabel: String? = null
     override val withDismissAction: Boolean = false
-) : SnackbarVisuals
+}
 
 open class SnackbarVisualsWithLoading(
     override val message: String,
-    override val duration: SnackbarDuration = SnackbarDuration.Indefinite,
-    override val actionLabel: String? = null,
-    override val withDismissAction: Boolean = false,
     val progress: StateFlow<Float>? = null
-) : SnackbarVisuals
+) : SnackbarVisuals {
+    override val duration: SnackbarDuration = SnackbarDuration.Indefinite
+    override val actionLabel: String? = null
+    override val withDismissAction: Boolean = false
+}
+
+open class SnackbarVisualsWithUndo(
+    override val message: String,
+    context: Context
+) : SnackbarVisuals {
+    override val actionLabel: String? = context.resources.getString(R.string.undo)
+    override val duration: SnackbarDuration = SnackbarDuration.Long
+    override val withDismissAction: Boolean = false
+}
