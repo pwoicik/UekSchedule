@@ -18,7 +18,7 @@ fun List<ClassDto>.toClasses(groupId: Long): List<Class> = this
 
         Class(
             groupId = groupId,
-            subject = dto.subject ?: dto.type.replaceFirstChar(Char::uppercase),
+            subject = dto.subject.ifBlankOrNull { dto.type.toUppercase() },
             startDateTime = convertDateTime(dto.date, dto.startTime),
             endDateTime = convertDateTime(dto.date, endTime),
             type = dto.type,
@@ -27,3 +27,8 @@ fun List<ClassDto>.toClasses(groupId: Long): List<Class> = this
             location = dto.location.ifEmpty { null }
         )
     }
+
+private fun String.toUppercase() = replaceFirstChar(Char::uppercase)
+
+private inline fun String?.ifBlankOrNull(defaultValue: () -> String): String =
+    this?.ifBlank(defaultValue) ?: defaultValue()
