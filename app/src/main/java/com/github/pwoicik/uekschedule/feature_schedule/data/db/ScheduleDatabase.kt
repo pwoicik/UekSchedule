@@ -7,18 +7,19 @@ import androidx.room.TypeConverters
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.dao.ActivityDao
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.dao.ClassDao
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.dao.GroupDao
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.dao.SubjectDao
 import com.github.pwoicik.uekschedule.feature_schedule.data.util.ScheduleDbTypeConverters
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Class
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.IgnoredClass
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.SubjectEntity
 
 @Database(
     entities = [
         Group::class,
         Class::class,
         Activity::class,
-        IgnoredClass::class
+        SubjectEntity::class
     ],
     version = 2,
     exportSchema = true,
@@ -35,4 +36,5 @@ abstract class ScheduleDatabase : RoomDatabase() {
     abstract val classDao: ClassDao
     abstract val groupDao: GroupDao
     abstract val activityDao: ActivityDao
+    abstract val subjectDao: SubjectDao
 }

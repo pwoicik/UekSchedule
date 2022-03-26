@@ -12,7 +12,10 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.GroupWithClasses
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toScheduleEntries
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toScheduleEntry
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toSubject
+import com.github.pwoicik.uekschedule.feature_schedule.data.db.mapper.toSubjectEntity
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Subject
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
@@ -25,6 +28,11 @@ class ScheduleRepositoryImpl(
     private val classDao = scheduleDatabase.classDao
     private val groupDao = scheduleDatabase.groupDao
     private val activityDao = scheduleDatabase.activityDao
+    private val subjectDao = scheduleDatabase.subjectDao
+
+    override suspend fun addSubjectToIgnored(subject: Subject) {
+        subjectDao.insertSubject(subject.toSubjectEntity())
+    }
 
     override suspend fun deleteActivity(activity: Activity) {
         activityDao.deleteActivity(activity)
@@ -32,6 +40,10 @@ class ScheduleRepositoryImpl(
 
     override suspend fun deleteGroup(group: Group) {
         groupDao.deleteGroup(group)
+    }
+
+    override suspend fun deleteSubjectFromIgnored(subject: Subject) {
+        subjectDao.deleteSubject(subject.toSubjectEntity())
     }
 
     private suspend fun fetchSchedule(group: Group): GroupWithClasses {
@@ -69,6 +81,16 @@ class ScheduleRepositoryImpl(
         return combine(classes, activities) { classes, activities ->
             (classes + activities).sortedBy(ScheduleEntry::startDateTime)
         }
+    }
+
+    override fun getAllSubjectsForGroup(groupId: Long): Flow<List<Subject>> = flow {
+        val allSubjects = subjectDao.getAllSubjectsForGroup(groupId)
+
+        subjectDao.getAllIgnoredSubjectsForGroup(groupId)
+            .map { ignoredSubjects ->
+                allSubjects.map { it.toSubject(it in ignoredSubjects) }
+            }
+            .collect(::emit)
     }
 
     override suspend fun getGroupWithClasses(group: Group): GroupWithClasses {

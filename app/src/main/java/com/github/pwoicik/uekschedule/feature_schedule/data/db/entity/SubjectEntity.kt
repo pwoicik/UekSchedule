@@ -4,14 +4,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 @Entity(
-    tableName = "ignored_classes",
+    tableName = "ignored_subjects",
     primaryKeys = [
         "group_id",
-        "subject",
+        "name",
         "type"
     ]
 )
-data class IgnoredClass(
+data class SubjectEntity(
 
     @ColumnInfo(name = "group_id")
     val groupId: Long,
@@ -19,7 +19,7 @@ data class IgnoredClass(
     @ColumnInfo(name = "group_name")
     val groupName: String,
 
-    val subject: String,
+    val name: String,
 
     val type: String
 )
