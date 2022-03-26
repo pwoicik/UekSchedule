@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "38fff40f361ea9b99249164519c74d09",
+    "identityHash": "7db60f371c1c7d5b1a6cfe72a7b0ad67",
     "entities": [
       {
         "tableName": "groups",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `is_favorite` INTEGER NOT NULL DEFAULT 1, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -19,6 +19,13 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "is_favorite",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "1"
           }
         ],
         "primaryKey": {
@@ -168,8 +175,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "ignored_classes",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` INTEGER NOT NULL, `group_name` TEXT NOT NULL, `subject` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`group_id`, `subject`, `type`))",
+        "tableName": "ignored_subjects",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` INTEGER NOT NULL, `group_name` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`group_id`, `name`, `type`))",
         "fields": [
           {
             "fieldPath": "groupId",
@@ -184,8 +191,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "subject",
-            "columnName": "subject",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -199,7 +206,7 @@
         "primaryKey": {
           "columnNames": [
             "group_id",
-            "subject",
+            "name",
             "type"
           ],
           "autoGenerate": false
@@ -211,7 +218,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '38fff40f361ea9b99249164519c74d09')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7db60f371c1c7d5b1a6cfe72a7b0ad67')"
     ]
   }
 }
