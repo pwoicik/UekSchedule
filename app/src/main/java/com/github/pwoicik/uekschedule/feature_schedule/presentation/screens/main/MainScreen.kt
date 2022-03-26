@@ -129,12 +129,9 @@ fun MainScreen(
             snackbarHostState = snackbarHostState,
             currentDestination = currentDestination,
             onDestinationClick = { destination ->
-                navController.popBackStack(
-                    NavGraphs.mainScreen.startRoute.route,
-                    inclusive = false
-                )
                 navController.navigateTo(destination.direction) {
                     launchSingleTop = true
+                    popUpTo(NavGraphs.mainScreen.startRoute.route)
                 }
             }
         ) {
@@ -144,19 +141,16 @@ fun MainScreen(
                 modifier = Modifier.padding(WindowInsets.combinedBottomPaddingValues())
             ) {
                 composable(ScheduleScreenDestination) {
-                    ScheduleScreen(parentNavigator = parentNavigator)
-                }
-                composable(SavedGroupsScreenDestination) {
-                    SavedGroupsScreen(
-                        parentNavigator = parentNavigator,
-                        navigator = DestinationsNavController(
-                            navController = navController,
-                            navBackStackEntry = navBackStackEntry
-                        )
-                    )
+                    ScheduleScreen(rootNavigator = parentNavigator)
                 }
                 composable(AllGroupsScreenDestination) {
-                    AllGroupsScreen(parentNavigator = parentNavigator)
+                    AllGroupsScreen(rootNavigator = parentNavigator)
+                }
+                composable(YourGroupsScreenDestination) {
+                    YourGroupsScreen(
+                        navigator = DestinationsNavController(navController, navBackStackEntry),
+                        rootNavigator = parentNavigator
+                    )
                 }
             }
         }

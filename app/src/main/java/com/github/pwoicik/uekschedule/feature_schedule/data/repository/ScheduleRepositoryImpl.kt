@@ -124,6 +124,10 @@ class ScheduleRepositoryImpl(
         }
     }
 
+    override suspend fun updateGroup(group: Group) {
+        groupDao.updateGroup(group)
+    }
+
     override suspend fun updateSchedules() {
         val groups = getSavedGroups().first()
         val groupsWithClasses = groups.map { group ->

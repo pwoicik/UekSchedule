@@ -34,6 +34,9 @@ interface GroupDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertGroup(group: Group)
 
+    @Update
+    suspend fun updateGroup(group: Group)
+
     @Delete
     suspend fun deleteGroup(group: Group)
 }

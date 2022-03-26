@@ -41,5 +41,7 @@ interface ScheduleRepository {
 
     suspend fun saveGroupWithClasses(gwc: GroupWithClasses)
 
+    suspend fun updateGroup(group: Group)
+
     suspend fun updateSchedules()
 }
