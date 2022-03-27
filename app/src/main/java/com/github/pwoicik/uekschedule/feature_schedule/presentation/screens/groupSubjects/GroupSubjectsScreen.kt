@@ -1,6 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.groupSubjects
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -47,6 +48,7 @@ fun GroupSubjectsScreen(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SubjectList(
     subjects: List<Subject>,
@@ -59,15 +61,14 @@ private fun SubjectList(
         ) {
             Text("Nothing here")
         }
-
     } else {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
             contentPadding = PaddingValues(24.dp)
         ) {
             items(subjects) { subject ->
                 Surface(
-                    tonalElevation = 2.dp,
+                    tonalElevation = 4.dp,
                     shape = RoundedCornerShape(6.dp)
                 ) {
                     Row(
@@ -89,10 +90,17 @@ private fun SubjectList(
                             )
                         }
                         IconButton(onClick = { onSubjectIgnoreClick(subject) }) {
-                            Icon(
-                                imageVector = if (subject.isIgnored) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                contentDescription = stringResource(R.string.hide_subject)
-                            )
+                            AnimatedContent(
+                                targetState = subject.isIgnored,
+                                transitionSpec = {
+                                    fadeIn(tween(200)) with fadeOut(tween(200))
+                                }
+                            ) { isIgnored ->
+                                Icon(
+                                    imageVector = if (isIgnored) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = stringResource(R.string.hide_subject)
+                                )
+                            }
                         }
                     }
                 }

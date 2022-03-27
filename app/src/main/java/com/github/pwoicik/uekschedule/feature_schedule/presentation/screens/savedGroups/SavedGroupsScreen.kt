@@ -2,8 +2,10 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sav
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -145,9 +147,13 @@ private fun GroupList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
-private fun ListItem(
+private fun LazyItemScope.ListItem(
     group: Group,
     onItemClick: () -> Unit,
     onFavoriteItemClick: () -> Unit,
@@ -156,7 +162,8 @@ private fun ListItem(
 ) {
     Surface(
         tonalElevation = 4.dp,
-        shape = RoundedCornerShape(6.dp)
+        shape = RoundedCornerShape(6.dp),
+        modifier = Modifier.animateItemPlacement()
     ) {
         ListItemLayout {
             Surface(
@@ -202,6 +209,7 @@ private fun ListItem(
                         Icon(
                             imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = stringResource(R.string.delete_group),
+                            tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.alpha(0.7f)
                         )
                     }
