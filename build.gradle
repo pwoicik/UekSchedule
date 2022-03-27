@@ -3,7 +3,7 @@ buildscript {
     ext {
         accompanist_version = '0.24.5-alpha'
         compose_version = '1.2.0-alpha06'
-        destinations_version = '1.3.5-beta'
+        destinations_version = '1.4.0-beta'
         hilt_version = '2.41'
         lifecycle_version = '2.4.1'
         retrofit_version = '2.9.0'
