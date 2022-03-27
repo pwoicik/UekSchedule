@@ -61,7 +61,7 @@ fun MainScreen(
         delay(2.seconds)
         context.updateApp().collectLatest { status ->
             when (status) {
-                UpdateStatus.Canceled -> Unit
+                UpdateStatus.Canceled -> { snackbarHostState.currentSnackbarData?.dismiss() }
                 is UpdateStatus.Downloading -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
