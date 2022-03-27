@@ -1,6 +1,8 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.singleGroupSchedulePreview.components
 
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Search
@@ -10,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
@@ -17,7 +20,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.S
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchedulePreviewScaffold(
     title: String,
@@ -72,6 +74,9 @@ fun SchedulePreviewScaffold(
                 )
             }
         },
+        modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding(),
         content = content
     )
 }

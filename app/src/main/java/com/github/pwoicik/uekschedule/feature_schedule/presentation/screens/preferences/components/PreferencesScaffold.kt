@@ -12,8 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,10 +51,10 @@ fun PreferencesScaffold(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp, vertical = 8.dp)
+                .navigationBarsPadding()
         ) {
             Box {}
             content()
-            Spacer(Modifier.navigationBarsHeight(8.dp))
         }
     }
 }

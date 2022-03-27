@@ -7,16 +7,12 @@ import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.CreateActivityScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel

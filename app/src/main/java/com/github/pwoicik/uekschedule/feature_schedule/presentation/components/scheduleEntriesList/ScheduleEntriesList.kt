@@ -1,7 +1,5 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +9,6 @@ import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -20,9 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openInBrowser
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -43,7 +43,7 @@ fun ScheduleEntriesList(
             scheduleEntriesListStickyHeader(date)
             items(items = entries) { entry ->
                 ScheduleEntriesListItem(scheduleEntry = entry, status = entry.status(timeNow))
-                Divider(modifier = Modifier.alpha(0.5f))
+                Divider(thickness = Dp.Hairline, modifier = Modifier.alpha(0.5f))
             }
         }
     }
@@ -132,68 +132,91 @@ private fun RowScope.ScheduleEntrySummaryColumn(
             .weight(0.6f, fill = true)
             .padding(horizontal = 16.dp)
     ) {
-        Text(name)
+        Text(
+            text = name,
+            lineHeight = 21.sp,
+            modifier = Modifier.padding(bottom = 2.dp)
+        )
 
         CompositionLocalProvider(
             LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
         ) {
             if (teachers.isNotEmpty()) {
-                Box {
-                    teachers.forEach { Text(it) }
-                }
-            }
-
-            if (details == null) {
-                if (type != null) {
-                    Text(type)
-                }
-            } else {
-                CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.tertiary
-                ) {
-                    Column {
-                        type?.let { Text(it) }
-                        Text(details)
-                    }
-                }
-            }
-
-            if (location != null) {
-                val match = htmlAnchorRegex.find(location)
-                if (match != null) {
-                    val url = match.groupValues[1]
-                    val text = match.groupValues[2].trim()
-
-                    val intent = remember {
-                        Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = Modifier
-                            .clickable {
-                                context.startActivity(intent)
-                            }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.OpenInNew,
-                            contentDescription = stringResource(R.string.open_in_browser),
-                            modifier = Modifier.size(20.dp)
-                        )
+                Column {
+                    teachers.forEach { teacher ->
                         Text(
-                            text = text,
+                            text = teacher,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textDecoration = TextDecoration.Underline,
-                            modifier = Modifier.align(Alignment.Bottom)
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalContentColor provides
+                        if (type == "Przeniesienie zajęć")
+                            MaterialTheme.colorScheme.tertiary
+                        else
+                            MaterialTheme.colorScheme.onSurfaceVariant
+            ) {
+                if (details == null) {
+                    if (type != null) {
+                        Text(
+                            text = type,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 } else {
-                    Text(
-                        text = location,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    CompositionLocalProvider(
+                        LocalContentColor provides MaterialTheme.colorScheme.tertiary
+                    ) {
+                        Column {
+                            if (type != null) {
+                                Text(
+                                    text = type,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                            Text(details)
+                        }
+                    }
+                }
+
+                if (location != null) {
+                    val match = htmlAnchorRegex.find(location)
+                    if (match != null) {
+                        val url = match.groupValues[1]
+                        val text = match.groupValues[2].trim()
+
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier
+                                .clickable { context.openInBrowser(url) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.OpenInNew,
+                                contentDescription = stringResource(R.string.open_in_browser),
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                text = text,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.align(Alignment.Bottom)
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = location,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }

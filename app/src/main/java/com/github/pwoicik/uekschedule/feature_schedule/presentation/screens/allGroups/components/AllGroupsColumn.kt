@@ -13,11 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllGroupsColumn(
     groups: List<Group>,
@@ -27,7 +28,7 @@ fun AllGroupsColumn(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 20.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
         modifier = modifier
     ) {
         items(groups) { group ->
@@ -36,33 +37,29 @@ fun AllGroupsColumn(
                     .clickable(
                         enabled = areGroupAddButtonsEnabled,
                         onClickLabel = stringResource(R.string.preview_group)
-                    ) {
-                        onGroupClick(group)
-                    }
+                    ) { onGroupClick(group) }
                     .padding(vertical = 8.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 ) {
                     Text(
                         text = group.name,
                         modifier = Modifier.weight(1f, fill = true)
                     )
 
-                    IconButton(onClick = { onGroupAddButtonClick(group) }) {
-                        Surface(
-                            shape = RoundedCornerShape(50),
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.save_group),
-                                modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp)
-                            )
-                        }
+                    Surface(
+                        shape = RoundedCornerShape(50),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        onClick = { onGroupAddButtonClick(group) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.save_group),
+                            modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp)
+                        )
                     }
 
                     Box(modifier = Modifier.padding(start = 4.dp)) {
@@ -74,7 +71,7 @@ fun AllGroupsColumn(
                     }
                 }
             }
-            Divider()
+            Divider(thickness = Dp.Hairline)
         }
     }
 }

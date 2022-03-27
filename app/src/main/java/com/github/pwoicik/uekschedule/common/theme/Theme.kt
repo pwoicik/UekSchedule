@@ -1,6 +1,5 @@
 package com.github.pwoicik.uekschedule.common.theme
 
-import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
@@ -67,18 +66,11 @@ private val DarkThemeColors = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
-private val AmoledThemeColors = DarkThemeColors.copy(
+private fun ColorScheme.amoledify() = copy(
     background = Color.Black,
     surface = Color.Black,
-    inverseOnSurface = Color.Black,
-    primaryContainer = Color.Black,
-    secondaryContainer = Color(0xFF222222),
-    tertiaryContainer = Color.Black
-)
-
-private fun dynamicAmoledColorScheme(context: Context) = dynamicDarkColorScheme(context).copy(
-    background = Color.Black,
-    surface = Color.Black,
+    surfaceVariant = Color.Black,
+    inverseSurface = Color(0xFFCCCCCC),
     inverseOnSurface = Color.Black,
     primaryContainer = Color.Black,
     secondaryContainer = Color(0xFF222222),
@@ -102,7 +94,7 @@ fun UEKScheduleTheme(
                 Preferences.Theme.DARK ->
                     DarkThemeColors
                 Preferences.Theme.AMOLED ->
-                    AmoledThemeColors
+                    DarkThemeColors.amoledify()
                 Preferences.Theme.DYNAMIC_AUTO ->
                     if (isSystemInDarkTheme()) dynamicDarkColorScheme(context)
                     else dynamicLightColorScheme(context)
@@ -111,7 +103,7 @@ fun UEKScheduleTheme(
                 Preferences.Theme.DYNAMIC_DARK ->
                     dynamicDarkColorScheme(context)
                 Preferences.Theme.DYNAMIC_AMOLED ->
-                    dynamicAmoledColorScheme(context)
+                    dynamicDarkColorScheme(context).amoledify()
             }
         }
         false -> {
@@ -124,7 +116,7 @@ fun UEKScheduleTheme(
                 Preferences.Theme.DARK, Preferences.Theme.DYNAMIC_DARK ->
                     DarkThemeColors
                 Preferences.Theme.AMOLED, Preferences.Theme.DYNAMIC_AMOLED ->
-                    AmoledThemeColors
+                    DarkThemeColors.amoledify()
             }
         }
     }

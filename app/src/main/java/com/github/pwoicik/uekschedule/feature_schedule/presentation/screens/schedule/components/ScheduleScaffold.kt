@@ -1,27 +1,22 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components
 
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
-import com.google.accompanist.insets.LocalWindowInsets
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScaffold(
     isSearchButtonEnabled: Boolean,
@@ -31,6 +26,8 @@ fun ScheduleScaffold(
     onFabClick: () -> Unit,
     isRefreshing: Boolean,
     onRefreshButtonClick: () -> Unit,
+    onMoodleButtonClick: () -> Unit,
+    onAboutAppButtonClick: () -> Unit,
     onPreferencesButtonClick: () -> Unit,
     snackbarHostState: SnackbarHostState,
     content: @Composable BoxScope.() -> Unit
@@ -38,12 +35,6 @@ fun ScheduleScaffold(
     var isSearchFieldVisible by rememberSaveable { mutableStateOf(false) }
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
-    val insets = LocalWindowInsets.current
-    val bottomPadding = with(LocalDensity.current) {
-        insets.ime.bottom.toDp().coerceAtLeast(
-            insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
-        )
-    }
     ScheduleEntriesListScaffold(
         title = stringResource(R.string.app_name),
         isSearchFieldVisible = isSearchFieldVisible,
@@ -99,6 +90,30 @@ fun ScheduleScaffold(
                         }
                     )
                     DropdownMenuItem(
+                        text = { Text(stringResource(R.string.moodle)) },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_moodle),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        },
+                        onClick = {
+                            onMoodleButtonClick()
+                            isDropdownExpanded = false
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.about_app)) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = stringResource(R.string.about_app)
+                            )
+                        },
+                        onClick = onAboutAppButtonClick
+                    )
+                    DropdownMenuItem(
                         text = { Text(stringResource(R.string.preferences)) },
                         leadingIcon = {
                             Icon(
@@ -114,7 +129,6 @@ fun ScheduleScaffold(
                 }
             }
         },
-        content = content,
-        modifier = Modifier.padding(bottom = bottomPadding)
+        content = content
     )
 }

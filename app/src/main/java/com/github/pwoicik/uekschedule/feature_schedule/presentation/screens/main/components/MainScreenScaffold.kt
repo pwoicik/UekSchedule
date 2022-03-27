@@ -3,6 +3,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.mai
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.MainScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
@@ -12,6 +13,7 @@ import com.ramcosta.composedestinations.spec.DestinationSpec
 fun MainScreenScaffold(
     currentDestination: DestinationSpec<*>?,
     onDestinationClick: (MainScreenDestination) -> Unit,
+    snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -21,6 +23,7 @@ fun MainScreenScaffold(
                 onDestinationClick = onDestinationClick
             )
         },
+        snackbarHost = { MainScreenSnackbarHost(hostState = snackbarHostState) },
         content = content
     )
 }

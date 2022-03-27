@@ -20,15 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.common.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AboutAppScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components.ScheduleScaffold
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openInBrowser
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +40,7 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun ScheduleScreen(
-    parentNavigator: DestinationsNavigator,
+    rootNavigator: DestinationsNavigator,
     viewModel: ScheduleViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -94,9 +96,9 @@ fun ScheduleScreen(
         onFabClick = { viewModel.emit(ScheduleEvent.FabClicked) },
         isRefreshing = state.isRefreshing,
         onRefreshButtonClick = { viewModel.emit(ScheduleEvent.RefreshButtonClicked) },
-        onPreferencesButtonClick = {
-            parentNavigator.navigate(PreferencesScreenDestination)
-        },
+        onMoodleButtonClick = { context.openInBrowser(Constants.MOODLE_URL) },
+        onAboutAppButtonClick = { rootNavigator.navigate(AboutAppScreenDestination) },
+        onPreferencesButtonClick = { rootNavigator.navigate(PreferencesScreenDestination) },
         snackbarHostState = snackbarHostState
     ) {
         Crossfade(state) { state ->

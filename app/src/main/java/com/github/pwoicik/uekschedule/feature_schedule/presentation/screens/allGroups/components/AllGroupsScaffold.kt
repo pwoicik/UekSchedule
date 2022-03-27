@@ -2,8 +2,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.all
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,15 +10,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.*
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.statusBarsPadding
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.searchTextFieldColors
 
-@OptIn(ExperimentalMaterial3Api::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllGroupsScaffold(
     searchFieldValue: TextFieldValue,
@@ -33,12 +31,6 @@ fun AllGroupsScaffold(
         if (focus) focusRequester.requestFocus()
     }
 
-    val insets = LocalWindowInsets.current
-    val bottomPadding = with(LocalDensity.current) {
-        insets.ime.bottom.toDp().coerceAtLeast(
-            insets.navigationBars.bottom.toDp() + Constants.BottomBarHeight
-        )
-    }
     Scaffold(
         topBar = {
             Surface {
@@ -58,19 +50,7 @@ fun AllGroupsScaffold(
                 )
             }
         },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { snackbarData ->
-                when (snackbarData.visuals) {
-                    is SnackbarVisualsWithError ->
-                        SnackbarWithError(snackbarData = snackbarData)
-                    is SnackbarVisualsWithSuccess ->
-                        SnackbarWithSuccess(snackbarData = snackbarData)
-                    is SnackbarVisualsWithLoading ->
-                        SnackbarWithLoading(snackbarData = snackbarData)
-                }
-            }
-        },
-        modifier = Modifier.padding(bottom = bottomPadding),
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         content = content
     )
 }

@@ -1,14 +1,14 @@
 package com.github.pwoicik.uekschedule.feature_schedule.data.api.dto
 
-import org.simpleframework.xml.Attribute
-import org.simpleframework.xml.Root
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Xml
 
-@Root(name = "zasob", strict = false)
-data class GroupDto @JvmOverloads constructor(
+@Xml(name = "zasob")
+data class GroupDto(
 
-    @field:Attribute(name = "id")
-    var id: Long = 0L,
+    @Attribute(name = "id")
+    val id: Long,
 
-    @field:Attribute(name = "nazwa")
-    var name: String = ""
+    @Attribute(name = "nazwa")
+    val name: String
 )

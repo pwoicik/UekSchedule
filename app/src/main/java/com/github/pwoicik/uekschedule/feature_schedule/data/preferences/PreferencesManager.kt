@@ -13,6 +13,16 @@ class PreferencesManager(context: Context) {
 
     private val preferences = context.preferences
 
+    suspend fun setLastUsedAppVersion(versionCode: Int) {
+        preferences.edit { preferences ->
+            preferences[Keys.LAST_USED_APP_VERSION] = versionCode
+        }
+    }
+
+    val lastUsedAppVersion = preferences.data.map { preferences ->
+        preferences[Keys.LAST_USED_APP_VERSION]
+    }
+
     suspend fun setTheme(theme: Preferences.Theme) {
         preferences.edit { preferences ->
             preferences[Keys.THEME] = theme.ordinal
@@ -26,6 +36,7 @@ class PreferencesManager(context: Context) {
     }
 
     private object Keys {
+        val LAST_USED_APP_VERSION = intPreferencesKey("LAST_USED_APP_VERSION")
         val THEME = intPreferencesKey("THEME")
     }
 }

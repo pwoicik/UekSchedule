@@ -4,13 +4,18 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.GroupWithClasses
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Subject
 import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
 
+    suspend fun addSubjectToIgnored(subject: Subject)
+
     suspend fun deleteActivity(activity: Activity)
 
     suspend fun deleteGroup(group: Group)
+
+    suspend fun deleteSubjectFromIgnored(subject: Subject)
 
     suspend fun getActivity(id: Long): Activity
 
@@ -19,6 +24,8 @@ interface ScheduleRepository {
     suspend fun getAllGroups(): List<Group>
 
     fun getAllScheduleEntries(): Flow<List<ScheduleEntry>>
+
+    fun getAllSubjectsForGroup(groupId: Long): Flow<List<Subject>>
 
     suspend fun getGroupWithClasses(group: Group): GroupWithClasses
 
@@ -33,6 +40,8 @@ interface ScheduleRepository {
     suspend fun saveGroup(group: Group)
 
     suspend fun saveGroupWithClasses(gwc: GroupWithClasses)
+
+    suspend fun updateGroup(group: Group)
 
     suspend fun updateSchedules()
 }

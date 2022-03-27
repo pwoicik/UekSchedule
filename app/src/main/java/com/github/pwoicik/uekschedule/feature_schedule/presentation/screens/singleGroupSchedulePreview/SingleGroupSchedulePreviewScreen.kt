@@ -22,7 +22,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.s
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.singleGroupSchedulePreview.components.SchedulePreviewScaffold
-import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collect
@@ -85,10 +84,7 @@ fun SingleGroupSchedulePreviewScreen(
         isRefreshing = state.isRefreshing,
         snackbarHostState = snackbarHostState
     ) {
-        Crossfade(
-            targetState = state,
-            modifier = Modifier.navigationBarsWithImePadding()
-        ) { state ->
+        Crossfade(state) { state ->
             when {
                 state.didTry && state.entries == null -> {
                     Box(
