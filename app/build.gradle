@@ -28,7 +28,7 @@ android {
         applicationId "com.github.pwoicik.uekschedule"
         minSdk 26
         targetSdk 32
-        versionCode 22
+        versionCode 24
         versionName "1.2.3"
 
         testInstrumentationRunner "com.github.pwoicik.uekschedule.CustomTestRunner"
