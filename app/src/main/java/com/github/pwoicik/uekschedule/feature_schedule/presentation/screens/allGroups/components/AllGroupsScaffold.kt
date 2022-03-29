@@ -16,6 +16,7 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.searchTextFieldColors
+import kotlinx.coroutines.job
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +29,9 @@ fun AllGroupsScaffold(
 ) {
     val focusRequester = remember { FocusRequester() }
     LaunchedEffect(focus) {
-        if (focus) focusRequester.requestFocus()
+        coroutineContext.job.invokeOnCompletion {
+            if (focus) focusRequester.requestFocus()
+        }
     }
 
     Scaffold(

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
+import kotlinx.coroutines.job
 
 @Composable
 fun SmallTopBarWithSearch(
@@ -55,7 +56,9 @@ fun SmallTopBarWithSearch(
             ) {
                 val focusRequester = remember { FocusRequester() }
                 LaunchedEffect(Unit) {
-                    focusRequester.requestFocus()
+                    coroutineContext.job.invokeOnCompletion {
+                        focusRequester.requestFocus()
+                    }
                 }
 
                 SearchTextField(
