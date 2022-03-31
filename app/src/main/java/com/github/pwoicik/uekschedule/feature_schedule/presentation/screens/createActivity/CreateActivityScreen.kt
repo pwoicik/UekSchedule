@@ -23,6 +23,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.crea
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.job
 
 @Destination(
     navGraph = "mainScreen",
@@ -57,7 +58,9 @@ fun CreateActivityScreen(
         state?.let { state ->
             val focusRequester = remember { FocusRequester() }
             LaunchedEffect(Unit) {
-                focusRequester.requestFocus()
+                coroutineContext.job.invokeOnCompletion {
+                    focusRequester.requestFocus()
+                }
             }
 
             CreateActivityTextField(
