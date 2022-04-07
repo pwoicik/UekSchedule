@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -37,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var preferences: PreferencesManager
 
-    @OptIn(ExperimentalTime::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

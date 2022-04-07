@@ -24,7 +24,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.s
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.singleGroupSchedulePreview.components.SchedulePreviewScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

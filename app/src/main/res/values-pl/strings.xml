@@ -43,6 +43,7 @@
     <string name="group_saved">Grupa \"%s\" została zapisana!</string>
     <string name="hide_subject">Ukryj przedmiot</string>
     <string name="location">Sala</string>
+    <string name="mark_group_as_favorite">Oznacz jako ulubioną</string>
     <string name="moodle">e-uczelnia</string>
     <string name="more">Więcej</string>
     <string name="no_activities">Nie masz zapisanych żadnych zajęć!</string>
@@ -54,7 +55,6 @@
     <string name="other_activities">Inne zajęcia</string>
     <string name="preferences">Preferencje</string>
     <string name="preview_group">Zobacz plan tej grupy</string>
-    <string name="rate_app">Oceń aplikację</string>
     <string name="refresh_data">Odśwież</string>
     <string name="repeat_activity">Powtarzaj zajęcia</string>
     <string name="requires_sdk_31">(Wymagany Android 12+)</string>
@@ -70,7 +70,6 @@
     <string name="show_subject">Pokaż przedmiot</string>
     <string name="start_date">Data</string>
     <string name="start_time">Godzina rozpoczęcia</string>
-    <string name="subjects">Przedmioty</string>
     <string name="teacher">Prowadzący</string>
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_auto">Systemowy</string>

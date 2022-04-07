@@ -96,10 +96,17 @@ private fun SubjectList(
                                     fadeIn(tween(200)) with fadeOut(tween(200))
                                 }
                             ) { isIgnored ->
-                                Icon(
-                                    imageVector = if (isIgnored) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                                    contentDescription = stringResource(R.string.hide_subject)
-                                )
+                                if (isIgnored) {
+                                    Icon(
+                                        imageVector = Icons.Default.VisibilityOff,
+                                        contentDescription = stringResource(R.string.show_subject)
+                                    )
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Default.Visibility,
+                                        contentDescription = stringResource(R.string.hide_subject)
+                                    )
+                                }
                             }
                         }
                     }

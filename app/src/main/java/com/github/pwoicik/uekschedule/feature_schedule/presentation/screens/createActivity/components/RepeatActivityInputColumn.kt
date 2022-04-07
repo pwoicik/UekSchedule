@@ -92,8 +92,8 @@ fun DaysOfWeekSelectionRow(
 ) {
     val daysOfWeek by remember {
         derivedStateOf {
-            DayOfWeek.values().associate {
-                it to it.getDisplayName(
+            DayOfWeek.values().associateWith {
+                it.getDisplayName(
                     TextStyle.SHORT_STANDALONE,
                     Locale.getDefault()
                 )

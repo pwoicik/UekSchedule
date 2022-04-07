@@ -208,7 +208,7 @@ private fun LazyItemScope.ListItem(
                     IconButton(onClick = onFavoriteItemClick) {
                         Icon(
                             imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                            contentDescription = stringResource(R.string.delete_group),
+                            contentDescription = stringResource(R.string.mark_group_as_favorite),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.alpha(0.7f)
                         )
@@ -218,7 +218,7 @@ private fun LazyItemScope.ListItem(
                 IconButton(onClick = onEditItemClick) {
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.delete_group),
+                        contentDescription = stringResource(R.string.edit_classes),
                         modifier = Modifier
                             .size(20.dp)
                             .alpha(0.7f)
