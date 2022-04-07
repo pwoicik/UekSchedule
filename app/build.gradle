@@ -22,6 +22,8 @@ ksp {
 }
 
 android {
+    namespace 'com.github.pwoicik.uekschedule'
+
     compileSdk 32
 
     defaultConfig {
@@ -53,7 +55,7 @@ android {
         jvmTarget = '11'
         useIR = true
 
-        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+        freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
     }
     buildFeatures {
         compose true
@@ -81,7 +83,7 @@ dependencies {
     // Material
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha08"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha09"
 
     // Destinations
     implementation "io.github.raamcosta.compose-destinations:animations-core:$destinations_version"

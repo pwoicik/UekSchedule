@@ -18,7 +18,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.save
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
-import com.ramcosta.composedestinations.navigation.DestinationsNavController
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.navigateTo
 import timber.log.Timber
@@ -61,7 +60,7 @@ fun YourGroupsScreen(
         ) {
             composable(SavedGroupsScreenDestination) {
                 SavedGroupsScreen(
-                    navigator = DestinationsNavController(navController, navBackStackEntry),
+                    navigator = destinationsNavigator,
                     mainNavigator = navigator,
                     rootNavigator = rootNavigator
                 )

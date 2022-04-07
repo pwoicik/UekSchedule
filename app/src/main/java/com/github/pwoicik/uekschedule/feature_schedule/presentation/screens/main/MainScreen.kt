@@ -31,7 +31,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.updateA
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
-import com.ramcosta.composedestinations.navigation.DestinationsNavController
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.navigateTo
 import kotlinx.coroutines.delay
@@ -132,7 +131,7 @@ fun MainScreen(
                 }
                 composable(YourGroupsScreenDestination) {
                     YourGroupsScreen(
-                        navigator = DestinationsNavController(navController, navBackStackEntry),
+                        navigator = destinationsNavigator,
                         rootNavigator = parentNavigator
                     )
                 }
