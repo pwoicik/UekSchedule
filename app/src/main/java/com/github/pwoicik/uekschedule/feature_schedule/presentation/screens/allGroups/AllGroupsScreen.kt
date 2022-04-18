@@ -121,10 +121,9 @@ fun AllGroupsScreen(
                         }
                     }
                     state.groups != null -> {
-                        val filteredGroups by derivedStateOf { state.filteredGroups }
                         val keyboardController = LocalSoftwareKeyboardController.current
                         AllGroupsColumn(
-                            groups = filteredGroups,
+                            groups = state.filteredGroups,
                             onGroupClick = {
                                 keyboardController?.hide()
                                 rootNavigator.navigate(

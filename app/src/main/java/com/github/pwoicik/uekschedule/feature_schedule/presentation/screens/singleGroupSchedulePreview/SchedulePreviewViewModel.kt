@@ -5,13 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.feature_schedule.common.timeFlow
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class SchedulePreviewViewModel @Inject constructor(
@@ -39,23 +42,26 @@ class SchedulePreviewViewModel @Inject constructor(
         if (refreshJob?.isActive == true) return
         refreshJob = viewModelScope.launch {
             _eventFlow.emit(UiEvent.HideSnackbar)
-            _state.update { state ->
-                state.copy(isRefreshing = true)
+            _state.update {
+                it.copy(isRefreshing = true)
             }
 
             val result = repo.fetchSchedule(navArgs.groupId).onFailure {
                 _eventFlow.emit(UiEvent.ShowErrorSnackbar)
             }
-            _state.update { state ->
-                state.copy(
+            _state.update {
+                val entries = result.getOrDefault(it.entries ?: emptyList())
+                it.copy(
                     didTry = true,
                     isRefreshing = false,
-                    entries = result.getOrDefault(state.entries)
+                    entries = entries,
+                    filteredEntries = entries.filterEntries(it.searchValue.text)
                 )
             }
         }
     }
 
+    private var filterJob: Job? = null
     fun emit(event: SchedulePreviewEvent) {
         when (event) {
             SchedulePreviewEvent.FabClicked -> {
@@ -67,8 +73,20 @@ class SchedulePreviewViewModel @Inject constructor(
                 refreshData()
             }
             is SchedulePreviewEvent.SearchTextChanged -> {
-                _state.update { state ->
-                    state.copy(searchValue = event.newValue)
+                _state.update {
+                    it.copy(searchValue = event.newValue)
+                }
+
+                filterJob?.cancel()
+                filterJob = viewModelScope.launch {
+                    delay(0.5.seconds)
+                    _state.update {
+                        it.copy(
+                            filteredEntries = it.entries
+                                ?.filterEntries(it.searchValue.text)
+                                ?: emptyMap()
+                        )
+                    }
                 }
             }
         }

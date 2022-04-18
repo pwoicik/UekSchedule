@@ -36,11 +36,8 @@ fun SingleGroupSchedulePreviewScreen(
     val state by viewModel.state.collectAsState()
     val timeNow by viewModel.timeFlow.collectAsState()
 
-    val filteredEntries by derivedStateOf {
-        state.entries.filterEntries(state.searchValue.text)
-    }
     val firstEntryIdx by derivedStateOf {
-        filteredEntries?.firstVisibleItemIndex(timeNow.toLocalDate()) ?: 0
+        state.filteredEntries.firstVisibleItemIndex(timeNow.toLocalDate())
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -115,7 +112,7 @@ fun SingleGroupSchedulePreviewScreen(
 
                     ScheduleEntriesList(
                         lazyListState = lazyListState,
-                        scheduleEntries = filteredEntries!!,
+                        scheduleEntries = state.filteredEntries,
                         timeNow = timeNow
                     )
                 }

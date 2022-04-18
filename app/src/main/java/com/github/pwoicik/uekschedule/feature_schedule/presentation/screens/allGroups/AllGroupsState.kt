@@ -9,11 +9,6 @@ data class AllGroupsState(
     val didTry: Boolean = false,
     val isSaving: Boolean = false,
     val groups: List<Group>? = null,
+    val filteredGroups: List<Group> = emptyList(),
     val searchValue: TextFieldValue = TextFieldValue()
-) {
-
-    val filteredGroups: List<Group>
-        get() = groups?.filter { group ->
-            group.name.contains(searchValue.text, ignoreCase = true)
-        } ?: emptyList()
-}
+)

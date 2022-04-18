@@ -6,9 +6,12 @@ import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class AllGroupsViewModel @Inject constructor(
@@ -42,15 +45,20 @@ class AllGroupsViewModel @Inject constructor(
                 )
             }
             _state.update { state ->
+                val groups = result.getOrDefault(state.groups ?: emptyList())
                 state.copy(
                     didTry = true,
                     isLoading = false,
-                    groups = result.getOrDefault(state.groups)
+                    groups = groups,
+                    filteredGroups = groups.filter {
+                        it.name.contains(state.searchValue.text, ignoreCase = true)
+                    }
                 )
             }
         }
     }
 
+    private var filterJob: Job? = null
     fun emit(event: AllGroupsEvent) {
         when (event) {
             is AllGroupsEvent.SearchTextChanged -> {
@@ -58,6 +66,22 @@ class AllGroupsViewModel @Inject constructor(
                     state.copy(
                         searchValue = event.newValue
                     )
+                }
+
+                filterJob?.cancel()
+                filterJob = viewModelScope.launch {
+                    delay(0.5.seconds)
+                    Timber.d("xyz")
+                    _state.update { state ->
+                        state.copy(
+                            filteredGroups = state.groups?.filter {
+                                it.name.contains(
+                                    state.searchValue.text,
+                                    ignoreCase = true
+                                )
+                            } ?: emptyList()
+                        )
+                    }
                 }
             }
             is AllGroupsEvent.GroupSaveButtonClicked -> {

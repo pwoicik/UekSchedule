@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.feature_schedule.common.timeFlow
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(
@@ -34,7 +37,9 @@ class ScheduleViewModel @Inject constructor(
                 val hasGroups = count > 0
                 state.copy(
                     hasSavedGroups = hasGroups,
-                    entries = if (hasGroups) entries else null
+                    entries = entries,
+                    filteredEntries = entries
+                        .filterEntries(state.searchValue.text)
                 )
             }
         }
@@ -62,6 +67,7 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
+    private var filterJob: Job? = null
     fun emit(event: ScheduleEvent) {
         when (event) {
             ScheduleEvent.FabClicked -> {
@@ -72,6 +78,18 @@ class ScheduleViewModel @Inject constructor(
                     state.copy(
                         searchValue = event.newValue.copy()
                     )
+                }
+
+                filterJob?.cancel()
+                filterJob = viewModelScope.launch {
+                    delay(0.5.seconds)
+                    _state.update {
+                        it.copy(
+                            filteredEntries = it.entries
+                                ?.filterEntries(it.searchValue.text)
+                                ?: emptyMap()
+                        )
+                    }
                 }
             }
             ScheduleEvent.RefreshButtonClicked -> {

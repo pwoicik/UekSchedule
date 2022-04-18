@@ -3,14 +3,14 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.components.
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
 import java.time.LocalDate
 
-fun List<ScheduleEntry>?.filterEntries(filterText: String): Map<LocalDate, List<ScheduleEntry>>? {
-    return this?.filter { entry ->
+fun List<ScheduleEntry>.filterEntries(filterText: String): Map<LocalDate, List<ScheduleEntry>> {
+    return this.filter { entry ->
         val matchesName = entry.name.contains(filterText, ignoreCase = true)
         val matchesTeacher = entry.teachers.any { teacher ->
             teacher.contains(filterText, ignoreCase = true)
         }
         matchesName || matchesTeacher
-    }?.groupBy(ScheduleEntry::startDate)
+    }.groupBy(ScheduleEntry::startDate)
 }
 
 fun Map<LocalDate, List<ScheduleEntry>>.firstVisibleItemIndex(date: LocalDate): Int {

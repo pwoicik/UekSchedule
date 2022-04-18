@@ -23,7 +23,6 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.common.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AboutAppScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.PreferencesScreenDestination
@@ -46,11 +45,8 @@ fun ScheduleScreen(
     val state by viewModel.state.collectAsState()
     val timeNow by viewModel.timeFlow.collectAsState()
 
-    val filteredEntries by derivedStateOf {
-        state.entries.filterEntries(state.searchValue.text)
-    }
     val firstEntryIdx by derivedStateOf {
-        filteredEntries?.firstVisibleItemIndex(timeNow.toLocalDate()) ?: 0
+        state.filteredEntries.firstVisibleItemIndex(timeNow.toLocalDate())
     }
 
     val listState = rememberLazyListState()
@@ -136,7 +132,7 @@ fun ScheduleScreen(
                         else -> {
                             ScheduleEntriesList(
                                 lazyListState = listState,
-                                scheduleEntries = filteredEntries!!,
+                                scheduleEntries = state.filteredEntries,
                                 timeNow = timeNow
                             )
                         }
