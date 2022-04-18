@@ -2,9 +2,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.common.Resource
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
-import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
+import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -13,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AllGroupsViewModel @Inject constructor(
-    private val useCases: ScheduleUseCases
+    private val repo: ScheduleRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AllGroupsState())
@@ -29,35 +28,27 @@ class AllGroupsViewModel @Inject constructor(
     private var fetchJob: Job? = null
     private fun fetchGroups() {
         if (fetchJob?.isActive == true) return
-        fetchJob = useCases.getAllGroups().onEach { response ->
-            when (response) {
-                is Resource.Error -> {
-                    _state.update { state ->
-                        state.copy(didTry = true, isLoading = false)
-                    }
-                    _eventFlow.emit(
-                        UiEvent.ShowErrorSnackbar(
-                            AllGroupsEvent.RetryGroupsFetch
-                        )
-                    )
-                }
-                is Resource.Loading -> {
-                    _state.update { state ->
-                        state.copy(isLoading = true)
-                    }
-                    _eventFlow.emit(UiEvent.HideSnackbar)
-                }
-                is Resource.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            didTry = true,
-                            isLoading = false,
-                            groups = response.data
-                        )
-                    }
-                }
+        fetchJob = viewModelScope.launch {
+            _state.update { state ->
+                state.copy(isLoading = true)
             }
-        }.launchIn(viewModelScope)
+            _eventFlow.emit(UiEvent.HideSnackbar)
+
+            val result = repo.getAllGroups().onFailure {
+                _eventFlow.emit(
+                    UiEvent.ShowErrorSnackbar(
+                        AllGroupsEvent.RetryGroupsFetch
+                    )
+                )
+            }
+            _state.update { state ->
+                state.copy(
+                    didTry = true,
+                    isLoading = false,
+                    groups = result.getOrDefault(state.groups)
+                )
+            }
+        }
     }
 
     fun emit(event: AllGroupsEvent) {
@@ -72,32 +63,25 @@ class AllGroupsViewModel @Inject constructor(
             is AllGroupsEvent.GroupSaveButtonClicked -> {
                 viewModelScope.launch {
                     _eventFlow.emit(UiEvent.HideSnackbar)
-                    useCases.saveGroup(event.group).collect { result ->
-                        when (result) {
-                            is Resource.Error -> {
-                                _state.update { state ->
-                                    state.copy(isSaving = false)
-                                }
-                                _eventFlow.emit(
-                                    UiEvent.ShowErrorSnackbar(
-                                        AllGroupsEvent.GroupSaveButtonClicked(event.group)
-                                    )
-                                )
-                            }
-                            is Resource.Loading -> {
-                                _state.update { state ->
-                                    state.copy(isSaving = true)
-                                }
-                                _eventFlow.emit(UiEvent.ShowSavingGroupSnackbar(event.group))
-                            }
-                            is Resource.Success -> {
-                                _state.update { state ->
-                                    state.copy(isSaving = false)
-                                }
-                                _eventFlow.emit(UiEvent.ShowSavedGroupSnackbar(event.group))
-                            }
-                        }
+
+                    _state.update { state ->
+                        state.copy(isSaving = true)
                     }
+                    _eventFlow.emit(UiEvent.ShowSavingGroupSnackbar(event.group))
+
+                    val result = repo.saveGroup(event.group)
+                    _state.update { state ->
+                        state.copy(isSaving = false)
+                    }
+                    _eventFlow.emit(
+                        if (result.isSuccess) {
+                            UiEvent.ShowSavedGroupSnackbar(event.group)
+                        } else {
+                            UiEvent.ShowErrorSnackbar(
+                                AllGroupsEvent.GroupSaveButtonClicked(event.group)
+                            )
+                        }
+                    )
                 }
             }
             AllGroupsEvent.RetryGroupsFetch -> {

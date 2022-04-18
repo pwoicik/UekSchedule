@@ -2,9 +2,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sch
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.common.Resource
 import com.github.pwoicik.uekschedule.feature_schedule.common.timeFlow
-import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
+import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleViewModel @Inject constructor(
-    private val useCases: ScheduleUseCases
+    private val repo: ScheduleRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ScheduleState())
@@ -28,8 +27,8 @@ class ScheduleViewModel @Inject constructor(
 
     init {
         combine(
-            useCases.getSavedGroupsCount(),
-            useCases.getAllScheduleEntries()
+            repo.getSavedGroupsCount(),
+            repo.getAllScheduleEntries()
         ) { count, entries ->
             _state.update { state ->
                 val hasGroups = count > 0
@@ -48,27 +47,19 @@ class ScheduleViewModel @Inject constructor(
     private var refreshJob: Job? = null
     private fun refreshData() {
         if (refreshJob?.isActive == true) return
-        refreshJob = useCases.updateClasses().onEach { response ->
-            when (response) {
-                is Resource.Error -> {
-                    _eventFlow.emit(UiEvent.ShowErrorSnackbar)
-                    _state.update { state ->
-                        state.copy(isRefreshing = false)
-                    }
-                }
-                is Resource.Loading -> {
-                    _eventFlow.emit(UiEvent.HideSnackbar)
-                    _state.update { state ->
-                        state.copy(isRefreshing = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _state.update { state ->
-                        state.copy(isRefreshing = false)
-                    }
-                }
+        refreshJob = viewModelScope.launch {
+            _eventFlow.emit(UiEvent.HideSnackbar)
+            _state.update { state ->
+                state.copy(isRefreshing = true)
             }
-        }.launchIn(viewModelScope)
+
+            repo.updateSchedules().onFailure {
+                _eventFlow.emit(UiEvent.ShowErrorSnackbar)
+            }
+            _state.update { state ->
+                state.copy(isRefreshing = false)
+            }
+        }
     }
 
     fun emit(event: ScheduleEvent) {

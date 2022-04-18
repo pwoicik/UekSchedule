@@ -5,13 +5,18 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-private val Context.preferences by preferencesDataStore("preferences")
+@Singleton
+class PreferencesManager @Inject constructor(
+    @ApplicationContext context: Context
+) {
 
-class PreferencesManager(context: Context) {
-
-    private val preferences = context.preferences
+    private val preferences = preferencesDataStore("preferences")
+        .getValue(context, context::javaClass)
 
     suspend fun setLastUsedAppVersion(versionCode: Int) {
         preferences.edit { preferences ->

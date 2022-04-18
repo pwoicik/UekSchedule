@@ -19,8 +19,11 @@ import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Subject
 import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ScheduleRepositoryImpl(
+@Singleton
+class ScheduleRepositoryImpl @Inject constructor(
     private val scheduleApi: ScheduleApi,
     private val scheduleDatabase: ScheduleDatabase
 ) : ScheduleRepository {
@@ -50,10 +53,15 @@ class ScheduleRepositoryImpl(
         return scheduleApi.getSchedule(group.id).toGroupWithClasses()
     }
 
-    override suspend fun fetchSchedule(groupId: Long): List<ScheduleEntry> {
-        return scheduleApi.getSchedule(groupId)
-            .toGroupWithClasses()
-            .classes.map(Class::toScheduleEntry)
+    override suspend fun fetchSchedule(groupId: Long): Result<List<ScheduleEntry>> = try {
+        Result.success(
+            scheduleApi.getSchedule(groupId)
+                .toGroupWithClasses()
+                .classes.map(Class::toScheduleEntry)
+        )
+    } catch (e: Exception) {
+        Timber.e(e)
+        Result.failure(e)
     }
 
     override suspend fun getActivity(id: Long): Activity {
@@ -64,8 +72,13 @@ class ScheduleRepositoryImpl(
         return activityDao.getAllActivities()
     }
 
-    override suspend fun getAllGroups(): List<Group> {
-        return scheduleApi.getGroups().groups!!.map(GroupDto::toGroup)
+    override suspend fun getAllGroups(): Result<List<Group>> = try {
+        Result.success(
+            scheduleApi.getGroups().groups!!.map(GroupDto::toGroup)
+        )
+    } catch (e: Exception) {
+        Timber.e(e)
+        Result.failure(e)
     }
 
     override fun getAllScheduleEntries(): Flow<List<ScheduleEntry>> {
@@ -109,12 +122,16 @@ class ScheduleRepositoryImpl(
         activityDao.insertActivity(activity)
     }
 
-    override suspend fun saveGroup(group: Group) {
+    override suspend fun saveGroup(group: Group): Result<Unit> = try {
         val gwc = fetchSchedule(group)
         scheduleDatabase.withTransaction {
             groupDao.insertGroup(gwc.group)
             classDao.insertAllClasses(gwc.classes)
         }
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Timber.e(e)
+        Result.failure(e)
     }
 
     override suspend fun saveGroupWithClasses(gwc: GroupWithClasses) {
@@ -128,7 +145,7 @@ class ScheduleRepositoryImpl(
         groupDao.updateGroup(group)
     }
 
-    override suspend fun updateSchedules() {
+    override suspend fun updateSchedules(): Result<Unit> = try {
         val groups = getSavedGroups().first()
         val groupsWithClasses = groups.map { group ->
             Timber.d("fetching schedule for group ${group.name}")
@@ -140,5 +157,9 @@ class ScheduleRepositoryImpl(
                 classDao.insertAllClasses(classes)
             }
         }
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Timber.e(e)
+        Result.failure(e)
     }
 }

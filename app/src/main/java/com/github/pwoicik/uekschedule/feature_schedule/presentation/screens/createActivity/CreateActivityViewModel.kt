@@ -7,7 +7,7 @@ import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
+import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.CreateActivityScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateActivityViewModel @Inject constructor(
-    private val useCases: ScheduleUseCases,
+    private val repo: ScheduleRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class CreateActivityViewModel @Inject constructor(
             _state.value = CreateActivityState()
         } else {
             viewModelScope.launch {
-                _state.value = CreateActivityState(useCases.getActivity(activityId))
+                _state.value = CreateActivityState(repo.getActivity(activityId))
             }
         }
     }
@@ -98,7 +98,7 @@ class CreateActivityViewModel @Inject constructor(
                         _eventFlow.emit(UiEvent.ShowError)
                         return@launch
                     }
-                    useCases.saveActivity(state.toActivity(navArgs.activityId))
+                    repo.saveActivity(state.toActivity(navArgs.activityId))
                     _eventFlow.emit(UiEvent.ActivitySaved)
                 }
             }

@@ -21,7 +21,7 @@ interface ScheduleRepository {
 
     fun getAllActivities(): Flow<List<Activity>>
 
-    suspend fun getAllGroups(): List<Group>
+    suspend fun getAllGroups(): Result<List<Group>>
 
     fun getAllScheduleEntries(): Flow<List<ScheduleEntry>>
 
@@ -33,15 +33,15 @@ interface ScheduleRepository {
 
     fun getSavedGroupsCount(): Flow<Int>
 
-    suspend fun fetchSchedule(groupId: Long): List<ScheduleEntry>
+    suspend fun fetchSchedule(groupId: Long): Result<List<ScheduleEntry>>
 
     suspend fun saveActivity(activity: Activity)
 
-    suspend fun saveGroup(group: Group)
+    suspend fun saveGroup(group: Group): Result<Unit>
 
     suspend fun saveGroupWithClasses(gwc: GroupWithClasses)
 
     suspend fun updateGroup(group: Group)
 
-    suspend fun updateSchedules()
+    suspend fun updateSchedules(): Result<Unit>
 }

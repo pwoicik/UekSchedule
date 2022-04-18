@@ -3,9 +3,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sin
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.common.Resource
 import com.github.pwoicik.uekschedule.feature_schedule.common.timeFlow
-import com.github.pwoicik.uekschedule.feature_schedule.domain.use_case.ScheduleUseCases
+import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SchedulePreviewViewModel @Inject constructor(
-    private val useCases: ScheduleUseCases,
+    private val repo: ScheduleRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -35,34 +34,26 @@ class SchedulePreviewViewModel @Inject constructor(
         refreshData()
     }
 
-    private val refreshJob: Job? = null
+    private var refreshJob: Job? = null
     private fun refreshData() {
         if (refreshJob?.isActive == true) return
-        useCases.getScheduleForGroup(navArgs.groupId).onEach { response ->
-            when (response) {
-                is Resource.Error -> {
-                    _eventFlow.emit(UiEvent.ShowErrorSnackbar)
-                    _state.update { state ->
-                        state.copy(didTry = true, isRefreshing = false)
-                    }
-                }
-                is Resource.Loading -> {
-                    _eventFlow.emit(UiEvent.HideSnackbar)
-                    _state.update { state ->
-                        state.copy(isRefreshing = true)
-                    }
-                }
-                is Resource.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            didTry = true,
-                            isRefreshing = false,
-                            entries = response.data
-                        )
-                    }
-                }
+        refreshJob = viewModelScope.launch {
+            _eventFlow.emit(UiEvent.HideSnackbar)
+            _state.update { state ->
+                state.copy(isRefreshing = true)
             }
-        }.launchIn(viewModelScope)
+
+            val result = repo.fetchSchedule(navArgs.groupId).onFailure {
+                _eventFlow.emit(UiEvent.ShowErrorSnackbar)
+            }
+            _state.update { state ->
+                state.copy(
+                    didTry = true,
+                    isRefreshing = false,
+                    entries = result.getOrDefault(state.entries)
+                )
+            }
+        }
     }
 
     fun emit(event: SchedulePreviewEvent) {
