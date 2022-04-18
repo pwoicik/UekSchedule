@@ -9,15 +9,17 @@ import androidx.compose.material.icons.filled.VerticalAlignCenter
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.*
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ScheduleEntriesListScaffold(
     title: String,
@@ -35,6 +37,7 @@ fun ScheduleEntriesListScaffold(
     colors: ScheduleEntriesListScaffoldColors = ScheduleEntriesListScaffoldColors.default(),
     content: @Composable BoxScope.() -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         topBar = {
             SmallTopBarWithSearch(
@@ -42,7 +45,10 @@ fun ScheduleEntriesListScaffold(
                 isSearchFieldVisible = isSearchFieldVisible,
                 searchValue = searchValue,
                 onSearchValueChange = onSearchValueChange,
-                onSearchValueClear = onSearchValueClear,
+                onSearchValueClear = {
+                    onSearchValueClear()
+                    keyboardController?.hide()
+                },
                 navigationIcon = navigationIcon,
                 actions = actions,
                 colors = colors.topBarColors
