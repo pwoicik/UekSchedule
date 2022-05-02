@@ -24,6 +24,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.common.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.MainNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AboutAppScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components.ScheduleScaffold
@@ -33,10 +34,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination(
-    navGraph = "mainScreen",
-    start = true
-)
+@MainNavGraph(start = true)
+@Destination
 @Composable
 fun ScheduleScreen(
     rootNavigator: DestinationsNavigator,

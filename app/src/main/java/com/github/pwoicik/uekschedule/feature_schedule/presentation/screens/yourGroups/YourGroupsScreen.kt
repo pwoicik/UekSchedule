@@ -9,10 +9,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.MainNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.appDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.OtherActivitiesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SavedGroupsScreenDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.otherActivities.OtherActivitiesScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups.SavedGroupsScreen
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -23,9 +24,8 @@ import com.ramcosta.composedestinations.navigation.navigateTo
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination(
-    navGraph = "mainScreen"
-)
+@MainNavGraph
+@Destination
 @Composable
 fun YourGroupsScreen(
     navigator: DestinationsNavigator,
@@ -36,7 +36,7 @@ fun YourGroupsScreen(
 
     SideEffect {
         Timber.tag("mainScreen navGraph destination")
-            .d(currentBackStackEntry?.navDestination?.route)
+            .d(currentBackStackEntry?.appDestination()?.route)
     }
 
     Scaffold(

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.MainNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.CreateActivityScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.CreateActivityTextField
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity.components.RepeatActivityInputColumn
@@ -25,8 +26,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.job
 
+@MainNavGraph
 @Destination(
-    navGraph = "mainScreen",
     navArgsDelegate = CreateActivityNavArgs::class
 )
 @Composable

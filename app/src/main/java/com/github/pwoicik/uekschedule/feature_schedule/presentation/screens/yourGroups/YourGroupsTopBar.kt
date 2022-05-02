@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
 import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.appDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.GroupSubjectsScreenDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 
 @Composable
 fun YourGroupsTopBar(
@@ -32,7 +32,7 @@ fun YourGroupsTopBar(
         targetState = currentNavBackStackEntry,
         modifier = Modifier.statusBarsPadding()
     ) { currentNavBackStackEntry ->
-        val currentDestination = currentNavBackStackEntry?.navDestination
+        val currentDestination = currentNavBackStackEntry?.appDestination()
         val currentYourGroupsDestination by derivedStateOf {
             currentDestination?.let { currentDestination ->
                 YourGroupsDestination.values().find { destination ->

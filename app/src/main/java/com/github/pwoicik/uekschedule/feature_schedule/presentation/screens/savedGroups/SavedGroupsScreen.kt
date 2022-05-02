@@ -24,6 +24,7 @@ import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithUndo
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.YourGroupsNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AllGroupsScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.GroupSubjectsScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
@@ -33,10 +34,8 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination(
-    navGraph = "yourGroups",
-    start = true
-)
+@YourGroupsNavGraph(start = true)
+@Destination
 @Composable
 fun SavedGroupsScreen(
     navigator: DestinationsNavigator,

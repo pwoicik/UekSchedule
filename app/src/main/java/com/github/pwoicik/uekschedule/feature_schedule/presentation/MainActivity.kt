@@ -18,7 +18,7 @@ import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
 import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.PreferencesManager
 import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.appDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.requestReview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.DestinationsNavHost
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
                 val navController = rememberNavController()
                 val currentDestination = navController.currentBackStackEntryAsState()
-                    .value?.navDestination
+                    .value?.appDestination()
                 LaunchedEffect(currentDestination) {
                     Timber
                         .tag("root navGraph destination")

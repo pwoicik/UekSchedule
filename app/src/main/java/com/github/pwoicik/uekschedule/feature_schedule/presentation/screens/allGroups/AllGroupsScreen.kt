@@ -25,6 +25,7 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.C
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.MainNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.components.AllGroupsColumn
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.components.AllGroupsScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
@@ -33,7 +34,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-@Destination(navGraph = "mainScreen")
+@MainNavGraph
+@Destination
 @Composable
 fun AllGroupsScreen(
     rootNavigator: DestinationsNavigator,

@@ -24,8 +24,10 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.abou
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openInBrowser
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openPlayStorePage
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
+@RootNavGraph
 @Destination
 @Composable
 fun AboutAppScreen(

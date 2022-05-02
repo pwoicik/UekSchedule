@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
@@ -21,7 +20,6 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.dest
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.MainScreenScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.SnackbarVisualsWithPending
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.SnackbarVisualsWithSuccess
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.navDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.yourGroups.YourGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
@@ -30,9 +28,11 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openPla
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.updateApp
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.navigateTo
+import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,14 +40,14 @@ import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination(start = true)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun MainScreen(
     parentNavigator: DestinationsNavigator
 ) {
     val navController = rememberNavController()
-    val currentDestination = navController.currentBackStackEntryAsState()
-        .value?.navDestination
+    val currentDestination by navController.currentDestinationAsState()
 
     SideEffect {
         Timber.tag("mainScreen navGraph destination")
@@ -114,12 +114,12 @@ fun MainScreen(
             onDestinationClick = { destination ->
                 navController.navigateTo(destination.direction) {
                     launchSingleTop = true
-                    popUpTo(NavGraphs.mainScreen.startRoute.route)
+                    popUpTo(NavGraphs.main.startRoute.route)
                 }
             }
         ) {
             DestinationsNavHost(
-                navGraph = NavGraphs.mainScreen,
+                navGraph = NavGraphs.main,
                 navController = navController,
                 modifier = Modifier.padding(WindowInsets.combinedBottomPaddingValues())
             ) {

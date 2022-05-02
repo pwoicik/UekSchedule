@@ -20,9 +20,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.preferences.components.PreferencesScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @OptIn(ExperimentalMaterial3Api::class)
+@RootNavGraph
 @Destination
 @Composable
 fun PreferencesScreen(

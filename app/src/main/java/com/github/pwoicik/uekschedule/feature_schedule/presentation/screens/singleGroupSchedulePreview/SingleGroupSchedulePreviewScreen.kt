@@ -19,14 +19,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.singleGroupSchedulePreview.components.SchedulePreviewScaffold
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
+@RootNavGraph
 @Destination(navArgsDelegate = SchedulePreviewNavArgs::class)
 @Composable
 fun SingleGroupSchedulePreviewScreen(

@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithUndo
+import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.YourGroupsNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.CreateActivityScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -32,7 +33,8 @@ import java.time.format.TextStyle
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Destination(navGraph = "yourGroups")
+@YourGroupsNavGraph
+@Destination
 @Composable
 fun OtherActivitiesScreen(
     mainNavigator: DestinationsNavigator,
