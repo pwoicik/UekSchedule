@@ -60,7 +60,7 @@ fun TextFieldDefaults.searchTextFieldColors(
 ) = textFieldColors(
     textColor = textColor,
     placeholderColor = placeholderColor,
-    backgroundColor = backgroundColor,
+    containerColor = backgroundColor,
     cursorColor = cursorColor,
     focusedIndicatorColor = cursorColor,
     unfocusedIndicatorColor = placeholderColor
