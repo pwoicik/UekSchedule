@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
+import com.github.pwoicik.uekschedule.domain.model.Group
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithUndo
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.YourGroupsNavGraph

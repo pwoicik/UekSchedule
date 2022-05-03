@@ -3,8 +3,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.sin
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.feature_schedule.common.timeFlow
-import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
+import com.github.pwoicik.uekschedule.common.util.timeFlow
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.filterEntries
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,7 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
+import com.github.pwoicik.uekschedule.domain.model.Group
 
 data class AllGroupsState(
 

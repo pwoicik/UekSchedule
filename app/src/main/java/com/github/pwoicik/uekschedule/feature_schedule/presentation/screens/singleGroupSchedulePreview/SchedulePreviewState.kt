@@ -1,7 +1,7 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.singleGroupSchedulePreview
 
 import androidx.compose.ui.text.input.TextFieldValue
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.domain.model.ScheduleEntry
 import java.time.LocalDate
 
 data class SchedulePreviewState(

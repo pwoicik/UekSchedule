@@ -3,8 +3,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.gro
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Subject
-import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
+import com.github.pwoicik.uekschedule.domain.model.Subject
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.GroupSubjectsScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Subject
+import com.github.pwoicik.uekschedule.domain.model.Subject
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.YourGroupsNavGraph
 import com.ramcosta.composedestinations.annotation.Destination
 

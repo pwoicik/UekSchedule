@@ -2,7 +2,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.oth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

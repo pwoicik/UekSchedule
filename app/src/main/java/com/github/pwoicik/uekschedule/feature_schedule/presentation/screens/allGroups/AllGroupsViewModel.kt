@@ -2,8 +2,8 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.all
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
-import com.github.pwoicik.uekschedule.feature_schedule.domain.repository.ScheduleRepository
+import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
+import com.github.pwoicik.uekschedule.domain.model.Group
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

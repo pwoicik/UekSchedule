@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.common.Constants
+import com.github.pwoicik.uekschedule.common.Constants
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.aboutApp.components.AboutScreenScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.aboutApp.components.Section
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.aboutApp.components.inlineClickableEmail

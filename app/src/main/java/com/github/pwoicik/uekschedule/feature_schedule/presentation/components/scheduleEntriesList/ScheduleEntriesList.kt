@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.domain.model.ScheduleEntry
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openInBrowser
 import java.time.LocalDate
 import java.time.LocalDateTime

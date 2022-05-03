@@ -1,8 +1,8 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.savedGroups
 
 import androidx.compose.runtime.Immutable
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Group
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.GroupWithClasses
+import com.github.pwoicik.uekschedule.domain.model.Group
+import com.github.pwoicik.uekschedule.domain.model.GroupWithClasses
 
 @Immutable
 data class SavedGroupsState(

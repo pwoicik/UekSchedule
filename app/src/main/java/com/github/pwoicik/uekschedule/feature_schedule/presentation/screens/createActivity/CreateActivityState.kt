@@ -1,6 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.createActivity
 
-import com.github.pwoicik.uekschedule.feature_schedule.data.db.entity.Activity
+import com.github.pwoicik.uekschedule.domain.model.Activity
 import java.time.*
 
 data class CreateActivityState(

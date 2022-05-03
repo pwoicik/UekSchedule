@@ -1,6 +1,6 @@
 package com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList
 
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.ScheduleEntry
+import com.github.pwoicik.uekschedule.domain.model.ScheduleEntry
 import java.time.LocalDate
 
 fun List<ScheduleEntry>.filterEntries(filterText: String): Map<LocalDate, List<ScheduleEntry>> {

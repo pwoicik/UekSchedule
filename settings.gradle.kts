@@ -15,4 +15,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "UEK Schedule"
 
-include(":app")
+include(
+    ":app",
+    ":common",
+    ":model",
+    ":db",
+    ":api",
+    ":repository"
+)
