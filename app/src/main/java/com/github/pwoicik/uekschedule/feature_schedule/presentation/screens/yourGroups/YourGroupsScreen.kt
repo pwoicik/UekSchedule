@@ -20,7 +20,7 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.navigateTo
+import com.ramcosta.composedestinations.navigation.navigate
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +44,7 @@ fun YourGroupsScreen(
             YourGroupsTopBar(
                 currentNavBackStackEntry = currentBackStackEntry,
                 onChangeDestination = {
-                    navController.navigateTo(it.direction) {
+                    navController.navigate(it.direction) {
                         launchSingleTop = true
                         popUpTo(NavGraphs.yourGroups.startRoute.route)
                     }

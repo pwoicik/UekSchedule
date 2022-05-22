@@ -13,9 +13,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SearchTextField
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarHost
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.searchTextFieldColors
+import com.github.pwoicik.uekschedule.presentation.components.SearchTextField
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarHost
+import com.github.pwoicik.uekschedule.presentation.components.searchTextFieldColors
 import kotlinx.coroutines.job
 
 @OptIn(ExperimentalMaterial3Api::class)

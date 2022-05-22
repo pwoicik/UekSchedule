@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.common.theme
+package com.github.pwoicik.uekschedule.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -6,7 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
+import com.github.pwoicik.uekschedule.domain.model.Preferences
 
 private val LightThemeColors = lightColorScheme(
     primary = md_theme_light_primary,

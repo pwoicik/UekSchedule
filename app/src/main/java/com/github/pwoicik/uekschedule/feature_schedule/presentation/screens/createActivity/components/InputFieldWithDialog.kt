@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.FormTextField
+import com.github.pwoicik.uekschedule.presentation.components.FormTextField
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

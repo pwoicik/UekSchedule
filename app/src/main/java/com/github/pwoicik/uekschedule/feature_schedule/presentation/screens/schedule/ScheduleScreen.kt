@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.common.Constants
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.MainNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AboutAppScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.components.ScheduleScaffold
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openInBrowser
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
+import com.github.pwoicik.uekschedule.presentation.util.openInBrowser
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
@@ -44,12 +44,14 @@ fun ScheduleScreen(
     val state by viewModel.state.collectAsState()
     val timeNow by viewModel.timeFlow.collectAsState()
 
-    val firstEntryIdx by derivedStateOf {
-        state.filteredEntries.firstVisibleItemIndex(timeNow.toLocalDate())
+    val firstEntryIdx by remember {
+        derivedStateOf {
+            state.filteredEntries.firstVisibleItemIndex(timeNow.toLocalDate())
+        }
     }
-
     val listState = rememberLazyListState()
     LaunchedEffect(firstEntryIdx) {
+        if (firstEntryIdx == 0) return@LaunchedEffect
         listState.animateScrollToItem(firstEntryIdx)
     }
 
@@ -146,7 +148,8 @@ fun ScheduleScreen(
                         Text(stringResource(R.string.no_saved_groups))
                     }
                 }
-                null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/ }
+                null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
+                }
             }
         }
     }

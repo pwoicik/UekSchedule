@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.FormTextField
+import com.github.pwoicik.uekschedule.presentation.components.FormTextField
 
 @Composable
 fun CreateActivityTextField(

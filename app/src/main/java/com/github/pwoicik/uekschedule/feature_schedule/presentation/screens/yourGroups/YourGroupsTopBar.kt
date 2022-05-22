@@ -33,10 +33,12 @@ fun YourGroupsTopBar(
         modifier = Modifier.statusBarsPadding()
     ) { currentNavBackStackEntry ->
         val currentDestination = currentNavBackStackEntry?.appDestination()
-        val currentYourGroupsDestination by derivedStateOf {
-            currentDestination?.let { currentDestination ->
-                YourGroupsDestination.values().find { destination ->
-                    destination.direction.route == currentDestination.route
+        val currentYourGroupsDestination by remember {
+            derivedStateOf {
+                currentDestination?.let { currentDestination ->
+                    YourGroupsDestination.values().find { destination ->
+                        destination.direction.route == currentDestination.route
+                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.util
+package com.github.pwoicik.uekschedule.presentation.util
 
 import android.app.Activity
 import com.google.android.play.core.ktx.launchReview

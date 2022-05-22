@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.common.theme
+package com.github.pwoicik.uekschedule.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -55,5 +55,3 @@ val md_theme_dark_outline = Color(0xFF938F99)
 val md_theme_dark_inverseOnSurface = Color(0xFF191c1d)
 val md_theme_dark_inverseSurface = Color(0xFFe0e3e3)
 val md_theme_dark_inversePrimary = Color(0xFF0062a2)
-
-val error = Color(0xFFB3261E)

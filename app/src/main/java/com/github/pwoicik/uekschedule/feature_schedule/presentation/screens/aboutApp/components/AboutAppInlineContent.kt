@@ -7,7 +7,7 @@ import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.unit.sp
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.aboutApp.ClickableText
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openComposeEmailToSupport
+import com.github.pwoicik.uekschedule.presentation.util.openComposeEmailToSupport
 
 fun inlineClickableEmail(context: Context) = inlineClickableText(
     id = "email",

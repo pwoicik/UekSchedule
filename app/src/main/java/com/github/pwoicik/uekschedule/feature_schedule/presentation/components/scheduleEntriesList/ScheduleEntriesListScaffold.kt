@@ -17,13 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.*
+import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearch
+import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ScheduleEntriesListScaffold(
     title: String,
     isSearchFieldVisible: Boolean,
+    dismissSearchField: () -> Unit,
     searchValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
     isFabVisible: Boolean,
@@ -43,6 +45,7 @@ fun ScheduleEntriesListScaffold(
             SmallTopBarWithSearch(
                 title = { Text(title) },
                 isSearchFieldVisible = isSearchFieldVisible,
+                dismissSearchField = dismissSearchField,
                 searchValue = searchValue,
                 onSearchValueChange = onSearchValueChange,
                 onSearchValueClear = {
@@ -68,7 +71,11 @@ fun ScheduleEntriesListScaffold(
                 }
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = {
+            com.github.pwoicik.uekschedule.presentation.components.SnackbarHost(
+                snackbarHostState
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Box(
@@ -83,7 +90,7 @@ fun ScheduleEntriesListScaffold(
                 enter = slideInVertically(),
                 exit = slideOutVertically()
             ) {
-                CircularProgressIndicator(
+                com.github.pwoicik.uekschedule.presentation.components.CircularProgressIndicator(
                     isSpinning = isRefreshing,
                     containerColor = colors.fabContainerColor,
                     contentColor = colors.fabContentColor,

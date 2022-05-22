@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":common"))
 
+    implementation(project(":common:jvm"))
     implementation(libs.retrofit)
 
     implementation(libs.tikxml.core)

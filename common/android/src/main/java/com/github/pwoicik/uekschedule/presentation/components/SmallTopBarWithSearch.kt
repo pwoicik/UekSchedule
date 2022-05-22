@@ -1,5 +1,7 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
+package com.github.pwoicik.uekschedule.presentation.components
 
+import androidx.activity.addCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -16,13 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.resources.R
 import kotlinx.coroutines.job
 
 @Composable
 fun SmallTopBarWithSearch(
     title: @Composable () -> Unit,
     isSearchFieldVisible: Boolean,
+    dismissSearchField: () -> Unit,
     searchValue: TextFieldValue,
     onSearchValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier,
@@ -31,6 +34,15 @@ fun SmallTopBarWithSearch(
     actions: @Composable RowScope.() -> Unit = {},
     colors: SmallTopBarWithSearchColors = SmallTopBarWithSearchColors.default()
 ) {
+    val backPressDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    LaunchedEffect(isSearchFieldVisible) {
+        if (!isSearchFieldVisible) return@LaunchedEffect
+        backPressDispatcher?.addCallback {
+            dismissSearchField()
+            remove()
+        }
+    }
+
     Surface(
         color = colors.containerColor,
         modifier = modifier

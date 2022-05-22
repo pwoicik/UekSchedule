@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.domain.model
+package com.github.pwoicik.uekschedule.domain.model
 
 object Preferences {
     enum class Theme {

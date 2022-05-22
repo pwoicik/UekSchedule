@@ -10,8 +10,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.allGroups.AllGroupsScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.AllGroupsScreenDestination
@@ -22,16 +22,16 @@ import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.components.SnackbarVisualsWithSuccess
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.schedule.ScheduleScreen
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.yourGroups.YourGroupsScreen
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.UpdateStatus
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.openPlayStorePage
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.updateApp
+import com.github.pwoicik.uekschedule.presentation.util.LocalBottomBarHeight
+import com.github.pwoicik.uekschedule.presentation.util.UpdateStatus
+import com.github.pwoicik.uekschedule.presentation.util.openPlayStorePage
+import com.github.pwoicik.uekschedule.presentation.util.updateApp
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.navigation.navigateTo
+import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -112,7 +112,7 @@ fun MainScreen(
             snackbarHostState = snackbarHostState,
             currentDestination = currentDestination,
             onDestinationClick = { destination ->
-                navController.navigateTo(destination.direction) {
+                navController.navigate(destination.direction) {
                     launchSingleTop = true
                     popUpTo(NavGraphs.main.startRoute.route)
                 }

@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.util
+package com.github.pwoicik.uekschedule.presentation.util
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.dp

@@ -34,8 +34,11 @@ fun GroupSubjectsScreen(
 ) {
     val subjects by viewModel.subjects.collectAsState()
 
-    Scaffold {
-        Crossfade(subjects == null) { isFetching ->
+    Scaffold { innerPadding ->
+        Crossfade(
+            targetState = subjects == null,
+            modifier = Modifier.padding(innerPadding)
+        ) { isFetching ->
             when (isFetching) {
                 true -> {}
                 false -> {

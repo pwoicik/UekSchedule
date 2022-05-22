@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
+package com.github.pwoicik.uekschedule.presentation.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectableGroup
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.LocalBottomBarHeight
+import com.github.pwoicik.uekschedule.presentation.util.LocalBottomBarHeight
 
 @Composable
 fun NavigationBar(

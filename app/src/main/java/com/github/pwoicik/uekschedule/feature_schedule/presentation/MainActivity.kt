@@ -14,12 +14,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.BuildConfig
-import com.github.pwoicik.uekschedule.common.theme.UEKScheduleTheme
+import com.github.pwoicik.uekschedule.domain.model.Preferences
 import com.github.pwoicik.uekschedule.feature_schedule.data.preferences.PreferencesManager
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.NavGraphs
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.appDestination
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.util.requestReview
+import com.github.pwoicik.uekschedule.presentation.util.requestReview
+import com.github.pwoicik.uekschedule.presentation.theme.UEKScheduleTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.DestinationsNavHost
 import dagger.hilt.android.AndroidEntryPoint

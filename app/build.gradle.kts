@@ -26,7 +26,7 @@ android {
         applicationId = "com.github.pwoicik.uekschedule"
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
-        versionCode = 27
+        versionCode = 28
         versionName = "1.2.3.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -35,8 +35,19 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file("debug_key.jks")
+            storePassword = "debug_key"
+            keyAlias = "key0"
+            keyPassword = "debug_key"
+        }
+    }
+
     buildTypes {
         getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
@@ -48,6 +59,9 @@ android {
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_11)
         targetCompatibility(JavaVersion.VERSION_11)
+    }
+    kotlinOptions {
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -63,7 +77,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(project(":resources"))
+    implementation(project(":common:jvm"))
+    implementation(project(":common:android"))
     implementation(project(":model"))
     implementation(project(":repository"))
 
@@ -72,7 +88,6 @@ dependencies {
 
     implementation(libs.material)
     implementation(libs.compose.ui)
-    implementation(libs.compose.material)
     implementation(libs.compose.material3)
     implementation(libs.compose.icons)
 

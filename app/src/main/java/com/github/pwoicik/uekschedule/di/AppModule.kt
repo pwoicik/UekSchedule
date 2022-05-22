@@ -7,4 +7,5 @@ import dagger.hilt.components.SingletonComponent
 
 @Module(includes = [RepositoryModule::class])
 @InstallIn(SingletonComponent::class)
+@Suppress("UNUSED")
 object AppModule

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.R
 import com.github.pwoicik.uekschedule.domain.model.Activity
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithUndo
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithUndo
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.YourGroupsNavGraph
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.destinations.CreateActivityScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination

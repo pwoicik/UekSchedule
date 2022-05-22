@@ -10,5 +10,6 @@ import dagger.Module
 abstract class RepositoryModule {
 
     @Binds
+    @Suppress("UNUSED")
     internal abstract fun bindRepository(impl: ScheduleRepositoryImpl): ScheduleRepository
 }

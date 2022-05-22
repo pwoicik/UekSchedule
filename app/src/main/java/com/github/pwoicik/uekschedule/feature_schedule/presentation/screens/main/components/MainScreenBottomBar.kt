@@ -5,7 +5,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.NavigationBar
+import com.github.pwoicik.uekschedule.presentation.components.NavigationBar
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.MainScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 

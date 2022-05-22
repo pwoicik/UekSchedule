@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SmallTopBarWithSearchColors
+import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.scheduleEntriesList.ScheduleEntriesListScaffoldColors
 
@@ -38,6 +38,10 @@ fun ScheduleScaffold(
     ScheduleEntriesListScaffold(
         title = stringResource(R.string.app_name),
         isSearchFieldVisible = isSearchFieldVisible,
+        dismissSearchField = {
+            onSearchValueChange(TextFieldValue())
+            isSearchFieldVisible = false
+        },
         searchValue = searchValue,
         onSearchValueChange = onSearchValueChange,
         onSearchValueClear = {

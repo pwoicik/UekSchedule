@@ -7,6 +7,7 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositories {
         google()
         mavenCentral()
@@ -17,9 +18,12 @@ rootProject.name = "UEK Schedule"
 
 include(
     ":app",
-    ":common",
+    ":resources",
+    ":common:jvm",
+    ":common:android",
     ":model",
     ":db",
     ":api",
-    ":repository"
+    ":repository",
+    ":features:schedule"
 )

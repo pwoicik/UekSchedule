@@ -7,9 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithError
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithLoading
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarWithLoading
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithLoading
+import com.github.pwoicik.uekschedule.presentation.components.SnackbarWithLoading
 
 @Composable
 fun MainScreenSnackbarHost(hostState: SnackbarHostState) {
@@ -70,7 +70,7 @@ fun MainScreenDismissibleActionSnackbar(
 class SnackbarVisualsWithSuccess(
     message: String,
     override val actionLabel: String? = null
-) : com.github.pwoicik.uekschedule.feature_schedule.presentation.components.SnackbarVisualsWithSuccess(message) {
+) : com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithSuccess(message) {
     override val duration: SnackbarDuration = SnackbarDuration.Indefinite
 }
 

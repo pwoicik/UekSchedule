@@ -2,7 +2,7 @@ package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.pre
 
 import androidx.annotation.StringRes
 import com.github.pwoicik.uekschedule.R
-import com.github.pwoicik.uekschedule.feature_schedule.domain.model.Preferences
+import com.github.pwoicik.uekschedule.domain.model.Preferences
 
 data class PreferencesState(
 

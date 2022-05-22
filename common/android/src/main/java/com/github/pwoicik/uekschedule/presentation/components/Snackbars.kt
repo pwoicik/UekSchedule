@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.components
+package com.github.pwoicik.uekschedule.presentation.components
 
 import android.content.Context
 import androidx.compose.animation.core.animateFloatAsState
@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.R
+import com.github.pwoicik.uekschedule.resources.R
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
