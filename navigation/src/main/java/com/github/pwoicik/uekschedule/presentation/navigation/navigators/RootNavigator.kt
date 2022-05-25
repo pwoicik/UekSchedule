@@ -5,10 +5,10 @@ import com.github.pwoicik.uekschedule.features.preferences.presentation.screens.
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview.SingleGroupSchedulePreviewNavigator
 
 class RootNavigator(
-    private val navController: NavHostController
+    private val rootNavController: NavHostController
 ) : PreferencesNavigator, SingleGroupSchedulePreviewNavigator {
 
     override fun navigateUp() {
-        navController.navigateUp()
+        rootNavController.navigateUp()
     }
 }

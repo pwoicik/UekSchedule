@@ -8,18 +8,18 @@ import com.github.pwoicik.uekschedule.features.search.presentation.screens.allGr
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 class MainNavigator(
-    private val navigator: DestinationsNavigator,
-    private val rootNavigator: DestinationsNavigator
+    private val mainNavController: DestinationsNavigator,
+    private val rootNavController: DestinationsNavigator
 ) : AllGroupsNavigator, CreateActivityNavigator, ScheduleNavigator {
     override fun navigateUp() {
-        navigator.navigateUp()
+        mainNavController.navigateUp()
     }
 
     override fun openPreferences() {
-        rootNavigator.navigate(PreferencesScreenDestination)
+        rootNavController.navigate(PreferencesScreenDestination)
     }
 
     override fun openSingleGroupSchedulePreview(groupId: Long, groupName: String) {
-        rootNavigator.navigate(SingleGroupSchedulePreviewScreenDestination(groupId, groupName))
+        rootNavController.navigate(SingleGroupSchedulePreviewScreenDestination(groupId, groupName))
     }
 }

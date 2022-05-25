@@ -26,7 +26,7 @@ import timber.log.Timber
 @Destination
 @Composable
 internal fun YourGroupsScreen(
-    navigator: DestinationsNavigator,
+    mainNavigator: DestinationsNavigator,
     rootNavigator: DestinationsNavigator
 ) {
     val navController = rememberNavController()
@@ -57,11 +57,11 @@ internal fun YourGroupsScreen(
             modifier = Modifier.padding(innerPadding),
             dependenciesContainerBuilder = {
                 val yourGroupsNavigator =
-                    remember(destinationsNavigator, navigator, rootNavigator) {
+                    remember(destinationsNavigator, mainNavigator, rootNavigator) {
                         YourGroupsNavigator(
-                            navigator = destinationsNavigator,
-                            mainNavigator = navigator,
-                            rootNavigator = rootNavigator
+                            yourGroupsNavController = destinationsNavigator,
+                            mainNavController = mainNavigator,
+                            rootNavController = rootNavigator
                         )
                     }
                 dependency(yourGroupsNavigator as OtherActivitiesNavigator)

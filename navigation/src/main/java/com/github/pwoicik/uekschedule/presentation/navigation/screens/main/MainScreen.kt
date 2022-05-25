@@ -17,16 +17,18 @@ import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWit
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.presentation.navigation.NavGraphs
 import com.github.pwoicik.uekschedule.presentation.navigation.navigators.MainNavigator
+import com.github.pwoicik.uekschedule.presentation.navigation.screens.destinations.YourGroupsScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.components.MainScreenScaffold
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.components.SnackbarVisualsWithPending
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.components.SnackbarVisualsWithSuccess
+import com.github.pwoicik.uekschedule.presentation.navigation.screens.yourGroups.YourGroupsScreen
 import com.github.pwoicik.uekschedule.presentation.util.LocalBottomBarHeight
 import com.github.pwoicik.uekschedule.presentation.util.UpdateStatus
 import com.github.pwoicik.uekschedule.presentation.util.openPlayStorePage
 import com.github.pwoicik.uekschedule.presentation.util.updateApp
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.navigation.dependency
 import com.ramcosta.composedestinations.navigation.navigate
@@ -38,11 +40,10 @@ import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RootNavGraph(start = true)
 @Destination
 @Composable
 internal fun MainScreen(
-    parentNavigator: DestinationsNavigator
+    rootNavigator: DestinationsNavigator
 ) {
     val navController = rememberNavController()
     val currentDestination by navController.currentDestinationAsState()
@@ -58,7 +59,9 @@ internal fun MainScreen(
         delay(2.seconds)
         context.updateApp().collectLatest { status ->
             when (status) {
-                UpdateStatus.Canceled -> { snackbarHostState.currentSnackbarData?.dismiss() }
+                UpdateStatus.Canceled -> {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                }
                 is UpdateStatus.Downloading -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
@@ -121,14 +124,21 @@ internal fun MainScreen(
                 navController = navController,
                 modifier = Modifier.padding(WindowInsets.combinedBottomPaddingValues()),
                 dependenciesContainerBuilder = {
-                    val mainNavigator = remember(destinationsNavigator, parentNavigator) {
-                        MainNavigator(destinationsNavigator, parentNavigator)
+                    val mainNavigator = remember(destinationsNavigator, rootNavigator) {
+                        MainNavigator(destinationsNavigator, rootNavigator)
                     }
                     dependency(mainNavigator as AllGroupsNavigator)
                     dependency(mainNavigator as CreateActivityNavigator)
                     dependency(mainNavigator as ScheduleNavigator)
                 }
-            )
+            ) {
+                composable(YourGroupsScreenDestination) {
+                    YourGroupsScreen(
+                        mainNavigator = destinationsNavigator,
+                        rootNavigator = rootNavigator
+                    )
+                }
+            }
         }
     }
 }
