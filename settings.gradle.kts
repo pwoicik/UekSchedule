@@ -25,5 +25,11 @@ include(
     ":db",
     ":api",
     ":repository",
-    ":features:schedule"
+    ":features:schedule",
+    ":features:groups",
+    ":features:subjects",
+    ":features:activities",
+    ":features:preferences",
+    ":features:search",
+    ":navigation"
 )

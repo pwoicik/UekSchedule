@@ -40,6 +40,8 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.room.ksp)
+    
+    implementation(libs.datastore)
 
     implementation(libs.timber)
 

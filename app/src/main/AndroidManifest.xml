@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UEKSchedule">
         <activity
-            android:name=".feature_schedule.presentation.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.UEKSchedule.NoActionBar"
             android:windowSoftInputMode="adjustResize">

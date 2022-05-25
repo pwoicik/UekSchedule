@@ -2,19 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
-}
-
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
-    }
 }
 
 android {
@@ -77,43 +65,26 @@ android {
 }
 
 dependencies {
-    implementation(project(":resources"))
-    implementation(project(":common:jvm"))
     implementation(project(":common:android"))
+    implementation(project(":common:jvm"))
     implementation(project(":model"))
+    implementation(project(":navigation"))
     implementation(project(":repository"))
+    implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
-    implementation(libs.material)
+    implementation(libs.lifecycle.runtime)
+
+    implementation(libs.compose.activity)
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
-    implementation(libs.compose.icons)
-
-    implementation(libs.lifecycle.runtime)
-    implementation(libs.lifecycle.viewmodel)
-
-    implementation(libs.destinations)
-    ksp(libs.destinations.ksp)
 
     implementation(libs.accompanist.uicontroller)
-    implementation(libs.accompanist.flowlayout)
-
-    implementation(libs.datastore)
 
     implementation(libs.hilt)
     kapt(libs.hilt.kapt)
-    implementation(libs.hilt.navigation)
 
     implementation(libs.timber)
-
-    implementation(libs.play.core)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.android)
-    androidTestImplementation(libs.espresso)
-    androidTestImplementation(libs.compose.test)
-
-    debugImplementation(libs.compose.tooling)
 }

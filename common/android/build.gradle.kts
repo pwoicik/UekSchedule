@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -44,6 +45,9 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
+
+    implementation(libs.destinations)
+    ksp(libs.destinations.ksp)
 
     implementation(libs.play.core)
 
