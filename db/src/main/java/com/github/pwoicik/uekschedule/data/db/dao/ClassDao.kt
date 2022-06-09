@@ -15,9 +15,9 @@ interface ClassDao {
         select *
         from classes c
         where
-            group_id in (
+            schedulable_id in (
                 select id
-                from groups
+                from schedulables
                 where is_favorite = 1
             )
             and
@@ -25,7 +25,7 @@ interface ClassDao {
                 select 0
                 from ignored_subjects i
                 where
-                    i.group_id = c.group_id
+                    i.schedulable_id = c.schedulable_id
                     and
                     i.name = c.subject
                     and

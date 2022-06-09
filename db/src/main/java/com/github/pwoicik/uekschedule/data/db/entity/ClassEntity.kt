@@ -7,20 +7,20 @@ import java.time.ZonedDateTime
 
 @Entity(
     tableName = "classes",
-    primaryKeys = ["group_id", "start_datetime"],
+    primaryKeys = ["schedulable_id", "start_datetime"],
     foreignKeys = [
         ForeignKey(
-            entity = GroupEntity::class,
+            entity = SchedulableEntity::class,
             parentColumns = ["id"],
-            childColumns = ["group_id"],
+            childColumns = ["schedulable_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class ClassEntity(
 
-    @ColumnInfo(name = "group_id")
-    val groupId: Long = 0L,
+    @ColumnInfo(name = "schedulable_id")
+    val schedulableId: Long = 0L,
 
     val subject: String,
 
@@ -35,6 +35,9 @@ data class ClassEntity(
     val details: String? = null,
 
     val teachers: List<String>? = null,
+
+    @ColumnInfo(defaultValue = "null")
+    val groups: List<String>? = null,
 
     val location: String? = null
 )

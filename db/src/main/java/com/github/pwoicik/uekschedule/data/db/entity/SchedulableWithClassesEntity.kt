@@ -3,14 +3,14 @@ package com.github.pwoicik.uekschedule.data.db.entity
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class GroupWithClassesEntity(
+data class SchedulableWithClassesEntity(
 
     @Embedded
-    val group: GroupEntity,
+    val schedulable: SchedulableEntity,
 
     @Relation(
         parentColumn = "id",
-        entityColumn = "group_id"
+        entityColumn = "schedulable_id"
     )
     val classes: List<ClassEntity>
 )
