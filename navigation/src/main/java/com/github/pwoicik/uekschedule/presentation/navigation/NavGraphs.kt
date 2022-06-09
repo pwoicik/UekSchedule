@@ -7,11 +7,11 @@ import com.github.pwoicik.uekschedule.features.groups.presentation.screens.saved
 import com.github.pwoicik.uekschedule.features.preferences.presentation.screens.preferences.destinations.PreferencesScreenDestination
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.ScheduleScreenDestination
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
-import com.github.pwoicik.uekschedule.features.search.presentation.screens.allGroups.destinations.AllGroupsScreenDestination
+import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.destinations.SearchScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.destinations.MainScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.destinations.YourGroupsScreenDestination
 
-object NavGraphs {
+internal object NavGraphs {
 
     val yourGroups = NavGraph(
         route = "your_groups",
@@ -27,7 +27,7 @@ object NavGraphs {
         route = "main",
         startRoute = ScheduleScreenDestination,
         destinations = listOf(
-            AllGroupsScreenDestination,
+            SearchScreenDestination,
             CreateActivityScreenDestination,
             ScheduleScreenDestination,
             YourGroupsScreenDestination

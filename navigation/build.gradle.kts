@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation(project(":common:android"))
+    implementation(project(":model"))
     implementation(project(":features:activities"))
     implementation(project(":features:groups"))
     implementation(project(":features:preferences"))

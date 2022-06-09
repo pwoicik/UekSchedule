@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.otherActivities.OtherActivitiesNavigator
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.savedGroups.SavedGroupsNavigator
 import com.github.pwoicik.uekschedule.presentation.navigation.NavGraphs
-import com.github.pwoicik.uekschedule.presentation.navigation.appDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.navigators.YourGroupsNavigator
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
@@ -32,9 +31,8 @@ internal fun YourGroupsScreen(
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
-    SideEffect {
-        Timber.tag("mainScreen navGraph destination")
-            .d(currentBackStackEntry?.appDestination()?.route)
+    LaunchedEffect(currentBackStackEntry) {
+        Timber.tag("yourGroups navGraph destination").d(currentBackStackEntry?.destination?.route)
     }
 
     Scaffold(

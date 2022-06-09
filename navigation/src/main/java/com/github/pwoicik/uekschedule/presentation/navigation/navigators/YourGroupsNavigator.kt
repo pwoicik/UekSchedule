@@ -5,7 +5,7 @@ import com.github.pwoicik.uekschedule.features.activities.presentation.screens.o
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.groupSubjects.destinations.GroupSubjectsScreenDestination
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.savedGroups.SavedGroupsNavigator
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
-import com.github.pwoicik.uekschedule.features.search.presentation.screens.allGroups.destinations.AllGroupsScreenDestination
+import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.destinations.SearchScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 class YourGroupsNavigator(
@@ -17,8 +17,8 @@ class YourGroupsNavigator(
         mainNavController.navigate(CreateActivityScreenDestination(activityId))
     }
 
-    override fun openAllGroups() {
-        mainNavController.navigate(AllGroupsScreenDestination)
+    override fun openSearch() {
+        mainNavController.navigate(SearchScreenDestination)
     }
 
     override fun openGroupSubjects(groupId: Long, groupName: String) {

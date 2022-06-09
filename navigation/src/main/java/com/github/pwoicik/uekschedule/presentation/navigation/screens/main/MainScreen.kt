@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.CreateActivityNavigator
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedule.ScheduleNavigator
-import com.github.pwoicik.uekschedule.features.search.presentation.screens.allGroups.AllGroupsNavigator
+import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.SearchNavigator
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.presentation.navigation.NavGraphs
@@ -48,9 +48,8 @@ internal fun MainScreen(
     val navController = rememberNavController()
     val currentDestination by navController.currentDestinationAsState()
 
-    SideEffect {
-        Timber.tag("mainScreen navGraph destination")
-            .d(currentDestination?.route.toString())
+    LaunchedEffect(currentDestination) {
+        Timber.tag("mainScreen navGraph destination").d(currentDestination?.route.toString())
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -127,7 +126,7 @@ internal fun MainScreen(
                     val mainNavigator = remember(destinationsNavigator, rootNavigator) {
                         MainNavigator(destinationsNavigator, rootNavigator)
                     }
-                    dependency(mainNavigator as AllGroupsNavigator)
+                    dependency(mainNavigator as SearchNavigator)
                     dependency(mainNavigator as CreateActivityNavigator)
                     dependency(mainNavigator as ScheduleNavigator)
                 }

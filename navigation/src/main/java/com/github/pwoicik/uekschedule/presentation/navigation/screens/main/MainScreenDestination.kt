@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main
+package com.github.pwoicik.uekschedule.presentation.navigation.screens.main
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.ManageSearch
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.ScheduleScreenDestination
-import com.github.pwoicik.uekschedule.features.search.presentation.screens.allGroups.destinations.AllGroupsScreenDestination
+import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.destinations.SearchScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.destinations.YourGroupsScreenDestination
 import com.ramcosta.composedestinations.spec.Direction
 
@@ -20,5 +20,5 @@ internal enum class MainScreenDestination(
 
     ScheduleScreen(ScheduleScreenDestination, Icons.Default.CalendarToday, R.string.schedule),
     YourGroupsScreen(YourGroupsScreenDestination, Icons.Default.Groups, R.string.your_groups),
-    AllGroupsScreen(AllGroupsScreenDestination, Icons.Default.ManageSearch, R.string.all_groups)
+    SearchScreen(SearchScreenDestination, Icons.Default.ManageSearch, R.string.search)
 }

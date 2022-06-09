@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package com.github.pwoicik.uekschedule.presentation.navigation
 
 import androidx.compose.runtime.Composable
@@ -11,7 +13,7 @@ import com.ramcosta.composedestinations.utils.destination
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-data class NavGraph(
+internal data class NavGraph(
     override val route: String,
     override val startRoute: Route,
     val destinations: List<DestinationSpec<*>>,
@@ -26,25 +28,25 @@ data class NavGraph(
  * If this [Route] is a [NavGraph], returns its
  * start [DestinationSpec].
  */
-val Route.startAppDestination: DestinationSpec<*>
+internal val Route.startAppDestination: DestinationSpec<*>
     get() = startDestination
 
 /**
  * Finds the [DestinationSpec] correspondent to this [NavBackStackEntry].
  */
-fun NavBackStackEntry.appDestination() = destination()
+internal fun NavBackStackEntry.appDestination() = destination()
 
 /**
  * Emits the currently active [DestinationSpec] whenever it changes. If
  * there is no active [DestinationSpec], no item will be emitted.
  */
-val NavController.appCurrentDestinationFlow: Flow<DestinationSpec<*>>
+internal val NavController.appCurrentDestinationFlow: Flow<DestinationSpec<*>>
     get() = currentBackStackEntryFlow.map { it.appDestination() }
 
 /**
  * Gets the current [DestinationSpec] as a [State].
  */
 @Composable
-fun NavController.appCurrentDestinationAsState(): State<DestinationSpec<*>?> {
+internal fun NavController.appCurrentDestinationAsState(): State<DestinationSpec<*>?> {
     return appCurrentDestinationFlow.collectAsState(initial = null)
 }

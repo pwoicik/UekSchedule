@@ -5,7 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import com.github.pwoicik.uekschedule.feature_schedule.presentation.screens.main.MainScreenDestination
+import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.MainScreenDestination
 import com.ramcosta.composedestinations.spec.DestinationSpec
 
 @OptIn(ExperimentalMaterial3Api::class)

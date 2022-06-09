@@ -17,7 +17,7 @@ suspend fun Context.updateApp(): Flow<UpdateStatus> {
 
     return AppUpdateManagerFactory.create(this.applicationContext)
         .requestUpdateFlow()
-        .catch { log.d(it) }
+        .catch { log.e(it) }
         .mapNotNull { result ->
             var emission: UpdateStatus? = null
             when (result) {
