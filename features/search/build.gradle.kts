@@ -6,10 +6,8 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-kotlin {
-    sourceSets.forEach {
-        it.kotlin.srcDir("build/generated/ksp/${it.name}/kotlin")
-    }
+kotlin.sourceSets.all {
+    kotlin.srcDir("build/generated/ksp/${name}/kotlin")
 }
 
 ksp {

@@ -41,6 +41,7 @@
     <string name="google_play_review">recenzję na Google Play</string>
     <string name="group_deleted">Usunięto grupę \"%s\"</string>
     <string name="group_saved">Grupa \"%s\" została zapisana!</string>
+    <string name="groups">Grupy</string>
     <string name="hide_subject">Ukryj przedmiot</string>
     <string name="location">Sala</string>
     <string name="mark_group_as_favorite">Oznacz jako ulubioną</string>
@@ -64,6 +65,7 @@
     <string name="saving_group">Zapisywanie grupy \"%s\"…</string>
     <string name="schedule">Plan zajęć</string>
     <string name="scroll_to_today">Pokaż najbliższe zajęcia</string>
+    <string name="search">Szukaj</string>
     <string name="search_entry">Szukaj zajęć</string>
     <string name="search_groups">Szukaj grupy</string>
     <string name="select_theme">Wybierz motyw</string>
@@ -71,6 +73,7 @@
     <string name="start_date">Data</string>
     <string name="start_time">Godzina rozpoczęcia</string>
     <string name="teacher">Prowadzący</string>
+    <string name="teachers">Prowadzący</string>
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_auto">Systemowy</string>
     <string name="theme_dark">Ciemny</string>

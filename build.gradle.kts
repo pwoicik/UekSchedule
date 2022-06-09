@@ -12,21 +12,25 @@ subprojects {
     }
 }
 
-fun isStable(candidate: ModuleComponentIdentifier): Boolean {
-    val group = candidate.group
-    val version = candidate.version
+val ModuleComponentIdentifier.isNotStable: Boolean
+    get() {
+        val group = group
+        val version = version
 
-    if (group == "com.tickaroo.tikxml" && version == "0.8.15") return false
-    if (group.startsWith("androidx.compose")) return true
-    if (group == "com.google.accompanist") return true
+        if (group == "com.tickaroo.tikxml" && version == "0.8.15") return false
+        if (group.startsWith("androidx.compose")) return true
+        if (group == "com.google.accompanist") return true
 
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    return stableKeyword || regex.matches(version)
-}
+        val stableKeyword =
+            listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+
+        val isStable = stableKeyword || regex.matches(version)
+        return !isStable
+    }
 
 tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
     rejectVersionIf {
-        !isStable(candidate)
+        candidate.isNotStable
     }
 }
