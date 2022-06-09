@@ -4,7 +4,7 @@ import com.tickaroo.tikxml.annotation.Attribute
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "zasob")
-data class GroupDto(
+data class SchedulableDto(
 
     @Attribute(name = "id")
     val id: Long,

@@ -1,7 +1,7 @@
 package com.github.pwoicik.uekschedule.domain.model
 
-data class GroupWithClasses(
+data class SchedulableWithClasses(
 
-    val group: Group,
+    val group: Schedulable,
     val classes: List<Class>
 )

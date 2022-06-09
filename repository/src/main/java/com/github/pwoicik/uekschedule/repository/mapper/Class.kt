@@ -9,7 +9,7 @@ import com.github.pwoicik.uekschedule.domain.model.Class
 import com.github.pwoicik.uekschedule.domain.model.ScheduleEntry
 
 internal fun ClassEntity.toClass() = Class(
-    groupId,
+    schedulableId,
     subject,
     startDateTime,
     endDateTime,
@@ -27,6 +27,7 @@ internal fun Class.toClassEntity() = ClassEntity(
     type,
     details,
     teachers,
+    TODO(),
     location
 )
 
@@ -43,7 +44,7 @@ internal fun List<ClassDto>.toClassEntities(groupId: Long): List<ClassEntity> = 
             .ifEmpty { null }
 
         ClassEntity(
-            groupId = groupId,
+            schedulableId = groupId,
             subject = dto.subject.ifBlankOrNull { dto.type.toUppercase() },
             startDateTime = convertDateTime(dto.date, dto.startTime),
             endDateTime = convertDateTime(dto.date, endTime),

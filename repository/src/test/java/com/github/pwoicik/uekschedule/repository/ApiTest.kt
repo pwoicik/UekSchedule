@@ -4,6 +4,7 @@ import com.github.pwoicik.uekschedule.common.Constants
 import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
 import com.github.pwoicik.uekschedule.data.api.ScheduleApi
 import com.github.pwoicik.uekschedule.data.db.ScheduleDatabase
+import com.github.pwoicik.uekschedule.domain.model.SchedulableType
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import kotlinx.coroutines.async
@@ -53,7 +54,7 @@ class ApiTest {
 
     @Test
     fun groupDtos_mapToModelsCorrectly(): Unit = runBlocking {
-        val groups = repo.getAllGroups().getOrThrow()
+        val groups = repo.getAllSchedulables(SchedulableType.Group).getOrThrow()
         val tasks = groups.map { group ->
             println("fetching group ${group.name}")
             async {

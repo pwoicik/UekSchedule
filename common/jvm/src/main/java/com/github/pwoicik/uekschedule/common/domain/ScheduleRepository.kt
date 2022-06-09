@@ -9,7 +9,7 @@ interface ScheduleRepository {
 
     suspend fun deleteActivity(activity: Activity)
 
-    suspend fun deleteGroup(group: Group)
+    suspend fun deleteGroup(group: Schedulable)
 
     suspend fun deleteSubjectFromIgnored(subject: Subject)
 
@@ -17,15 +17,15 @@ interface ScheduleRepository {
 
     fun getAllActivities(): Flow<List<Activity>>
 
-    suspend fun getAllGroups(): Result<List<Group>>
+    suspend fun getAllSchedulables(type: SchedulableType): Result<List<Schedulable>>
 
     fun getAllScheduleEntries(): Flow<List<ScheduleEntry>>
 
     fun getAllSubjectsForGroup(groupId: Long): Flow<List<Subject>>
 
-    suspend fun getGroupWithClasses(group: Group): GroupWithClasses
+    suspend fun getGroupWithClasses(group: Schedulable): SchedulableWithClasses
 
-    fun getSavedGroups(): Flow<List<Group>>
+    fun getSavedGroups(): Flow<List<Schedulable>>
 
     fun getSavedGroupsCount(): Flow<Int>
 
@@ -33,11 +33,11 @@ interface ScheduleRepository {
 
     suspend fun saveActivity(activity: Activity)
 
-    suspend fun saveGroup(group: Group): Result<Unit>
+    suspend fun saveSchedulable(schedulable: Schedulable): Result<Unit>
 
-    suspend fun saveGroupWithClasses(gwc: GroupWithClasses)
+    suspend fun saveGroupWithClasses(gwc: SchedulableWithClasses)
 
-    suspend fun updateGroup(group: Group)
+    suspend fun updateGroup(group: Schedulable)
 
     suspend fun updateSchedules(): Result<Unit>
 }

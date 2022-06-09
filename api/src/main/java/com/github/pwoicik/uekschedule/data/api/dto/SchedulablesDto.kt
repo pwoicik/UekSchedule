@@ -4,8 +4,8 @@ import com.tickaroo.tikxml.annotation.Element
 import com.tickaroo.tikxml.annotation.Xml
 
 @Xml(name = "plan-zajec")
-data class GroupsDto(
+data class SchedulablesDto(
 
     @Element
-    val groups: List<GroupDto>? = null
+    val schedulables: List<SchedulableDto>? = null
 )

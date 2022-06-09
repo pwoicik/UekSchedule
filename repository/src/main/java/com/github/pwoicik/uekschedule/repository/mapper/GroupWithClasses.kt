@@ -1,9 +1,9 @@
 package com.github.pwoicik.uekschedule.repository.mapper
 
 import com.github.pwoicik.uekschedule.data.db.entity.ClassEntity
-import com.github.pwoicik.uekschedule.data.db.entity.GroupWithClassesEntity
-import com.github.pwoicik.uekschedule.domain.model.GroupWithClasses
+import com.github.pwoicik.uekschedule.data.db.entity.SchedulableWithClassesEntity
+import com.github.pwoicik.uekschedule.domain.model.SchedulableWithClasses
 
-internal fun GroupWithClassesEntity.toGroupWithClasses() = GroupWithClasses(
-    group.toGroup(), classes.map(ClassEntity::toClass)
+internal fun SchedulableWithClassesEntity.toGroupWithClasses() = SchedulableWithClasses(
+    schedulable.toSchedulable(), classes.map(ClassEntity::toClass)
 )
