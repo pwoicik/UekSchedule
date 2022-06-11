@@ -21,7 +21,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
 interface SearchNavigator {
-    fun openSingleSchedulableSchedulePreview(group: Schedulable)
+    fun openSchedulePreview(schedulable: Schedulable)
 }
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -91,7 +91,7 @@ fun SearchScreen(
                     isItemButtonEnabled = !sss.isSaving,
                     onItemClick = {
                         keyboardController?.hide()
-                        navigator.openSingleSchedulableSchedulePreview(schedulable)
+                        navigator.openSchedulePreview(schedulable)
                     },
                     onSaveItemClick = {
                         viewModel.emit(

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "cde84ffa3407ebdfc4f358db0be1e98c",
+    "identityHash": "2f7142d1b6560ed65c02e416e2555075",
     "entities": [
       {
         "tableName": "schedulables",
@@ -138,7 +138,7 @@
       },
       {
         "tableName": "ignored_subjects",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`schedulable_id` INTEGER NOT NULL, `group_name` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`schedulable_id`, `name`, `type`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`schedulable_id` INTEGER NOT NULL, `schedulable_name` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`schedulable_id`, `name`, `type`))",
         "fields": [
           {
             "fieldPath": "groupId",
@@ -147,8 +147,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "groupName",
-            "columnName": "group_name",
+            "fieldPath": "schedulableName",
+            "columnName": "schedulable_name",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -242,7 +242,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cde84ffa3407ebdfc4f358db0be1e98c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2f7142d1b6560ed65c02e416e2555075')"
     ]
   }
 }

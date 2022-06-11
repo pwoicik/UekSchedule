@@ -88,6 +88,7 @@ internal fun ScheduleEntriesListItem(
         ScheduleEntrySummaryColumn(
             name = scheduleEntry.name,
             teachers = scheduleEntry.teachers,
+            groups = scheduleEntry.groups,
             details = scheduleEntry.details,
             type = scheduleEntry.type,
             location = scheduleEntry.location
@@ -121,6 +122,7 @@ private fun ScheduleEntryTimesColumn(
 private fun RowScope.ScheduleEntrySummaryColumn(
     name: String,
     teachers: List<String>,
+    groups: List<String>,
     details: String?,
     type: String?,
     location: String?
@@ -147,6 +149,18 @@ private fun RowScope.ScheduleEntrySummaryColumn(
                     teachers.forEach { teacher ->
                         Text(
                             text = teacher,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+
+            if (groups.isNotEmpty()) {
+                Column {
+                    groups.forEach { group ->
+                        Text(
+                            text = group,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )

@@ -16,8 +16,8 @@ data class SubjectEntity(
     @ColumnInfo(name = "schedulable_id")
     val groupId: Long,
 
-    @ColumnInfo(name = "group_name")
-    val groupName: String,
+    @ColumnInfo(name = "schedulable_name")
+    val schedulableName: String,
 
     val name: String,
 

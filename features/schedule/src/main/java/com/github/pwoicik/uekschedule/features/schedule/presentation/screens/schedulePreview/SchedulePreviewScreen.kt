@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview
+package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
@@ -19,20 +19,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.firstVisibleItemIndex
+import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview.components.SchedulePreviewScaffold
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
-import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview.components.SchedulePreviewScaffold
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
-interface SingleGroupSchedulePreviewNavigator {
+interface SchedulePreviewNavigator {
     fun navigateUp()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination(navArgsDelegate = SchedulePreviewNavArgs::class)
 @Composable
-fun SingleGroupSchedulePreviewScreen(
-    navigator: SingleGroupSchedulePreviewNavigator,
+fun SchedulePreviewScreen(
+    navigator: SchedulePreviewNavigator,
 ) {
     val viewModel: SchedulePreviewViewModel = hiltViewModel()
 

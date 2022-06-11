@@ -8,10 +8,10 @@ import com.tickaroo.tikxml.annotation.Xml
 data class ScheduleDto(
 
     @Attribute(name = "id")
-    val groupId: String,
+    val schedulableId: String,
 
     @Attribute(name = "nazwa")
-    val groupName: String,
+    val schedulableName: String,
 
     @Element
     val classes: List<ClassDto>? = null,

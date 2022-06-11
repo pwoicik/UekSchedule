@@ -56,12 +56,13 @@ fun TextFieldDefaults.searchTextFieldColors(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
     placeholderColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    cursorColor: Color = MaterialTheme.colorScheme.primary
+    cursorColor: Color = MaterialTheme.colorScheme.primary,
+    focusedIndicatorColor: Color = cursorColor
 ) = textFieldColors(
     textColor = textColor,
     placeholderColor = placeholderColor,
     containerColor = backgroundColor,
     cursorColor = cursorColor,
-    focusedIndicatorColor = cursorColor,
+    focusedIndicatorColor = focusedIndicatorColor,
     unfocusedIndicatorColor = placeholderColor
 )

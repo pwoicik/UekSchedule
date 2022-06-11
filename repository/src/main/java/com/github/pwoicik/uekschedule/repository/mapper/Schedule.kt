@@ -5,13 +5,15 @@ import com.github.pwoicik.uekschedule.data.db.entity.SchedulableEntity
 import com.github.pwoicik.uekschedule.data.db.entity.SchedulableWithClassesEntity
 import com.github.pwoicik.uekschedule.domain.model.SchedulableType
 
-internal fun ScheduleDto.toGroupWithClasses(): SchedulableWithClassesEntity {
-    val groupId = groupId.toLong()
+internal fun ScheduleDto.toSchedulableWithClasses(
+    type: SchedulableType
+): SchedulableWithClassesEntity {
+    val groupId = schedulableId.toLong()
 
     val schedule = SchedulableEntity(
         groupId,
-        groupName,
-        type = SchedulableType.Group
+        schedulableName,
+        type
     )
 
     val classes = classes?.toClassEntities(groupId) ?: emptyList()

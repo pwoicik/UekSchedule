@@ -16,18 +16,19 @@ internal fun ClassEntity.toClass() = Class(
     type,
     details,
     teachers,
+    groups,
     location
 )
 
 internal fun Class.toClassEntity() = ClassEntity(
-    groupId,
+    schedulableId,
     subject,
     startDateTime,
     endDateTime,
     type,
     details,
     teachers,
-    TODO(),
+    groups,
     location
 )
 
@@ -39,9 +40,12 @@ internal fun List<ClassDto>.toClassEntities(groupId: Long): List<ClassEntity> = 
     .map { dto ->
         val endTime = dto.endTime.replace(""" \(.+\)""".toRegex(), "")
         val teachers = dto.teachers
-            .filter { it.teacher.isNotEmpty() }
-            .map { it.teacher }
-            .ifEmpty { null }
+            ?.filter { it.teacher.isNotEmpty() }
+            ?.map { it.teacher }
+            ?.ifEmpty { null }
+        val groups = dto.groups
+            ?.split(", ")
+            ?.ifEmpty { null }
 
         ClassEntity(
             schedulableId = groupId,
@@ -51,6 +55,7 @@ internal fun List<ClassDto>.toClassEntities(groupId: Long): List<ClassEntity> = 
             type = dto.type,
             details = dto.details,
             teachers = teachers,
+            groups = groups,
             location = dto.location.ifEmpty { null }
         )
     }
@@ -62,5 +67,6 @@ internal fun ClassEntity.toScheduleEntry() = ScheduleEntry(
     type = type,
     details = details,
     teachers = teachers ?: emptyList(),
+    groups = groups ?: emptyList(),
     location = location
 )

@@ -29,7 +29,10 @@ interface ScheduleRepository {
 
     fun getSavedGroupsCount(): Flow<Int>
 
-    suspend fun fetchSchedule(groupId: Long): Result<List<ScheduleEntry>>
+    suspend fun fetchSchedule(
+        schedulableId: Long,
+        schedulableType: SchedulableType
+    ): Result<List<ScheduleEntry>>
 
     suspend fun saveActivity(activity: Activity)
 

@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.features.preferences.presentation.screens.preferences.PreferencesNavigator
-import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview.SingleGroupSchedulePreviewNavigator
+import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview.SchedulePreviewNavigator
 import com.github.pwoicik.uekschedule.presentation.navigation.navigators.RootNavigator
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.navigation.dependency
@@ -30,7 +30,7 @@ fun RootNavHost() {
                 RootNavigator(navController)
             }
             dependency(rootNavigator as PreferencesNavigator)
-            dependency(rootNavigator as SingleGroupSchedulePreviewNavigator)
+            dependency(rootNavigator as SchedulePreviewNavigator)
         }
     )
 }

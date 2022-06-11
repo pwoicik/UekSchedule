@@ -5,8 +5,8 @@ import com.github.pwoicik.uekschedule.features.activities.presentation.screens.d
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.groupSubjects.destinations.GroupSubjectsScreenDestination
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.savedGroups.destinations.SavedGroupsScreenDestination
 import com.github.pwoicik.uekschedule.features.preferences.presentation.screens.preferences.destinations.PreferencesScreenDestination
+import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.SchedulePreviewScreenDestination
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.ScheduleScreenDestination
-import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.destinations.SearchScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.destinations.MainScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.destinations.YourGroupsScreenDestination
@@ -43,7 +43,7 @@ internal object NavGraphs {
         destinations = listOf(
             MainScreenDestination,
             PreferencesScreenDestination,
-            SingleGroupSchedulePreviewScreenDestination
+            SchedulePreviewScreenDestination
         ),
         nestedNavGraphs = listOf(
             main

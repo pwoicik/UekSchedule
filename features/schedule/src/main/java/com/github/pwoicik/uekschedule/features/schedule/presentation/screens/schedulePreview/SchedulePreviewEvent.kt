@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview
+package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview
 
 import androidx.compose.ui.text.input.TextFieldValue
 

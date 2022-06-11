@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.domain.model.Schedulable
+import com.github.pwoicik.uekschedule.domain.model.SchedulableType
 import com.github.pwoicik.uekschedule.features.groups.R
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithUndo
 import com.ramcosta.composedestinations.annotation.Destination
@@ -30,7 +31,11 @@ import kotlin.math.roundToInt
 interface SavedGroupsNavigator {
     fun openSearch()
     fun openGroupSubjects(groupId: Long, groupName: String)
-    fun openSingleGroupSchedulePreview(groupId: Long, groupName: String)
+    fun openSchedulePreview(
+        schedulableId: Long,
+        schedulableName: String,
+        schedulableType: SchedulableType
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +94,7 @@ fun SavedGroupsScreen(
                     GroupList(
                         groups = state.groups!!,
                         onGroupClick = {
-                            navigator.openSingleGroupSchedulePreview(it.id, it.name)
+                            navigator.openSchedulePreview(it.id, it.name, it.type)
                         },
                         onFavoriteGroupClick = { viewModel.emit(SavedGroupsEvent.FavoriteGroup(it)) },
                         onEditGroupClick = {

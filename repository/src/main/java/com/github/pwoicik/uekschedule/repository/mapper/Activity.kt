@@ -30,6 +30,7 @@ internal fun ActivityEntity.toScheduleEntries(): List<ScheduleEntry> {
                     type = type,
                     details = null,
                     teachers = listOfNotNull(teacher),
+                    groups = emptyList(),
                     location = location
                 )
             )
@@ -58,6 +59,7 @@ internal fun ActivityEntity.toScheduleEntries(): List<ScheduleEntry> {
                             type = type,
                             details = null,
                             teachers = listOfNotNull(teacher),
+                            groups = emptyList(),
                             location = location
                         )
                     )

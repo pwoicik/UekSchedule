@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview.components
+package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview.components
 
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.imePadding
@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.common.R
-import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesListScaffoldColors
+import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
 
 @Composable
 internal fun SchedulePreviewScaffold(

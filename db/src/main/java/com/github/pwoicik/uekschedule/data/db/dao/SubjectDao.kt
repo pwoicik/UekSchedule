@@ -9,7 +9,7 @@ interface SubjectDao {
 
     @Query(
         """
-        select c.schedulable_id, g.name as group_name, c.subject as name, c.type
+        select c.schedulable_id, g.name as schedulable_name, c.subject as name, c.type
         from schedulables g
             inner join classes c
             on c.schedulable_id = g.id

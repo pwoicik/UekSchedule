@@ -1,4 +1,4 @@
-package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.singleGroupSchedulePreview
+package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
 import com.github.pwoicik.uekschedule.common.util.timeFlow
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.filterEntries
-import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.SingleGroupSchedulePreviewScreenDestination
+import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.destinations.SchedulePreviewScreenDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -22,9 +22,9 @@ internal class SchedulePreviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val navArgs = SingleGroupSchedulePreviewScreenDestination.argsFrom(savedStateHandle)
+    private val navArgs = SchedulePreviewScreenDestination.argsFrom(savedStateHandle)
 
-    private val _state = MutableStateFlow(SchedulePreviewState(groupName = navArgs.groupName))
+    private val _state = MutableStateFlow(SchedulePreviewState(groupName = navArgs.schedulableName))
     val state = _state.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<UiEvent>(replay = 1)
@@ -39,16 +39,17 @@ internal class SchedulePreviewViewModel @Inject constructor(
 
     private var refreshJob: Job? = null
     private fun refreshData() {
-        if (refreshJob?.isActive == true) return
+        refreshJob?.cancel()
         refreshJob = viewModelScope.launch {
             _eventFlow.emit(UiEvent.HideSnackbar)
             _state.update {
                 it.copy(isRefreshing = true)
             }
 
-            val result = repo.fetchSchedule(navArgs.groupId).onFailure {
-                _eventFlow.emit(UiEvent.ShowErrorSnackbar)
-            }
+            val result =
+                repo.fetchSchedule(navArgs.schedulableId, navArgs.schedulableType).onFailure {
+                    _eventFlow.emit(UiEvent.ShowErrorSnackbar)
+                }
             _state.update {
                 val entries = result.getOrDefault(it.entries ?: emptyList())
                 it.copy(
