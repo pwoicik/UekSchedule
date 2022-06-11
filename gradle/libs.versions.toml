@@ -1,6 +1,7 @@
 [versions]
 accompanist = "0.24.10-beta"
 agp = "7.2.1"
+androidx_test = "1.4.0"
 appcompat = "1.4.2"
 benmanesversion = "0.42.0"
 compose = "1.2.0-beta03"
@@ -35,6 +36,7 @@ accompanist_uicontroller = { module = "com.google.accompanist:accompanist-system
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 androidx_appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx_core_ktx = { module = "androidx.core:core-ktx", version.ref = "core.ktx" }
+androidx_test_runner = { module = "androidx.test:runner", version.ref = "androidx.test" }
 compose_activity = { module = "androidx.activity:activity-compose", version.ref = "compose.activity" }
 compose_icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose_material3 = { module = "androidx.compose.material3:material3", version.ref = "compose.material3" }
@@ -68,6 +70,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 room_ksp = { module = "androidx.room:room-compiler", version.ref = "room" }
 room_ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room_runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room_testing = { module = "androidx.room:room-testing", version.ref = "room" }
 tikxml_annotation = { module = "com.tickaroo.tikxml:annotation", version.ref = "tikxml" }
 tikxml_core = { module = "com.tickaroo.tikxml:core", version.ref = "tikxml" }
 tikxml_htmlescape = { module = "com.tickaroo.tikxml:converter-htmlescape", version.ref = "tikxml" }

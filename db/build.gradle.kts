@@ -26,6 +26,12 @@ android {
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
     }
 
     buildTypes {
@@ -50,10 +56,12 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.room.ksp)
+    androidTestImplementation(libs.room.testing)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)
 
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.junit.android)
 }
