@@ -14,7 +14,7 @@ import androidx.room.Entity
 data class SubjectEntity(
 
     @ColumnInfo(name = "schedulable_id")
-    val groupId: Long,
+    val schedulableId: Long,
 
     @ColumnInfo(name = "schedulable_name")
     val schedulableName: String,

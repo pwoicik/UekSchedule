@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "2f7142d1b6560ed65c02e416e2555075",
+    "identityHash": "e8d293ab02ba39a37160edd1e427b2a1",
     "entities": [
       {
         "tableName": "schedulables",
@@ -41,17 +41,7 @@
           ],
           "autoGenerate": false
         },
-        "indices": [
-          {
-            "name": "index_schedulables_type",
-            "unique": false,
-            "columnNames": [
-              "type"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_schedulables_type` ON `${TABLE_NAME}` (`type`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": []
       },
       {
@@ -141,7 +131,7 @@
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`schedulable_id` INTEGER NOT NULL, `schedulable_name` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`schedulable_id`, `name`, `type`))",
         "fields": [
           {
-            "fieldPath": "groupId",
+            "fieldPath": "schedulableId",
             "columnName": "schedulable_id",
             "affinity": "INTEGER",
             "notNull": true
@@ -242,7 +232,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2f7142d1b6560ed65c02e416e2555075')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e8d293ab02ba39a37160edd1e427b2a1')"
     ]
   }
 }

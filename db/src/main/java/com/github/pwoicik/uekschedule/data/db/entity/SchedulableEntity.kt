@@ -13,7 +13,7 @@ data class SchedulableEntity(
 
     val name: String,
 
-    @ColumnInfo(defaultValue = "0", index = true)
+    @ColumnInfo(defaultValue = "0")
     val type: SchedulableType,
 
     @ColumnInfo(name = "is_favorite", defaultValue = "1")
