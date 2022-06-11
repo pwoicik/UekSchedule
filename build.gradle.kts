@@ -17,9 +17,9 @@ val ModuleComponentIdentifier.isNotStable: Boolean
         val group = group
         val version = version
 
-        if (group == "com.tickaroo.tikxml" && version == "0.8.15") return false
-        if (group.startsWith("androidx.compose")) return true
-        if (group == "com.google.accompanist") return true
+        if (group == "com.tickaroo.tikxml" && version == "0.8.15") return true
+        if (group.startsWith("androidx.compose")) return false
+        if (group == "com.google.accompanist") return false
 
         val stableKeyword =
             listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
