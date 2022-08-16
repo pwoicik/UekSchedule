@@ -147,8 +147,7 @@ fun ScheduleScreen(
                         Text(stringResource(R.string.no_saved_groups))
                     }
                 }
-                null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
-                }
+                null -> Unit
             }
         }
     }

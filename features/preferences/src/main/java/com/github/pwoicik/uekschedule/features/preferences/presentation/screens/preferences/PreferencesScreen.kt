@@ -25,7 +25,6 @@ interface PreferencesNavigator {
     fun navigateUp()
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun PreferencesScreen(

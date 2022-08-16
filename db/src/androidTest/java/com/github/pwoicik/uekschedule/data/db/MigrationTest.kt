@@ -21,27 +21,27 @@ class MigrationTest {
         helper.createDatabase(TEST_DB, 2).apply {
             execSQL(
                 """
-                insert into groups values(
-                    1,
-                    "group",
-                    true
-                )
-            """.trimIndent()
+                    insert into groups values(
+                        1,
+                        "group",
+                        true
+                    )
+                """.trimIndent()
             )
 
             execSQL(
                 """
-                insert into classes values(
-                    1,
-                    "subject",
-                    1,
-                    1,
-                    "type",
-                    "details",
-                    "teachers",
-                    "location"
-                )
-            """.trimIndent()
+                    insert into classes values(
+                        1,
+                        "subject",
+                        1,
+                        1,
+                        "type",
+                        "details",
+                        "teachers",
+                        "location"
+                    )
+                """.trimIndent()
             )
 
             close()

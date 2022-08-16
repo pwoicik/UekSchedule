@@ -119,7 +119,7 @@ fun SchedulePreviewScreen(
                         timeNow = timeNow
                     )
                 }
-                else -> { /*DISPLAY NOTHING BEFORE FIRST SYNC*/ }
+                else -> Unit
             }
         }
     }

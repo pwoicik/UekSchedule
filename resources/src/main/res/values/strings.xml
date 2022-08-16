@@ -4,14 +4,6 @@
         <item quantity="other">STARTS IN\n%d DAYS</item>
     </plurals>
 
-    <string name="about_app">About the app</string>
-    <string name="about_section1_part1">If you like the app consider rating it on</string>
-    <string name="about_section1_part2">If you have encountered any problems or have any suggestions regarding possible improvements, you can contact the developer through a</string>
-    <string name="about_section1_part3">or directly via</string>
-    <string name="about_section1_title">For users</string>
-    <string name="about_section2_part1" translatable="false">If you are an app developer and are interested in contributing to the project you can find the source code of this application on</string>
-    <string name="about_section2_part2" translatable="false">Feel free to fork the repository and change whatever you like. If you make changes that you consider valuable to the project you may create a pull request. In case of any questions or problems you can open an issue/discussion or contact me directly via</string>
-    <string name="about_section2_title">For developers</string>
     <string name="activity_data_error">Wrong input! Check fields highlighted in red</string>
     <string name="activity_deleted">Deleted activity \"%s\"</string>
     <string name="activity_name">Activity name</string>
@@ -35,14 +27,8 @@
     <string name="dynamic_theme_description">Colors based on your wallpaper</string>
     <string name="edit_activity">Edit activity</string>
     <string name="edit_classes">Edit classes</string>
-    <string name="email" translatable="false">email</string>
     <string name="entry_search_placeholder">Subject or teacher</string>
-    <string name="github" translatable="false">GitHub</string>
-    <string name="github_page">See on GitHub</string>
     <string name="go_back">Go back</string>
-    <string name="google_play" translatable="false">Google Play</string>
-    <string name="google_play_page">See on Google Play</string>
-    <string name="google_play_review">Google Play review</string>
     <string name="group_deleted">Deleted group \"%s\"</string>
     <string name="group_saved">Group \"%s\" has been saved!</string>
     <string name="groups">Groups</string>

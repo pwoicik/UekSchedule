@@ -10,9 +10,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -241,60 +243,57 @@ private fun RowScope.ScheduleEntrySummaryColumn(
 private fun ScheduleEntryStatusColumn(
     status: ScheduleEntryStatus
 ) {
-    val context = LocalContext.current
     Column(horizontalAlignment = Alignment.End) {
-        ProvideTextStyle(MaterialTheme.typography.bodyMedium) {
-            when (status) {
-                is ScheduleEntryStatus.NotStarted -> {
-                    val startsIn = status.minutesToStart
-                    val text = when {
-                        startsIn < 1 ->
-                            stringResource(R.string.class_starts_in_less_than_1_min)
-                        startsIn < 60 ->
-                            stringResource(R.string.class_starts_in_minutes, startsIn)
-                        startsIn > 1440 -> {
-                            val days = startsIn / 1440
-                            context
-                                .resources
-                                .getQuantityString(
-                                    R.plurals.class_starts_in_days,
-                                    days.toInt(),
-                                    days
-                                )
-                        }
-                        else ->
-                            stringResource(
-                                R.string.class_starts_in_hours,
-                                startsIn / 60
-                            )
-                    }
+        ProvideTextStyle(MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.End)) {
+            val text = getStatusText(status)
+            Text(
+                text = text,
+                color = if (status is ScheduleEntryStatus.InProgress) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    LocalTextStyle.current.color
+                }
+            )
+        }
+    }
+}
 
-                    Text(
-                        text = text,
-                        textAlign = TextAlign.End
-                    )
-                }
-                is ScheduleEntryStatus.InProgress -> {
-                    val endsIn = status.minutesRemaining
-                    val text = when {
-                        endsIn < 1 -> stringResource(R.string.class_ends_in_less_than_1_min)
-                        else -> stringResource(R.string.class_ends_in_minutes, endsIn)
-                    }
-
-                    Text(
-                        text = text,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.End
-                    )
-                }
-                is ScheduleEntryStatus.Ended -> {
-                    Text(
-                        text = stringResource(R.string.class_ended),
-                        textAlign = TextAlign.End
-                    )
-                }
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun getStatusText(status: ScheduleEntryStatus) = when (status) {
+    is ScheduleEntryStatus.NotStarted -> {
+        when (val startsIn = status.minutesToStart) {
+            in 1 until 60 -> {
+                stringResource(R.string.class_starts_in_minutes, startsIn)
+            }
+            in 60 until 1440 -> {
+                stringResource(R.string.class_starts_in_hours, startsIn / 60)
+            }
+            in 1440..Long.MAX_VALUE -> {
+                val days = (startsIn / 1440).toInt()
+                pluralStringResource(
+                    id = R.plurals.class_starts_in_days,
+                    count = days,
+                    days
+                )
+            }
+            else -> {
+                stringResource(R.string.class_starts_in_less_than_1_min)
             }
         }
+    }
+    is ScheduleEntryStatus.InProgress -> {
+        when (val endsIn = status.minutesRemaining) {
+            in 1..Int.MAX_VALUE -> {
+                stringResource(R.string.class_ends_in_minutes, endsIn)
+            }
+            else -> {
+                stringResource(R.string.class_ends_in_less_than_1_min)
+            }
+        }
+    }
+    is ScheduleEntryStatus.Ended -> {
+        stringResource(R.string.class_ended)
     }
 }
 

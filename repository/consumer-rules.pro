@@ -1,4 +1,5 @@
 -keep class com.tickaroo.tikxml.** { *; }
+#noinspection ShrinkerUnresolvedReference
 -keep @com.tickaroo.tikxml.annotation.Xml public class *
 -keep class **$$TypeAdapter { *; }
 

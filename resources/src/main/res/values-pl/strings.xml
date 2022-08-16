@@ -6,12 +6,6 @@
         <item quantity="many">ZA\n%d DNI</item>
     </plurals>
 
-    <string name="about_app">O aplikacji</string>
-    <string name="about_section1_part1">Jeżeli podoba ci się ta aplikacja, wyraź swoją opinię na</string>
-    <string name="about_section1_part2">Jeżeli podczas użytkowania aplikacji natrafiłeś(-aś) na jakiekolwiek błędy, masz sugestie co do dalszego rozwoju aplikacji możesz skontaktować się z twórcą aplikacji poprzez</string>
-    <string name="about_section1_part3">lub bezpośrednio poprzez</string>
-    <string name="about_section1_title">Dla użytkowników</string>
-    <string name="about_section2_title">Dla programistów</string>
     <string name="activity_data_error">Błędne dane! Sprawdź pola zaznaczone na czerwono</string>
     <string name="activity_deleted">Usunięto zajęcia \"%s\"</string>
     <string name="activity_name">Nazwa zajęć</string>
@@ -35,10 +29,7 @@
     <string name="edit_activity">Edytuj zajęcia</string>
     <string name="edit_classes">Edytuj przedmioty</string>
     <string name="entry_search_placeholder">Przedmiot lub prowadzący</string>
-    <string name="github_page">Przejdź do GitHub\'a</string>
     <string name="go_back">Cofnij</string>
-    <string name="google_play_page">Przejdź do Google Play</string>
-    <string name="google_play_review">recenzję na Google Play</string>
     <string name="group_deleted">Usunięto grupę \"%s\"</string>
     <string name="group_saved">Grupa \"%s\" została zapisana!</string>
     <string name="groups">Grupy</string>
