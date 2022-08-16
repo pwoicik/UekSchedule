@@ -20,13 +20,13 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
+@Suppress("UnstableApiUsage")
 android {
+    namespace = "com.github.pwoicik.uekschedule.db"
     compileSdk = libs.versions.sdk.target.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
-        targetSdk = libs.versions.sdk.target.get().toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,10 +51,8 @@ android {
 
 dependencies {
     implementation(project(":common:jvm"))
-    implementation(project(":model"))
 
-    implementation(libs.room.ktx)
-    implementation(libs.room.runtime)
+    implementation(libs.bundles.room)
     ksp(libs.room.ksp)
     androidTestImplementation(libs.room.testing)
 

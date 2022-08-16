@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.resources.R
 import kotlinx.coroutines.job
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SmallTopBarWithSearch(
     title: @Composable () -> Unit,

@@ -12,6 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.resources.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTextField(
     value: TextFieldValue,
@@ -51,6 +52,7 @@ fun SearchTextField(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldDefaults.searchTextFieldColors(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,

@@ -5,13 +5,13 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+@Suppress("UnstableApiUsage")
 android {
+    namespace = "com.github.pwoicik.uekschedule.repository"
     compileSdk = libs.versions.sdk.target.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
-        targetSdk = libs.versions.sdk.target.get().toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -33,12 +33,10 @@ android {
 
 dependencies {
     implementation(project(":common:jvm"))
-    implementation(project(":model"))
     implementation(project(":api"))
     implementation(project(":db"))
 
-    implementation(libs.room.ktx)
-    implementation(libs.room.runtime)
+    implementation(libs.bundles.room)
     ksp(libs.room.ksp)
     
     implementation(libs.datastore)

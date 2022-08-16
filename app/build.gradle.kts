@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
+@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule"
 
@@ -59,7 +60,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packagingOptions {
         resources {
@@ -70,25 +71,15 @@ android {
 
 dependencies {
     implementation(project(":common:android"))
-    implementation(project(":common:jvm"))
-    implementation(project(":model"))
     implementation(project(":navigation"))
     implementation(project(":repository"))
-    implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
 
     implementation(libs.lifecycle.runtime)
-
-    implementation(libs.compose.activity)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material3)
 
     implementation(libs.accompanist.uicontroller)
 
     implementation(libs.hilt)
     kapt(libs.hilt.kapt)
-
-    implementation(libs.timber)
 }

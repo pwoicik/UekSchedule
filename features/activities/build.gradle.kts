@@ -17,13 +17,13 @@ ksp {
     arg("compose-destinations.moduleName", "activities")
 }
 
+@Suppress("UnstableApiUsage")
 android {
+    namespace = "com.github.pwoicik.uekschedule.features.activities"
     compileSdk = libs.versions.sdk.target.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
-        targetSdk = libs.versions.sdk.target.get().toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -44,23 +44,12 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
 dependencies {
-    implementation(project(":model"))
     implementation(project(":common:android"))
-    implementation(project(":common:jvm"))
-
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.icons)
-
-    implementation(libs.accompanist.flowlayout)
 
     implementation(libs.destinations)
     ksp(libs.destinations.ksp)
@@ -68,6 +57,4 @@ dependencies {
     implementation(libs.hilt)
     kapt(libs.hilt.kapt)
     implementation(libs.hilt.navigation)
-
-    implementation(libs.timber)
 }

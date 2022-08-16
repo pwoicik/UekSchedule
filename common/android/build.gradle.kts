@@ -4,13 +4,13 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+@Suppress("UnstableApiUsage")
 android {
+    namespace = "com.github.pwoicik.uekschedule.common"
     compileSdk = libs.versions.sdk.target.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
-        targetSdk = libs.versions.sdk.target.get().toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -31,25 +31,26 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
 dependencies {
-    implementation(project(":common:jvm"))
-    implementation(project(":model"))
-    implementation(project(":resources"))
+    api(project(":common:jvm"))
+    api(project(":resources"))
 
-    implementation(libs.androidx.appcompat)
+    api(libs.androidx.appcompat)
 
-    implementation(libs.compose.activity)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material3)
+    api(libs.material)
+
+    api(libs.bundles.compose)
+
+    api(libs.accompanist.flowlayout)
 
     implementation(libs.destinations)
     ksp(libs.destinations.ksp)
 
     implementation(libs.play.core)
 
-    implementation(libs.timber)
+    api(libs.timber)
 }
