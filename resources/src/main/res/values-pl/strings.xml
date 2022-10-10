@@ -11,7 +11,6 @@
     <string name="activity_name">Nazwa zajęć</string>
     <string name="activity_type">Typ zajęć</string>
     <string name="add_group">Dodaj nową grupę</string>
-    <string name="all_groups">Wszystkie grupy</string>
     <string name="class_ended">MINĘŁO</string>
     <string name="class_ends_in_less_than_1_min"><![CDATA[KONIEC ZA\n< 1 MIN]]></string>
     <string name="class_ends_in_minutes">KONIEC ZA\n%d MIN</string>
@@ -42,6 +41,7 @@
     <string name="no_classes_message">Nie masz żadnych zajęć!</string>
     <string name="no_classes_message2">Brak zajęć dla tej grupy!</string>
     <string name="no_saved_groups">Nie masz zapisanych żadnych grup!</string>
+    <string name="nothing_found">Nic nie znaleziono!</string>
     <string name="open_in_browser">Otwórz link w przeglądarce</string>
     <string name="optional">(opcjonalne)</string>
     <string name="other_activities">Inne zajęcia</string>

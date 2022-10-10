@@ -9,7 +9,6 @@
     <string name="activity_name">Activity name</string>
     <string name="activity_type">Activity type</string>
     <string name="add_group">Add a new group</string>
-    <string name="all_groups">All groups</string>
     <string name="app_name" translatable="false">UEK Schedule</string>
     <string name="class_ended">ENDED</string>
     <string name="class_ends_in_less_than_1_min"><![CDATA[ENDS IN\n< 1 MIN]]></string>
@@ -41,6 +40,7 @@
     <string name="no_classes_message">You don\'t have any classes!</string>
     <string name="no_classes_message2">No classes here!</string>
     <string name="no_saved_groups">You don\'t have any saved groups!</string>
+    <string name="nothing_found">No results found!</string>
     <string name="open_in_browser">Open link in browser</string>
     <string name="optional">(optional)</string>
     <string name="other_activities">Other activities</string>

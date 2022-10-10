@@ -39,7 +39,20 @@ internal data class SearchableSchedulablesState(
     val isSaving: Boolean = false,
     val items: List<Schedulable>? = null,
     val filteredItems: List<Schedulable> = emptyList()
-)
+) {
+    val dataState = when {
+        isLoading -> DataState.LOADING
+        didTry && items == null -> DataState.NO_CONNECTION
+        else -> DataState.SUCCESS
+    }
+}
+
+internal enum class DataState {
+    NO_CONNECTION,
+    LOADING,
+    SUCCESS
+}
+
 
 internal sealed interface UserMessage {
 

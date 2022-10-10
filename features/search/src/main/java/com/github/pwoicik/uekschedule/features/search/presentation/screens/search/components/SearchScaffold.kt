@@ -4,11 +4,27 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
@@ -22,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.common.R
+import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.DataState
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.SearchPages
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.SearchableSchedulablesState
 import com.github.pwoicik.uekschedule.presentation.components.CircularProgressIndicator
@@ -87,7 +104,8 @@ private fun SearchTopBar(
             colors = TextFieldDefaults.searchTextFieldColors(
                 cursorColor = MaterialTheme.colorScheme.secondary,
                 textColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                focusedIndicatorColor = MaterialTheme.colorScheme.outline
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
             ),
             modifier = Modifier
                 .statusBarsPadding()
@@ -131,9 +149,9 @@ private fun SearchCrossfade(
             .fillMaxSize()
             .padding(paddingValues)
     ) {
-        Crossfade(targetState = searchableSchedulablesState) { state ->
-            when {
-                state.didTry && state.items == null -> {
+        Crossfade(searchableSchedulablesState.dataState) { state ->
+            when (state) {
+                DataState.NO_CONNECTION -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier.fillMaxSize()
@@ -146,7 +164,11 @@ private fun SearchCrossfade(
                         )
                     }
                 }
-                state.items != null -> content()
+
+                DataState.SUCCESS -> {
+                    content()
+                }
+
                 else -> Unit
             }
         }

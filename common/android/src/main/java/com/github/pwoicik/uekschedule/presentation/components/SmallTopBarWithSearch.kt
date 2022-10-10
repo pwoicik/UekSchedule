@@ -3,11 +3,21 @@ package com.github.pwoicik.uekschedule.presentation.components
 import androidx.activity.addCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -48,26 +58,25 @@ fun SmallTopBarWithSearch(
         color = colors.containerColor,
         modifier = modifier
     ) {
-        Box(
-            modifier = Modifier
-                .statusBarsPadding()
-                .animateContentSize()
-        ) {
-            SmallTopAppBar(
-                title = title,
-                actions = actions,
-                navigationIcon = navigationIcon,
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.Transparent,
-                    navigationIconContentColor = colors.leadingIconColor,
-                    actionIconContentColor = colors.trailingIconsColor,
-                    titleContentColor = colors.titleColor
-                )
+        TopAppBar(
+            title = title,
+            actions = actions,
+            navigationIcon = navigationIcon,
+            windowInsets = WindowInsets.statusBars,
+            colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = Color.Transparent,
+                navigationIconContentColor = colors.leadingIconColor,
+                actionIconContentColor = colors.trailingIconsColor,
+                titleContentColor = colors.titleColor
             )
-            AnimatedVisibility(
-                visible = isSearchFieldVisible,
-                enter = fadeIn(),
-                exit = fadeOut()
+        )
+        AnimatedVisibility(
+            visible = isSearchFieldVisible,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier.statusBarsPadding()
             ) {
                 val focusRequester = remember { FocusRequester() }
                 LaunchedEffect(Unit) {

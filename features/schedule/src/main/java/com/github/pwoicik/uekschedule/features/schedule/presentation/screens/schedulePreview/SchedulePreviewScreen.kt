@@ -8,8 +8,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -20,6 +30,7 @@ import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedulePreview.components.SchedulePreviewScaffold
+import com.github.pwoicik.uekschedule.presentation.components.NoResults
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
@@ -98,6 +109,11 @@ fun SchedulePreviewScreen(
                         )
                     }
                 }
+
+                state.filteredEntries.isEmpty() -> {
+                    NoResults()
+                }
+
                 state.entries?.isEmpty() == true -> {
                     Box(
                         contentAlignment = Alignment.Center,
