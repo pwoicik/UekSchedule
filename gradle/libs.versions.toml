@@ -1,24 +1,24 @@
 [versions]
-accompanist = "0.26.1-alpha"
-agp = "7.4.0-alpha09"
+accompanist = "0.26.5-rc"
+agp = "8.0.0-alpha03"
 androidx_test = "1.4.0"
-appcompat = "1.5.0"
+appcompat = "1.5.1"
 benmanesversion = "0.42.0"
-compose = "1.3.0-alpha03"
-compose_activity = "1.5.1"
-compose_compiler = "1.3.0"
-compose_material3 = "1.0.0-alpha16"
-core_ktx = "1.8.0"
-dagger = "2.43.2"
+compose = "1.3.0-rc01"
+compose_activity = "1.6.0"
+compose_compiler = "1.3.2"
+compose_material3 = "1.0.0-rc01"
+core_ktx = "1.9.0"
+dagger = "2.44"
 datastore = "1.0.0"
-destinations = "1.7.15-beta"
+destinations = "1.7.22-beta"
 espresso = "3.4.0"
 hilt_navigation = "1.0.0"
 junit = "4.13.2"
 junit_android = "1.1.3"
-kotlin = "1.7.10"
+kotlin = "1.7.20"
 kotlinx_coroutines = "1.6.4"
-ksp = "1.7.10-1.0.6"
+ksp = "1.7.20-1.0.6"
 lifecycle = "2.5.1"
 material = "1.6.1"
 mockito = "4.0.0"
@@ -59,6 +59,7 @@ hilt_test = { module = "com.google.dagger:hilt-android-testing", version.ref = "
 junit = { module = "junit:junit", version.ref = "junit" }
 junit_android = { module = "androidx.test.ext:junit", version.ref = "junit.android" }
 kgp = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin_stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlinx_coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx.coroutines" }
 ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 lifecycle_runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -80,7 +81,7 @@ tikxml_retrofit = { module = "com.tickaroo.tikxml:retrofit-converter", version.r
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [bundles]
-compose = ["compose_activity", "compose_icons", "compose_material3", "compose_ui"]
+compose = ["compose_activity", "compose_icons", "compose_material3", "compose_ui", "compose_tooling"]
 room = ["room_ktx", "room_runtime"]
 tikxml = ["tikxml_annotation", "tikxml_core", "tikxml_htmlescape", "tikxml_retrofit"]
 

@@ -1,9 +1,11 @@
 package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedule
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.domain.model.ScheduleEntry
 import java.time.LocalDate
 
+@Immutable
 internal data class ScheduleState(
 
     val hasSavedGroups: Boolean? = null,
