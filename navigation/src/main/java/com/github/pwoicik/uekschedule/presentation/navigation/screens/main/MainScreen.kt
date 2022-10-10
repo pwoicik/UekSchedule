@@ -1,13 +1,15 @@
 package com.github.pwoicik.uekschedule.presentation.navigation.screens.main
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.CreateActivityNavigator
@@ -22,7 +24,6 @@ import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.compo
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.components.SnackbarVisualsWithPending
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.components.SnackbarVisualsWithSuccess
 import com.github.pwoicik.uekschedule.presentation.navigation.screens.yourGroups.YourGroupsScreen
-import com.github.pwoicik.uekschedule.presentation.util.LocalBottomBarHeight
 import com.github.pwoicik.uekschedule.presentation.util.UpdateStatus
 import com.github.pwoicik.uekschedule.presentation.util.openPlayStorePage
 import com.github.pwoicik.uekschedule.presentation.util.updateApp
@@ -61,6 +62,7 @@ internal fun MainScreen(
                 UpdateStatus.Canceled -> {
                     snackbarHostState.currentSnackbarData?.dismiss()
                 }
+
                 is UpdateStatus.Downloading -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
@@ -70,6 +72,7 @@ internal fun MainScreen(
                         )
                     )
                 }
+
                 UpdateStatus.Failed -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     val result = snackbarHostState.showSnackbar(
@@ -83,6 +86,7 @@ internal fun MainScreen(
                         context.openPlayStorePage()
                     }
                 }
+
                 UpdateStatus.Pending -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
@@ -91,6 +95,7 @@ internal fun MainScreen(
                         )
                     )
                 }
+
                 is UpdateStatus.Downloaded -> launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     val result = snackbarHostState.showSnackbar(
@@ -107,43 +112,35 @@ internal fun MainScreen(
         }
     }
 
-    CompositionLocalProvider(LocalBottomBarHeight provides 75.dp) {
-        MainScreenScaffold(
-            snackbarHostState = snackbarHostState,
-            currentDestination = currentDestination,
-            onDestinationClick = { destination ->
-                navController.navigate(destination.direction) {
-                    launchSingleTop = true
-                    popUpTo(NavGraphs.main.startRoute.route)
+    MainScreenScaffold(
+        snackbarHostState = snackbarHostState,
+        currentDestination = currentDestination,
+        onDestinationClick = { destination ->
+            navController.navigate(destination.direction) {
+                launchSingleTop = true
+                popUpTo(NavGraphs.main.startRoute.route)
+            }
+        }
+    ) {
+        DestinationsNavHost(
+            navGraph = NavGraphs.main,
+            navController = navController,
+            modifier = Modifier.padding(it),
+            dependenciesContainerBuilder = {
+                val mainNavigator = remember(destinationsNavigator, rootNavigator) {
+                    MainNavigator(destinationsNavigator, rootNavigator)
                 }
+                dependency(mainNavigator as SearchNavigator)
+                dependency(mainNavigator as CreateActivityNavigator)
+                dependency(mainNavigator as ScheduleNavigator)
             }
         ) {
-            DestinationsNavHost(
-                navGraph = NavGraphs.main,
-                navController = navController,
-                modifier = Modifier.padding(WindowInsets.combinedBottomPaddingValues()),
-                dependenciesContainerBuilder = {
-                    val mainNavigator = remember(destinationsNavigator, rootNavigator) {
-                        MainNavigator(destinationsNavigator, rootNavigator)
-                    }
-                    dependency(mainNavigator as SearchNavigator)
-                    dependency(mainNavigator as CreateActivityNavigator)
-                    dependency(mainNavigator as ScheduleNavigator)
-                }
-            ) {
-                composable(YourGroupsScreenDestination) {
-                    YourGroupsScreen(
-                        mainNavigator = destinationsNavigator,
-                        rootNavigator = rootNavigator
-                    )
-                }
+            composable(YourGroupsScreenDestination) {
+                YourGroupsScreen(
+                    mainNavigator = destinationsNavigator,
+                    rootNavigator = rootNavigator
+                )
             }
         }
     }
 }
-
-@Composable
-private fun WindowInsets.Companion.combinedBottomPaddingValues() = ime
-    .union(navigationBars.add(WindowInsets(bottom = LocalBottomBarHeight.current)))
-    .only(WindowInsetsSides.Bottom)
-    .asPaddingValues()

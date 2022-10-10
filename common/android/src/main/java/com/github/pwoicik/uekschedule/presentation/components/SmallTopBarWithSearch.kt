@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -54,17 +53,14 @@ fun SmallTopBarWithSearch(
         }
     }
 
-    Surface(
-        color = colors.containerColor,
-        modifier = modifier
-    ) {
+    Box(modifier) {
         TopAppBar(
             title = title,
             actions = actions,
             navigationIcon = navigationIcon,
             windowInsets = WindowInsets.statusBars,
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Color.Transparent,
+                containerColor = colors.containerColor,
                 navigationIconContentColor = colors.leadingIconColor,
                 actionIconContentColor = colors.trailingIconsColor,
                 titleContentColor = colors.titleColor

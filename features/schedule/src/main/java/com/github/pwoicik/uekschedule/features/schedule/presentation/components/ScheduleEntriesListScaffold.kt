@@ -3,10 +3,20 @@ package com.github.pwoicik.uekschedule.features.schedule.presentation.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VerticalAlignCenter
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -19,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearch
 import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
+import com.github.pwoicik.uekschedule.presentation.util.zero
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -41,6 +52,7 @@ internal fun ScheduleEntriesListScaffold(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
+        contentWindowInsets = WindowInsets.zero(),
         topBar = {
             SmallTopBarWithSearch(
                 title = { Text(title) },

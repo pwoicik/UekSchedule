@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,6 +46,7 @@ import com.github.pwoicik.uekschedule.presentation.components.CircularProgressIn
 import com.github.pwoicik.uekschedule.presentation.components.SearchTextField
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.presentation.components.searchTextFieldColors
+import com.github.pwoicik.uekschedule.presentation.util.zero
 import kotlinx.coroutines.job
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,6 +62,7 @@ internal fun SearchScaffold(
     content: @Composable () -> Unit
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets.zero(),
         topBar = {
             SearchTopBar(
                 searchValue = searchableSchedulablesState.searchValue,
