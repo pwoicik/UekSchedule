@@ -15,7 +15,7 @@ android {
         applicationId = "com.github.pwoicik.uekschedule"
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
-        versionCode = 32
+        versionCode = 33
         versionName = "1.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
