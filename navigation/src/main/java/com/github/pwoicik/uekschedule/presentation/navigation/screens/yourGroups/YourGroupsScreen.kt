@@ -1,5 +1,6 @@
 package com.github.pwoicik.uekschedule.presentation.navigation.screens.yourGroups
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -14,6 +15,7 @@ import com.github.pwoicik.uekschedule.features.activities.presentation.screens.o
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.savedGroups.SavedGroupsNavigator
 import com.github.pwoicik.uekschedule.presentation.navigation.NavGraphs
 import com.github.pwoicik.uekschedule.presentation.navigation.navigators.YourGroupsNavigator
+import com.github.pwoicik.uekschedule.presentation.util.zero
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -36,6 +38,7 @@ internal fun YourGroupsScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.zero(),
         topBar = {
             YourGroupsTopBar(
                 currentNavBackStackEntry = currentBackStackEntry,

@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
+    namespace = "com.github.pwoicik.uekschedule.resources"
     compileSdk = libs.versions.sdk.target.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
-        targetSdk = libs.versions.sdk.target.get().toInt()
     }
 
     compileOptions {

@@ -11,6 +11,7 @@ data class ScheduleEntry(
     val type: String?,
     val details: String?,
     val teachers: List<String>,
+    val groups: List<String>,
     val location: String?,
 ) {
 

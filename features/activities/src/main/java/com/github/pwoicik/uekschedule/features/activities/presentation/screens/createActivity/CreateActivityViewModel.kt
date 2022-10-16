@@ -110,5 +110,3 @@ internal class CreateActivityViewModel @Inject constructor(
         object ActivitySaved : UiEvent()
     }
 }
-
-

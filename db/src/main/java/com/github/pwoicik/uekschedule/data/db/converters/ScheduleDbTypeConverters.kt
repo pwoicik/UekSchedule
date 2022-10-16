@@ -1,6 +1,7 @@
 package com.github.pwoicik.uekschedule.data.db.converters
 
 import androidx.room.TypeConverter
+import com.github.pwoicik.uekschedule.domain.model.SchedulableType
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
@@ -38,4 +39,13 @@ object ScheduleDbTypeConverters {
     fun stringListFromString(string: String?): List<String>? =
         string?.split(',')
 
+    @TypeConverter
+    @JvmStatic
+    fun schedulableTypeToLong(schedulableType: SchedulableType): Long =
+        schedulableType.ordinal.toLong()
+
+    @TypeConverter
+    @JvmStatic
+    fun schedulableTypeFromLong(schedulableTypeOrdinal: Long): SchedulableType =
+        SchedulableType.values()[schedulableTypeOrdinal.toInt()]
 }

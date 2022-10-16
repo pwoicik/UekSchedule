@@ -7,13 +7,11 @@ plugins {
 dependencies {
 
     implementation(project(":common:jvm"))
+
     implementation(libs.retrofit)
 
-    implementation(libs.tikxml.core)
+    implementation(libs.bundles.tikxml)
     kapt(libs.tikxml.kapt)
-    implementation(libs.tikxml.retrofit)
-    implementation(libs.tikxml.annotation)
-    implementation(libs.tikxml.htmlescape)
 
     implementation(libs.dagger)
     kapt(libs.dagger.kapt)

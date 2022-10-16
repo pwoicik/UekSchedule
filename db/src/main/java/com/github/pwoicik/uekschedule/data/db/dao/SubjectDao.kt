@@ -9,19 +9,19 @@ interface SubjectDao {
 
     @Query(
         """
-        select c.group_id, g.name as group_name, c.subject as name, c.type
-        from groups g
+        select c.schedulable_id, g.name as schedulable_name, c.subject as name, c.type
+        from schedulables g
             inner join classes c
-            on c.group_id = g.id
-        where g.id = :groupId
+            on c.schedulable_id = g.id
+        where g.id = :schedulableId
         group by g.name, c.subject, c.type
         order by c.subject
         """
     )
-    suspend fun getAllSubjectsForGroup(groupId: Long): List<SubjectEntity>
+    suspend fun getAllSubjectsForGroup(schedulableId: Long): List<SubjectEntity>
 
-    @Query("select * from ignored_subjects where group_id = :groupId")
-    fun getAllIgnoredSubjectsForGroup(groupId: Long): Flow<List<SubjectEntity>>
+    @Query("select * from ignored_subjects where schedulable_id = :schedulableId")
+    fun getAllIgnoredSubjectsForGroup(schedulableId: Long): Flow<List<SubjectEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSubject(subject: SubjectEntity)

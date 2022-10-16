@@ -15,13 +15,13 @@ ksp {
     arg("compose-destinations.moduleName", "search")
 }
 
+@Suppress("UnstableApiUsage")
 android {
+    namespace = "com.github.pwoicik.uekschedule.navigation"
     compileSdk = libs.versions.sdk.target.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
-        targetSdk = libs.versions.sdk.target.get().toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,13 +42,12 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
 dependencies {
     implementation(project(":common:android"))
-    implementation(project(":model"))
     implementation(project(":features:activities"))
     implementation(project(":features:groups"))
     implementation(project(":features:preferences"))
@@ -56,12 +55,6 @@ dependencies {
     implementation(project(":features:search"))
     implementation(project(":features:subjects"))
 
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.icons)
-
     implementation(libs.destinations)
     ksp(libs.destinations.ksp)
-
-    implementation(libs.timber)
 }

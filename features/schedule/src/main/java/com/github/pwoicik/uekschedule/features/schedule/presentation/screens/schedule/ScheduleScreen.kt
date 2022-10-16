@@ -11,19 +11,30 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.common.Constants
+import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesList
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.firstVisibleItemIndex
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedule.components.ScheduleScaffold
+import com.github.pwoicik.uekschedule.presentation.components.NoResults
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.presentation.util.openInBrowser
 import com.ramcosta.composedestinations.annotation.Destination
@@ -97,48 +108,42 @@ fun ScheduleScreen(
         onPreferencesButtonClick = { navigator.openPreferences() },
         snackbarHostState = snackbarHostState
     ) {
-        Crossfade(state) { state ->
-            when (state.hasSavedGroups) {
-                true -> {
-                    when {
-                        state.entries == null -> {
-                            AnimatedVisibility(
-                                visible = !state.isRefreshing,
-                                enter = fadeIn(tween(delayMillis = 500)),
-                                exit = fadeOut()
-                            ) {
-                                Box(
-                                    contentAlignment = Alignment.Center,
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.CloudOff,
-                                        contentDescription = stringResource(R.string.couldnt_connect),
-                                        tint = MaterialTheme.colorScheme.onErrorContainer,
-                                        modifier = Modifier.size(50.dp)
-                                    )
-                                }
-                            }
-                        }
-                        state.entries.isEmpty() -> {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                            ) {
-                                Text(stringResource(R.string.no_classes_message))
-                            }
-                        }
-                        else -> {
-                            ScheduleEntriesList(
-                                lazyListState = listState,
-                                scheduleEntries = state.filteredEntries,
-                                timeNow = timeNow
+        Crossfade(state.dataState) { dataState ->
+            when (dataState) {
+                DataState.LOADING -> Unit
+                DataState.SUCCESS -> {
+                    ScheduleEntriesList(
+                        lazyListState = listState,
+                        scheduleEntries = state.filteredEntries,
+                        timeNow = timeNow
+                    )
+                }
+
+                DataState.NO_CONNECTION -> {
+                    AnimatedVisibility(
+                        visible = !state.isRefreshing,
+                        enter = fadeIn(tween(delayMillis = 500)),
+                        exit = fadeOut()
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.CloudOff,
+                                contentDescription = stringResource(R.string.couldnt_connect),
+                                tint = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.size(50.dp)
                             )
                         }
                     }
                 }
-                false -> {
+
+                DataState.NO_RESULTS -> {
+                    NoResults()
+                }
+
+                DataState.NO_GROUPS -> {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -146,8 +151,17 @@ fun ScheduleScreen(
                     ) {
                         Text(stringResource(R.string.no_saved_groups))
                     }
+
                 }
-                null -> { /*DISPLAY NOTHING BEFORE SYNC WITH ROOM*/
+
+                DataState.NO_CLASSES -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Text(stringResource(R.string.no_classes_message))
+                    }
                 }
             }
         }

@@ -1,18 +1,22 @@
 package com.github.pwoicik.uekschedule.repository.mapper
 
 import com.github.pwoicik.uekschedule.data.api.dto.ScheduleDto
-import com.github.pwoicik.uekschedule.data.db.entity.GroupEntity
-import com.github.pwoicik.uekschedule.data.db.entity.GroupWithClassesEntity
+import com.github.pwoicik.uekschedule.data.db.entity.SchedulableEntity
+import com.github.pwoicik.uekschedule.data.db.entity.SchedulableWithClassesEntity
+import com.github.pwoicik.uekschedule.domain.model.SchedulableType
 
-internal fun ScheduleDto.toGroupWithClasses(): GroupWithClassesEntity {
-    val groupId = groupId.toLong()
+internal fun ScheduleDto.toSchedulableWithClasses(
+    type: SchedulableType
+): SchedulableWithClassesEntity {
+    val groupId = schedulableId.toLong()
 
-    val schedule = GroupEntity(
+    val schedule = SchedulableEntity(
         groupId,
-        groupName
+        schedulableName,
+        type
     )
 
     val classes = classes?.toClassEntities(groupId) ?: emptyList()
 
-    return GroupWithClassesEntity(schedule, classes)
+    return SchedulableWithClassesEntity(schedule, classes)
 }

@@ -6,18 +6,18 @@ import androidx.room.Entity
 @Entity(
     tableName = "ignored_subjects",
     primaryKeys = [
-        "group_id",
+        "schedulable_id",
         "name",
         "type"
     ]
 )
 data class SubjectEntity(
 
-    @ColumnInfo(name = "group_id")
-    val groupId: Long,
+    @ColumnInfo(name = "schedulable_id")
+    val schedulableId: Long,
 
-    @ColumnInfo(name = "group_name")
-    val groupName: String,
+    @ColumnInfo(name = "schedulable_name")
+    val schedulableName: String,
 
     val name: String,
 

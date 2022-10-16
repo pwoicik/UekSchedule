@@ -27,7 +27,10 @@ data class ClassDto(
     val details: String? = null,
 
     @Element
-    val teachers: List<TeacherDto>,
+    val teachers: List<TeacherDto>? = null,
+
+    @PropertyElement(name = "grupa")
+    val groups: String? = null,
 
     @PropertyElement(name = "sala", converter = HtmlEscapeStringConverter::class)
     val location: String,

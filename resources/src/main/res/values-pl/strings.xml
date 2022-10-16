@@ -6,18 +6,11 @@
         <item quantity="many">ZA\n%d DNI</item>
     </plurals>
 
-    <string name="about_app">O aplikacji</string>
-    <string name="about_section1_part1">Jeżeli podoba ci się ta aplikacja, wyraź swoją opinię na</string>
-    <string name="about_section1_part2">Jeżeli podczas użytkowania aplikacji natrafiłeś(-aś) na jakiekolwiek błędy, masz sugestie co do dalszego rozwoju aplikacji możesz skontaktować się z twórcą aplikacji poprzez</string>
-    <string name="about_section1_part3">lub bezpośrednio poprzez</string>
-    <string name="about_section1_title">Dla użytkowników</string>
-    <string name="about_section2_title">Dla programistów</string>
     <string name="activity_data_error">Błędne dane! Sprawdź pola zaznaczone na czerwono</string>
     <string name="activity_deleted">Usunięto zajęcia \"%s\"</string>
     <string name="activity_name">Nazwa zajęć</string>
     <string name="activity_type">Typ zajęć</string>
     <string name="add_group">Dodaj nową grupę</string>
-    <string name="all_groups">Wszystkie grupy</string>
     <string name="class_ended">MINĘŁO</string>
     <string name="class_ends_in_less_than_1_min"><![CDATA[KONIEC ZA\n< 1 MIN]]></string>
     <string name="class_ends_in_minutes">KONIEC ZA\n%d MIN</string>
@@ -35,12 +28,10 @@
     <string name="edit_activity">Edytuj zajęcia</string>
     <string name="edit_classes">Edytuj przedmioty</string>
     <string name="entry_search_placeholder">Przedmiot lub prowadzący</string>
-    <string name="github_page">Przejdź do GitHub\'a</string>
     <string name="go_back">Cofnij</string>
-    <string name="google_play_page">Przejdź do Google Play</string>
-    <string name="google_play_review">recenzję na Google Play</string>
     <string name="group_deleted">Usunięto grupę \"%s\"</string>
     <string name="group_saved">Grupa \"%s\" została zapisana!</string>
+    <string name="groups">Grupy</string>
     <string name="hide_subject">Ukryj przedmiot</string>
     <string name="location">Sala</string>
     <string name="mark_group_as_favorite">Oznacz jako ulubioną</string>
@@ -50,6 +41,7 @@
     <string name="no_classes_message">Nie masz żadnych zajęć!</string>
     <string name="no_classes_message2">Brak zajęć dla tej grupy!</string>
     <string name="no_saved_groups">Nie masz zapisanych żadnych grup!</string>
+    <string name="nothing_found">Nic nie znaleziono!</string>
     <string name="open_in_browser">Otwórz link w przeglądarce</string>
     <string name="optional">(opcjonalne)</string>
     <string name="other_activities">Inne zajęcia</string>
@@ -64,6 +56,7 @@
     <string name="saving_group">Zapisywanie grupy \"%s\"…</string>
     <string name="schedule">Plan zajęć</string>
     <string name="scroll_to_today">Pokaż najbliższe zajęcia</string>
+    <string name="search">Szukaj</string>
     <string name="search_entry">Szukaj zajęć</string>
     <string name="search_groups">Szukaj grupy</string>
     <string name="select_theme">Wybierz motyw</string>
@@ -71,6 +64,7 @@
     <string name="start_date">Data</string>
     <string name="start_time">Godzina rozpoczęcia</string>
     <string name="teacher">Prowadzący</string>
+    <string name="teachers">Prowadzący</string>
     <string name="theme_amoled">AMOLED</string>
     <string name="theme_auto">Systemowy</string>
     <string name="theme_dark">Ciemny</string>

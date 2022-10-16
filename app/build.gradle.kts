@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
+@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule"
 
@@ -14,8 +15,8 @@ android {
         applicationId = "com.github.pwoicik.uekschedule"
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
-        versionCode = 28
-        versionName = "1.2.3.2"
+        versionCode = 33
+        versionName = "1.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -33,6 +34,10 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+        }
+
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
 
@@ -55,7 +60,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.asProvider().get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packagingOptions {
         resources {
@@ -66,25 +71,15 @@ android {
 
 dependencies {
     implementation(project(":common:android"))
-    implementation(project(":common:jvm"))
-    implementation(project(":model"))
     implementation(project(":navigation"))
     implementation(project(":repository"))
-    implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
 
     implementation(libs.lifecycle.runtime)
-
-    implementation(libs.compose.activity)
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material3)
 
     implementation(libs.accompanist.uicontroller)
 
     implementation(libs.hilt)
     kapt(libs.hilt.kapt)
-
-    implementation(libs.timber)
 }

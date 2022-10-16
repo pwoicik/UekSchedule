@@ -1,31 +1,33 @@
 [versions]
-accompanist = "0.24.9-beta"
-agp = "7.2.0"
-appcompat = "1.4.1"
+accompanist = "0.26.5-rc"
+agp = "8.0.0-alpha03"
+androidx_test = "1.4.0"
+appcompat = "1.5.1"
 benmanesversion = "0.42.0"
-compose = "1.2.0-beta02"
-compose_activity = "1.4.0"
-compose_material3 = "1.0.0-alpha12"
-core_ktx = "1.7.0"
-dagger = "2.42"
+compose = "1.3.0-rc01"
+compose_activity = "1.6.0"
+compose_compiler = "1.3.2"
+compose_material3 = "1.0.0-rc01"
+core_ktx = "1.9.0"
+dagger = "2.44"
 datastore = "1.0.0"
-destinations = "1.5.5-beta"
+destinations = "1.7.22-beta"
 espresso = "3.4.0"
 hilt_navigation = "1.0.0"
 junit = "4.13.2"
 junit_android = "1.1.3"
-kotlin = "1.6.21"
-kotlinx_coroutines = "1.6.1"
-ksp = "1.6.21-1.0.5"
-lifecycle = "2.4.1"
-material = "1.6.0"
+kotlin = "1.7.20"
+kotlinx_coroutines = "1.6.4"
+ksp = "1.7.20-1.0.7"
+lifecycle = "2.5.1"
+material = "1.6.1"
 mockito = "4.0.0"
-okhttp = "4.9.3"
+okhttp = "4.10.0"
 play_core = "1.8.1"
 retrofit = "2.9.0"
-room = "2.4.2"
+room = "2.4.3"
 sdk_min = "26"
-sdk_target = "32"
+sdk_target = "33"
 tikxml = "0.8.13"
 timber = "5.0.1"
 
@@ -35,6 +37,7 @@ accompanist_uicontroller = { module = "com.google.accompanist:accompanist-system
 agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 androidx_appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx_core_ktx = { module = "androidx.core:core-ktx", version.ref = "core.ktx" }
+androidx_test_runner = { module = "androidx.test:runner", version.ref = "androidx.test" }
 compose_activity = { module = "androidx.activity:activity-compose", version.ref = "compose.activity" }
 compose_icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose_material3 = { module = "androidx.compose.material3:material3", version.ref = "compose.material3" }
@@ -56,6 +59,7 @@ hilt_test = { module = "com.google.dagger:hilt-android-testing", version.ref = "
 junit = { module = "junit:junit", version.ref = "junit" }
 junit_android = { module = "androidx.test.ext:junit", version.ref = "junit.android" }
 kgp = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin_stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlinx_coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx.coroutines" }
 ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 lifecycle_runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -68,6 +72,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 room_ksp = { module = "androidx.room:room-compiler", version.ref = "room" }
 room_ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room_runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room_testing = { module = "androidx.room:room-testing", version.ref = "room" }
 tikxml_annotation = { module = "com.tickaroo.tikxml:annotation", version.ref = "tikxml" }
 tikxml_core = { module = "com.tickaroo.tikxml:core", version.ref = "tikxml" }
 tikxml_htmlescape = { module = "com.tickaroo.tikxml:converter-htmlescape", version.ref = "tikxml" }
@@ -75,6 +80,11 @@ tikxml_kapt = { module = "com.tickaroo.tikxml:processor", version.ref = "tikxml"
 tikxml_retrofit = { module = "com.tickaroo.tikxml:retrofit-converter", version.ref = "tikxml" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
+[bundles]
+compose = ["compose_activity", "compose_icons", "compose_material3", "compose_ui", "compose_tooling"]
+room = ["room_ktx", "room_runtime"]
+tikxml = ["tikxml_annotation", "tikxml_core", "tikxml_htmlescape", "tikxml_retrofit"]
+
 [plugins]
-versions = { id = "com.github.ben-manes.versions", version.ref = "benmanesversion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "benmanesversion" }

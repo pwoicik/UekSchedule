@@ -3,15 +3,13 @@ package com.github.pwoicik.uekschedule.repository
 import androidx.room.withTransaction
 import com.github.pwoicik.uekschedule.common.domain.ScheduleRepository
 import com.github.pwoicik.uekschedule.data.api.ScheduleApi
-import com.github.pwoicik.uekschedule.data.api.dto.GroupDto
 import com.github.pwoicik.uekschedule.data.db.ScheduleDatabase
 import com.github.pwoicik.uekschedule.data.db.entity.ActivityEntity
 import com.github.pwoicik.uekschedule.data.db.entity.ClassEntity
-import com.github.pwoicik.uekschedule.data.db.entity.GroupEntity
-import com.github.pwoicik.uekschedule.data.db.entity.GroupWithClassesEntity
+import com.github.pwoicik.uekschedule.data.db.entity.SchedulableEntity
+import com.github.pwoicik.uekschedule.data.db.entity.SchedulableWithClassesEntity
 import com.github.pwoicik.uekschedule.domain.model.*
 import com.github.pwoicik.uekschedule.repository.mapper.*
-import com.github.pwoicik.uekschedule.repository.mapper.toScheduleEntry
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,6 +26,7 @@ internal class ScheduleRepositoryImpl @Inject constructor(
     private val activityDao = scheduleDatabase.activityDao
     private val subjectDao = scheduleDatabase.subjectDao
 
+
     override suspend fun addSubjectToIgnored(subject: Subject) {
         subjectDao.insertSubject(subject.toSubjectEntity())
     }
@@ -36,27 +35,38 @@ internal class ScheduleRepositoryImpl @Inject constructor(
         activityDao.deleteActivity(activity.id)
     }
 
-    override suspend fun deleteGroup(group: Group) {
-        groupDao.deleteGroup(group.id)
+    override suspend fun deleteGroup(group: Schedulable) {
+        groupDao.deleteSchedulable(group.id)
     }
 
     override suspend fun deleteSubjectFromIgnored(subject: Subject) {
         subjectDao.deleteSubject(subject.toSubjectEntity())
     }
 
-    private suspend fun fetchSchedule(group: Group): GroupWithClassesEntity {
-        return scheduleApi.getSchedule(group.id).toGroupWithClasses()
-    }
+    private suspend fun fetchSchedule(schedulable: Schedulable): SchedulableWithClassesEntity =
+        when (schedulable.type) {
+            SchedulableType.Group -> scheduleApi.getGroupSchedule(schedulable.id)
+                .toSchedulableWithClasses(SchedulableType.Group)
+            SchedulableType.Teacher -> scheduleApi.getTeacherSchedule(schedulable.id)
+                .toSchedulableWithClasses(SchedulableType.Teacher)
+        }
 
-    override suspend fun fetchSchedule(groupId: Long): Result<List<ScheduleEntry>> = try {
-        Result.success(
-            scheduleApi.getSchedule(groupId)
-                .toGroupWithClasses()
-                .classes.map(ClassEntity::toScheduleEntry)
-        )
-    } catch (e: Exception) {
-        Timber.e(e)
-        Result.failure(e)
+    override suspend fun fetchSchedule(
+        schedulableId: Long,
+        schedulableType: SchedulableType
+    ): Result<List<ScheduleEntry>> {
+        return try {
+            val swc = when (schedulableType) {
+                SchedulableType.Group -> scheduleApi.getGroupSchedule(schedulableId)
+                    .toSchedulableWithClasses(SchedulableType.Group)
+                SchedulableType.Teacher -> scheduleApi.getTeacherSchedule(schedulableId)
+                    .toSchedulableWithClasses(SchedulableType.Teacher)
+            }
+            Result.success(swc.classes.map(ClassEntity::toScheduleEntry))
+        } catch (e: Exception) {
+            Timber.e(e)
+            Result.failure(e)
+        }
     }
 
     override suspend fun getActivity(id: Long): Activity {
@@ -69,13 +79,20 @@ internal class ScheduleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllGroups(): Result<List<Group>> = try {
-        Result.success(
-            scheduleApi.getGroups().groups!!.map(GroupDto::toGroup)
-        )
-    } catch (e: Exception) {
-        Timber.e(e)
-        Result.failure(e)
+    override suspend fun getAllSchedulables(type: SchedulableType): Result<List<Schedulable>> {
+        return try {
+            val schedulables = when (type) {
+                SchedulableType.Group -> scheduleApi.getGroups()
+                    .schedulables!!.map { it.toSchedulable(SchedulableType.Group) }
+                SchedulableType.Teacher -> scheduleApi.getTeachers()
+                    .schedulables!!.map { it.toSchedulable(SchedulableType.Teacher) }
+            }
+
+            Result.success(schedulables)
+        } catch (e: Exception) {
+            Timber.e(e)
+            Result.failure(e)
+        }
     }
 
     override fun getAllScheduleEntries(): Flow<List<ScheduleEntry>> {
@@ -103,28 +120,28 @@ internal class ScheduleRepositoryImpl @Inject constructor(
             .collect(::emit)
     }
 
-    override suspend fun getGroupWithClasses(group: Group): GroupWithClasses {
-        return groupDao.getGroupWithClasses(group.id).toGroupWithClasses()
+    override suspend fun getGroupWithClasses(group: Schedulable): SchedulableWithClasses {
+        return groupDao.getSchedulablesWithClasses(group.id).toSchedulableWithClasses()
     }
 
-    override fun getSavedGroups(): Flow<List<Group>> {
-        return groupDao.getAllGroups().map {
-            it.map(GroupEntity::toGroup)
+    override fun getSavedGroups(): Flow<List<Schedulable>> {
+        return groupDao.getAllSchedulables().map {
+            it.map(SchedulableEntity::toSchedulable)
         }
     }
 
     override fun getSavedGroupsCount(): Flow<Int> {
-        return groupDao.getGroupsCount()
+        return groupDao.getSchedulablesCount()
     }
 
     override suspend fun saveActivity(activity: Activity) {
         activityDao.insertActivity(activity.toActivityEntity())
     }
 
-    override suspend fun saveGroup(group: Group): Result<Unit> = try {
-        val gwc = fetchSchedule(group)
+    override suspend fun saveSchedulable(schedulable: Schedulable): Result<Unit> = try {
+        val gwc = fetchSchedule(schedulable)
         scheduleDatabase.withTransaction {
-            groupDao.insertGroup(gwc.group)
+            groupDao.insertSchedulable(gwc.schedulable)
             classDao.insertAllClasses(gwc.classes)
         }
         Result.success(Unit)
@@ -133,15 +150,15 @@ internal class ScheduleRepositoryImpl @Inject constructor(
         Result.failure(e)
     }
 
-    override suspend fun saveGroupWithClasses(gwc: GroupWithClasses) {
+    override suspend fun saveGroupWithClasses(gwc: SchedulableWithClasses) {
         scheduleDatabase.withTransaction {
-            groupDao.insertGroup(gwc.group.toGroupEntity())
+            groupDao.insertSchedulable(gwc.group.toGroupEntity())
             classDao.insertAllClasses(gwc.classes.map(Class::toClassEntity))
         }
     }
 
-    override suspend fun updateGroup(group: Group) {
-        groupDao.updateGroup(group.toGroupEntity())
+    override suspend fun updateGroup(group: Schedulable) {
+        groupDao.updateSchedulable(group.toGroupEntity())
     }
 
     override suspend fun updateSchedules(): Result<Unit> = try {

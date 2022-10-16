@@ -3,7 +3,14 @@ package com.github.pwoicik.uekschedule.presentation.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,6 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.resources.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTextField(
     value: TextFieldValue,
@@ -34,7 +42,7 @@ fun SearchTextField(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = stringResource(R.string.search_groups)
+                contentDescription = null
             )
         },
         trailingIcon = {
@@ -51,17 +59,20 @@ fun SearchTextField(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldDefaults.searchTextFieldColors(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
     placeholderColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    cursorColor: Color = MaterialTheme.colorScheme.primary
+    cursorColor: Color = MaterialTheme.colorScheme.primary,
+    focusedIndicatorColor: Color = cursorColor,
+    unfocusedIndicatorColor: Color = placeholderColor
 ) = textFieldColors(
     textColor = textColor,
     placeholderColor = placeholderColor,
     containerColor = backgroundColor,
     cursorColor = cursorColor,
-    focusedIndicatorColor = cursorColor,
-    unfocusedIndicatorColor = placeholderColor
+    focusedIndicatorColor = focusedIndicatorColor,
+    unfocusedIndicatorColor = unfocusedIndicatorColor
 )

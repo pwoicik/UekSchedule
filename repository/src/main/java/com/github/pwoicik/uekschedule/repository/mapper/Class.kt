@@ -9,24 +9,26 @@ import com.github.pwoicik.uekschedule.domain.model.Class
 import com.github.pwoicik.uekschedule.domain.model.ScheduleEntry
 
 internal fun ClassEntity.toClass() = Class(
-    groupId,
+    schedulableId,
     subject,
     startDateTime,
     endDateTime,
     type,
     details,
     teachers,
+    groups,
     location
 )
 
 internal fun Class.toClassEntity() = ClassEntity(
-    groupId,
+    schedulableId,
     subject,
     startDateTime,
     endDateTime,
     type,
     details,
     teachers,
+    groups,
     location
 )
 
@@ -38,18 +40,22 @@ internal fun List<ClassDto>.toClassEntities(groupId: Long): List<ClassEntity> = 
     .map { dto ->
         val endTime = dto.endTime.replace(""" \(.+\)""".toRegex(), "")
         val teachers = dto.teachers
-            .filter { it.teacher.isNotEmpty() }
-            .map { it.teacher }
-            .ifEmpty { null }
+            ?.filter { it.teacher.isNotEmpty() }
+            ?.map { it.teacher }
+            ?.ifEmpty { null }
+        val groups = dto.groups
+            ?.split(", ")
+            ?.ifEmpty { null }
 
         ClassEntity(
-            groupId = groupId,
+            schedulableId = groupId,
             subject = dto.subject.ifBlankOrNull { dto.type.toUppercase() },
             startDateTime = convertDateTime(dto.date, dto.startTime),
             endDateTime = convertDateTime(dto.date, endTime),
             type = dto.type,
             details = dto.details,
             teachers = teachers,
+            groups = groups,
             location = dto.location.ifEmpty { null }
         )
     }
@@ -61,5 +67,6 @@ internal fun ClassEntity.toScheduleEntry() = ScheduleEntry(
     type = type,
     details = details,
     teachers = teachers ?: emptyList(),
+    groups = groups ?: emptyList(),
     location = location
 )

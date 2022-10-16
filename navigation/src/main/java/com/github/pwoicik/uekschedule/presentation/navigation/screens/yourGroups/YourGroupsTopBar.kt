@@ -21,6 +21,7 @@ import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.groups.presentation.screens.groupSubjects.destinations.GroupSubjectsScreenDestination
 import com.github.pwoicik.uekschedule.presentation.navigation.appDestination
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun YourGroupsTopBar(
     currentNavBackStackEntry: NavBackStackEntry?,
