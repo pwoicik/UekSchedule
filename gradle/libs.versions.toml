@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.26.5-rc"
-agp = "8.0.0-alpha03"
+agp = "8.0.0-alpha04"
 androidx_test = "1.4.0"
 appcompat = "1.5.1"
 benmanesversion = "0.42.0"
