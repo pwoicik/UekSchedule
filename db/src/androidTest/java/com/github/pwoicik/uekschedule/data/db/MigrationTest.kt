@@ -18,8 +18,8 @@ class MigrationTest {
 
     @Test
     fun migrate2to3() {
-        helper.createDatabase(TEST_DB, 2).apply {
-            execSQL(
+        helper.createDatabase(TEST_DB, 2).use {
+            it.execSQL(
                 """
                     insert into groups values(
                         1,
@@ -28,8 +28,7 @@ class MigrationTest {
                     )
                 """.trimIndent()
             )
-
-            execSQL(
+            it.execSQL(
                 """
                     insert into classes values(
                         1,
@@ -43,8 +42,33 @@ class MigrationTest {
                     )
                 """.trimIndent()
             )
-
-            close()
+            it.execSQL(
+                """
+                    insert into ignored_subjects values(
+                        1,
+                        "group",
+                        "subject",
+                        "type"
+                    )
+                """.trimIndent()
+            )
+            it.execSQL(
+                """
+                    insert into activities values(
+                        1,
+                        "name",
+                        null,
+                        null,
+                        null,
+                        0,
+                        90,
+                        null
+                    )
+                """.trimIndent()
+            )
+            // the auto migration doesn't work when renaming column group_id to schedulable_id
+            //  wipe the whole table to fix it
+            it.execSQL("delete from ignored_subjects")
         }
 
         val db = helper.runMigrationsAndValidate(TEST_DB, 3, true)
