@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.DataState
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.SearchPages
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.SearchableSchedulablesState
@@ -47,9 +45,9 @@ import com.github.pwoicik.uekschedule.presentation.components.SearchTextField
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarHost
 import com.github.pwoicik.uekschedule.presentation.components.searchTextFieldColors
 import com.github.pwoicik.uekschedule.presentation.util.zero
+import com.github.pwoicik.uekschedule.resources.R
 import kotlinx.coroutines.job
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @NonRestartableComposable
 internal fun SearchScaffold(
@@ -82,7 +80,6 @@ internal fun SearchScaffold(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTopBar(
     searchValue: TextFieldValue,
@@ -125,7 +122,7 @@ private fun SearchTopBar(
                 )
             }
         ) {
-            SearchPages.values().forEach { page ->
+            SearchPages.entries.forEach { page ->
                 Tab(
                     selected = currentPage == page,
                     text = { Text(stringResource(id = page.title)) },
@@ -152,7 +149,10 @@ private fun SearchCrossfade(
             .fillMaxSize()
             .padding(paddingValues)
     ) {
-        Crossfade(searchableSchedulablesState.dataState) { state ->
+        Crossfade(
+            targetState = searchableSchedulablesState.dataState,
+            label = "data state crossfade"
+        ) { state ->
             when (state) {
                 DataState.NO_CONNECTION -> {
                     Box(

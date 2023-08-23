@@ -1,8 +1,14 @@
 package com.github.pwoicik.uekschedule.presentation.theme
 
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -82,48 +88,70 @@ fun UEKScheduleTheme(
     theme: Preferences.Theme,
     content: @Composable () -> Unit
 ) {
-    val context = LocalContext.current
-    val colors = when (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        true -> {
-            when (theme) {
-                Preferences.Theme.AUTO ->
-                    if (isSystemInDarkTheme()) DarkThemeColors
-                    else LightThemeColors
-                Preferences.Theme.LIGHT ->
-                    LightThemeColors
-                Preferences.Theme.DARK ->
-                    DarkThemeColors
-                Preferences.Theme.AMOLED ->
-                    DarkThemeColors.amoledify()
-                Preferences.Theme.DYNAMIC_AUTO ->
-                    if (isSystemInDarkTheme()) dynamicDarkColorScheme(context)
-                    else dynamicLightColorScheme(context)
-                Preferences.Theme.DYNAMIC_LIGHT ->
-                    dynamicLightColorScheme(context)
-                Preferences.Theme.DYNAMIC_DARK ->
-                    dynamicDarkColorScheme(context)
-                Preferences.Theme.DYNAMIC_AMOLED ->
-                    dynamicDarkColorScheme(context).amoledify()
-            }
-        }
-        false -> {
-            when (theme) {
-                Preferences.Theme.AUTO, Preferences.Theme.DYNAMIC_AUTO ->
-                    if (isSystemInDarkTheme()) DarkThemeColors
-                    else LightThemeColors
-                Preferences.Theme.LIGHT, Preferences.Theme.DYNAMIC_LIGHT ->
-                    LightThemeColors
-                Preferences.Theme.DARK, Preferences.Theme.DYNAMIC_DARK ->
-                    DarkThemeColors
-                Preferences.Theme.AMOLED, Preferences.Theme.DYNAMIC_AMOLED ->
-                    DarkThemeColors.amoledify()
-            }
-        }
-    }
-
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme = if (Build.VERSION.SDK_INT >= 31) {
+            getColorsApi31(theme)
+        } else {
+            getColors(theme)
+        },
         typography = AppTypography,
         content = content
     )
+}
+
+@Composable
+@RequiresApi(31)
+private fun getColorsApi31(theme: Preferences.Theme): ColorScheme {
+    val context = LocalContext.current
+    return when (theme) {
+        Preferences.Theme.AUTO -> if (isSystemInDarkTheme()) {
+            DarkThemeColors
+        } else {
+            LightThemeColors
+        }
+
+        Preferences.Theme.LIGHT ->
+            LightThemeColors
+
+        Preferences.Theme.DARK ->
+            DarkThemeColors
+
+        Preferences.Theme.AMOLED ->
+            DarkThemeColors.amoledify()
+
+        Preferences.Theme.DYNAMIC_AUTO -> if (isSystemInDarkTheme()) {
+            dynamicDarkColorScheme(context)
+        } else {
+            dynamicLightColorScheme(context)
+        }
+
+        Preferences.Theme.DYNAMIC_LIGHT ->
+            dynamicLightColorScheme(context)
+
+        Preferences.Theme.DYNAMIC_DARK ->
+            dynamicDarkColorScheme(context)
+
+        Preferences.Theme.DYNAMIC_AMOLED ->
+            dynamicDarkColorScheme(context).amoledify()
+    }
+}
+
+@Composable
+private fun getColors(theme: Preferences.Theme): ColorScheme {
+    return when (theme) {
+        Preferences.Theme.AUTO, Preferences.Theme.DYNAMIC_AUTO -> if (isSystemInDarkTheme()) {
+            DarkThemeColors
+        } else {
+            LightThemeColors
+        }
+
+        Preferences.Theme.LIGHT, Preferences.Theme.DYNAMIC_LIGHT ->
+            LightThemeColors
+
+        Preferences.Theme.DARK, Preferences.Theme.DYNAMIC_DARK ->
+            DarkThemeColors
+
+        Preferences.Theme.AMOLED, Preferences.Theme.DYNAMIC_AMOLED ->
+            DarkThemeColors.amoledify()
+    }
 }

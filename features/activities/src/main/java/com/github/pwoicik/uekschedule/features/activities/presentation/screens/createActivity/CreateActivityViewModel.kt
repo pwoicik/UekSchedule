@@ -106,7 +106,7 @@ internal class CreateActivityViewModel @Inject constructor(
     }
 
     sealed class UiEvent {
-        object ShowError : UiEvent()
-        object ActivitySaved : UiEvent()
+        data object ShowError : UiEvent()
+        data object ActivitySaved : UiEvent()
     }
 }

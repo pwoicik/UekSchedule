@@ -18,10 +18,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesListScaffoldColors
 import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
+import com.github.pwoicik.uekschedule.resources.R
 
 @Composable
 internal fun SchedulePreviewScaffold(

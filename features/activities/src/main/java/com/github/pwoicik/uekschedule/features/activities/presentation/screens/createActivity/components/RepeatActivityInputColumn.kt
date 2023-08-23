@@ -4,7 +4,12 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,15 +28,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.CreateActivityState
+import com.github.pwoicik.uekschedule.resources.R
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
-import java.util.*
+import java.util.Locale
 
 @Composable
 internal fun RepeatActivityInputColumn(
@@ -62,7 +67,10 @@ internal fun RepeatActivityInputColumn(
             )
         }
 
-        Crossfade(state.repeatActivity) {
+        Crossfade(
+            targetState = state.repeatActivity,
+            label = "repeat activity transition"
+        ) {
             when (it) {
                 true -> {
                     DaysOfWeekSelectionRow(
@@ -71,6 +79,7 @@ internal fun RepeatActivityInputColumn(
                         onUnselectDayToRepeat = onUnselectDayToRepeat
                     )
                 }
+
                 false -> {
                     DateInputField(
                         date = state.startDate,
@@ -126,11 +135,12 @@ internal fun DaysOfWeekSelectionRow(
             for ((dayOfWeek, displayName) in daysOfWeek) {
                 val isSelected = dayOfWeek in selectedDays
                 val color = animateColorAsState(
-                    if (isSelected) {
+                    targetValue = if (isSelected) {
                         MaterialTheme.colorScheme.secondary
                     } else {
                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                    }
+                    },
+                    label = "selected color transition"
                 )
 
                 Box(

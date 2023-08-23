@@ -3,19 +3,32 @@ package com.github.pwoicik.uekschedule.features.schedule.presentation.screens.sc
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesListScaffold
 import com.github.pwoicik.uekschedule.features.schedule.presentation.components.ScheduleEntriesListScaffoldColors
 import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
+import com.github.pwoicik.uekschedule.resources.R
 
 @Composable
 internal fun ScheduleScaffold(

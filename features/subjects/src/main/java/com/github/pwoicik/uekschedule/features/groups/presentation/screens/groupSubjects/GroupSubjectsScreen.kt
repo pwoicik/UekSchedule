@@ -2,11 +2,10 @@ package com.github.pwoicik.uekschedule.features.groups.presentation.screens.grou
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,12 +35,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.domain.model.Subject
 import com.github.pwoicik.uekschedule.presentation.util.zero
+import com.github.pwoicik.uekschedule.resources.R
 import com.ramcosta.composedestinations.annotation.Destination
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination(
     navArgsDelegate = GroupSubjectsNavArgs::class
 )
@@ -56,6 +53,7 @@ fun GroupSubjectsScreen() {
     ) { innerPadding ->
         Crossfade(
             targetState = subjects == null,
+            label = "fetching crossfade",
             modifier = Modifier.padding(innerPadding)
         ) { isFetching ->
             when (isFetching) {
@@ -71,7 +69,6 @@ fun GroupSubjectsScreen() {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SubjectList(
     subjects: List<Subject>,
@@ -116,8 +113,9 @@ private fun SubjectList(
                             AnimatedContent(
                                 targetState = subject.isIgnored,
                                 transitionSpec = {
-                                    fadeIn(tween(200)) with fadeOut(tween(200))
-                                }
+                                    fadeIn(tween(200)) togetherWith fadeOut(tween(200))
+                                },
+                                label = "ignored icon transition"
                             ) { isIgnored ->
                                 if (isIgnored) {
                                     Icon(

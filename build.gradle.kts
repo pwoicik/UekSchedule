@@ -1,5 +1,8 @@
 plugins {
+    alias(libs.plugins.kgp) apply false
+    alias(libs.plugins.agp) apply false
     alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.hilt) apply false
     alias(libs.plugins.versions)
 }
 
@@ -22,7 +25,7 @@ val ModuleComponentIdentifier.isNotStable: Boolean
         if (group == "com.google.accompanist") return false
 
         val stableKeyword =
-            listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+            listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
         val regex = "^[0-9,.v-]+(-r)?$".toRegex()
 
         val isStable = stableKeyword || regex.matches(version)

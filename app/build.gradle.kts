@@ -5,7 +5,6 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule"
 
@@ -57,12 +56,13 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

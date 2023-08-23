@@ -9,5 +9,5 @@ internal sealed class SavedGroupsEvent {
     data class DeleteGroup(val group: Schedulable) : SavedGroupsEvent()
     data class UndoGroupDeletion(val gwc: SchedulableWithClasses) : SavedGroupsEvent()
 
-    object UserMessageSeen : SavedGroupsEvent()
+    data object UserMessageSeen : SavedGroupsEvent()
 }

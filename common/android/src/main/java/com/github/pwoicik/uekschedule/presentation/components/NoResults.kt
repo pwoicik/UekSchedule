@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.pwoicik.uekschedule.common.R
+import com.github.pwoicik.uekschedule.resources.R
 
 @Composable
 fun NoResults(

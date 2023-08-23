@@ -7,7 +7,12 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.ktx.AppUpdateResult
 import com.google.android.play.core.ktx.requestUpdateFlow
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.mapNotNull
 import timber.log.Timber
 
 suspend fun Context.updateApp(): Flow<UpdateStatus> {
@@ -66,9 +71,9 @@ suspend fun Context.updateApp(): Flow<UpdateStatus> {
 }
 
 sealed class UpdateStatus {
-    object Pending : UpdateStatus()
-    object Canceled : UpdateStatus()
-    object Failed : UpdateStatus()
+    data object Pending : UpdateStatus()
+    data object Canceled : UpdateStatus()
+    data object Failed : UpdateStatus()
     data class Downloading(val progress: StateFlow<Float>) : UpdateStatus()
     data class Downloaded(val restartApp: suspend () -> Unit) : UpdateStatus()
 }

@@ -6,16 +6,11 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-kotlin.sourceSets.all {
-    kotlin.srcDir("build/generated/ksp/${name}/kotlin")
-}
-
 ksp {
     arg("compose-destinations.mode", "destinations")
     arg("compose-destinations.moduleName", "search")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule.features.search"
     compileSdk = libs.versions.sdk.target.get().toInt()

@@ -2,7 +2,6 @@ package com.github.pwoicik.uekschedule.presentation.navigation.screens.yourGroup
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +22,6 @@ import com.ramcosta.composedestinations.navigation.dependency
 import com.ramcosta.composedestinations.navigation.navigate
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 internal fun YourGroupsScreen(

@@ -15,11 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.components.CreateActivityScaffold
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.components.CreateActivityTextField
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.components.RepeatActivityInputColumn
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.components.TimeInputField
+import com.github.pwoicik.uekschedule.resources.R
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.job
@@ -46,6 +46,7 @@ fun CreateActivityScreen(
                 is CreateActivityViewModel.UiEvent.ShowError -> {
                     snackbarHostState.showSnackbar(snackbarErrorMessage)
                 }
+
                 is CreateActivityViewModel.UiEvent.ActivitySaved -> {
                     navigator.navigateUp()
                 }

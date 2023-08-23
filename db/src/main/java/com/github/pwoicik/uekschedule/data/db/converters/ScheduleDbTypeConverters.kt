@@ -47,5 +47,5 @@ object ScheduleDbTypeConverters {
     @TypeConverter
     @JvmStatic
     fun schedulableTypeFromLong(schedulableTypeOrdinal: Long): SchedulableType =
-        SchedulableType.values()[schedulableTypeOrdinal.toInt()]
+        SchedulableType.entries[schedulableTypeOrdinal.toInt()]
 }

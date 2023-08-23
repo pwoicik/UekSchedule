@@ -7,5 +7,5 @@ internal sealed class OtherActivitiesEvent {
     data class DeleteActivity(val activity: Activity) : OtherActivitiesEvent()
     data class UndoActivityDeletion(val activity: Activity) : OtherActivitiesEvent()
 
-    object UserMessageSeen : OtherActivitiesEvent()
+    data object UserMessageSeen : OtherActivitiesEvent()
 }

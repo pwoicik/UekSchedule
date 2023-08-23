@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit
 internal sealed class ScheduleEntryStatus {
     data class NotStarted(val minutesToStart: Long) : ScheduleEntryStatus()
     data class InProgress(val minutesRemaining: Long) : ScheduleEntryStatus()
-    object Ended : ScheduleEntryStatus()
+    data object Ended : ScheduleEntryStatus()
 }
 
 internal fun ScheduleEntry.status(timeNow: LocalDateTime): ScheduleEntryStatus {

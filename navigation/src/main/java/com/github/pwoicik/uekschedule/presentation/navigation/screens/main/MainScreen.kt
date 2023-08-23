@@ -1,7 +1,6 @@
 package com.github.pwoicik.uekschedule.presentation.navigation.screens.main
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
@@ -11,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.CreateActivityNavigator
 import com.github.pwoicik.uekschedule.features.schedule.presentation.screens.schedule.ScheduleNavigator
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.SearchNavigator
@@ -27,6 +25,7 @@ import com.github.pwoicik.uekschedule.presentation.navigation.screens.yourGroups
 import com.github.pwoicik.uekschedule.presentation.util.UpdateStatus
 import com.github.pwoicik.uekschedule.presentation.util.openPlayStorePage
 import com.github.pwoicik.uekschedule.presentation.util.updateApp
+import com.github.pwoicik.uekschedule.resources.R
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
@@ -40,7 +39,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 internal fun MainScreen(

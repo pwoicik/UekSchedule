@@ -1,8 +1,8 @@
 package com.github.pwoicik.uekschedule.features.preferences.presentation.screens.preferences
 
 import androidx.annotation.StringRes
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.domain.model.Preferences
+import com.github.pwoicik.uekschedule.resources.R
 
 internal data class PreferencesState(
 
@@ -24,6 +24,7 @@ internal enum class ThemePreference(@StringRes val stringRes: Int) {
             DARK -> Preferences.Theme.DYNAMIC_DARK
             AMOLED -> Preferences.Theme.DYNAMIC_AMOLED
         }
+
         false -> when (this) {
             AUTO -> Preferences.Theme.AUTO
             LIGHT -> Preferences.Theme.LIGHT
@@ -36,10 +37,13 @@ internal enum class ThemePreference(@StringRes val stringRes: Int) {
         fun fromPreferencesTheme(theme: Preferences.Theme) = when (theme) {
             Preferences.Theme.AUTO,
             Preferences.Theme.DYNAMIC_AUTO -> AUTO
+
             Preferences.Theme.LIGHT,
             Preferences.Theme.DYNAMIC_LIGHT -> LIGHT
+
             Preferences.Theme.DARK,
             Preferences.Theme.DYNAMIC_DARK -> DARK
+
             Preferences.Theme.AMOLED,
             Preferences.Theme.DYNAMIC_AMOLED -> AMOLED
         }

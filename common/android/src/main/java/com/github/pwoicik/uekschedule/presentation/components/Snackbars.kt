@@ -2,9 +2,20 @@ package com.github.pwoicik.uekschedule.presentation.components
 
 import android.content.Context
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarVisuals
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -73,7 +84,10 @@ fun SnackbarWithLoading(
                 )
             } else {
                 val progress by visuals.progress.collectAsState()
-                val animatedProgress by animateFloatAsState(progress.coerceAtLeast(0.1f))
+                val animatedProgress by animateFloatAsState(
+                    targetValue = progress.coerceAtLeast(0.1f),
+                    label = "snackbar progress animation"
+                )
                 CircularProgressIndicator(
                     progress = animatedProgress,
                     strokeWidth = 3.dp,

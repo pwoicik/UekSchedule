@@ -2,7 +2,6 @@ package com.github.pwoicik.uekschedule.features.search.presentation.screens.sear
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
@@ -15,7 +14,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.domain.model.Schedulable
-import com.github.pwoicik.uekschedule.features.search.R
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.components.SearchItem
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.components.SearchItemsColumn
 import com.github.pwoicik.uekschedule.features.search.presentation.screens.search.components.SearchScaffold
@@ -23,6 +21,7 @@ import com.github.pwoicik.uekschedule.presentation.components.NoResults
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithError
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithLoading
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithSuccess
+import com.github.pwoicik.uekschedule.resources.R
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 
@@ -30,7 +29,7 @@ interface SearchNavigator {
     fun openSchedulePreview(schedulable: Schedulable)
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Destination
 @Composable
 fun SearchScreen(
@@ -55,6 +54,7 @@ fun SearchScreen(
                 }
                 viewModel.emit(SearchEvent.UserMessageSeen)
             }
+
             is UserMessage.SavedSchedulable -> launch {
                 snackbarHostState.showSnackbar(
                     SnackbarVisualsWithSuccess(
@@ -65,6 +65,7 @@ fun SearchScreen(
                     )
                 )
             }
+
             is UserMessage.SavingSchedulable -> launch {
                 snackbarHostState.showSnackbar(
                     SnackbarVisualsWithLoading(
@@ -75,6 +76,7 @@ fun SearchScreen(
                     )
                 )
             }
+
             null -> Unit
         }
     }
@@ -90,7 +92,10 @@ fun SearchScreen(
         val sss = state.searchableSchedulablesState
 
         val keyboardController = LocalSoftwareKeyboardController.current
-        Crossfade(targetState = sss.filteredItems.isEmpty()) {
+        Crossfade(
+            targetState = sss.filteredItems.isEmpty(),
+            label = "filtered items crossfade"
+        ) {
             when (it) {
                 true -> {
                     NoResults()

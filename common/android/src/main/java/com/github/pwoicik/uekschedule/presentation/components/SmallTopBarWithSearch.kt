@@ -59,7 +59,7 @@ fun SmallTopBarWithSearch(
             actions = actions,
             navigationIcon = navigationIcon,
             windowInsets = WindowInsets.statusBars,
-            colors = TopAppBarDefaults.smallTopAppBarColors(
+            colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = colors.containerColor,
                 navigationIconContentColor = colors.leadingIconColor,
                 actionIconContentColor = colors.trailingIconsColor,

@@ -5,22 +5,11 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-kotlin {
-    sourceSets {
-        debug {
-            kotlin.srcDir("build/generated/ksp/debug/kotlin")
-        }
-        release {
-            kotlin.srcDir("build/generated/ksp/release/kotlin")
-        }
-    }
-}
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule.db"
     compileSdk = libs.versions.sdk.target.get().toInt()

@@ -15,7 +15,7 @@ internal fun MainScreenBottomBar(
     onDestinationClick: (MainScreenDestination) -> Unit
 ) {
     NavigationBar {
-        MainScreenDestination.values().forEach { destination ->
+        MainScreenDestination.entries.forEach { destination ->
             val label = stringResource(destination.label)
             NavigationBarItem(
                 selected = currentDestination?.route == destination.direction.route,

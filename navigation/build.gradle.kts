@@ -4,18 +4,11 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-kotlin {
-    sourceSets.forEach {
-        it.kotlin.srcDir("build/generated/ksp/${it.name}/kotlin")
-    }
-}
-
 ksp {
     arg("compose-destinations.mode", "destinations")
     arg("compose-destinations.moduleName", "search")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule.navigation"
     compileSdk = libs.versions.sdk.target.get().toInt()

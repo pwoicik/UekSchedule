@@ -1,7 +1,14 @@
 package com.github.pwoicik.uekschedule.features.activities.presentation.screens.otherActivities
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,8 +16,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -19,21 +40,20 @@ import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.domain.model.Activity
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithUndo
+import com.github.pwoicik.uekschedule.resources.R
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
-import java.util.*
+import java.util.Locale
 
 interface OtherActivitiesNavigator {
     fun openCreateActivity(activityId: Long = 0)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun OtherActivitiesScreen(
@@ -62,6 +82,7 @@ fun OtherActivitiesScreen(
                 }
                 viewModel.emit(OtherActivitiesEvent.UserMessageSeen)
             }
+
             UserMessage.None -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
             }
@@ -81,6 +102,7 @@ fun OtherActivitiesScreen(
     ) { innerPadding ->
         Crossfade(
             targetState = state.activities == null,
+            label = "fetching crossfade",
             modifier = Modifier.padding(innerPadding)
         ) { isFetching ->
             when (isFetching) {
@@ -97,7 +119,6 @@ fun OtherActivitiesScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActivityList(
     activities: List<Activity>,
@@ -134,19 +155,23 @@ fun ActivityList(
                                 .padding(vertical = 8.dp)
                         ) {
                             Text(activity.name)
-                            val time by derivedStateOf { activity.startDateTime.format(timeFormatter) }
-                            val date by derivedStateOf {
-                                if (activity.isOneshot) {
-                                    activity.startDateTime.format(dateFormatter)
-                                } else {
-                                    activity.repeatOnDaysOfWeek!!
-                                        .sortedBy(DayOfWeek::ordinal)
-                                        .joinToString(separator = ", ") {
-                                            it.getDisplayName(
-                                                TextStyle.SHORT_STANDALONE,
-                                                Locale.getDefault()
-                                            )
-                                        }
+                            val time by remember {
+                                derivedStateOf { activity.startDateTime.format(timeFormatter) }
+                            }
+                            val date by remember {
+                                derivedStateOf {
+                                    if (activity.isOneshot) {
+                                        activity.startDateTime.format(dateFormatter)
+                                    } else {
+                                        activity.repeatOnDaysOfWeek!!
+                                            .sortedBy(DayOfWeek::ordinal)
+                                            .joinToString(separator = ", ") {
+                                                it.getDisplayName(
+                                                    TextStyle.SHORT_STANDALONE,
+                                                    Locale.getDefault()
+                                                )
+                                            }
+                                    }
                                 }
                             }
                             Text(

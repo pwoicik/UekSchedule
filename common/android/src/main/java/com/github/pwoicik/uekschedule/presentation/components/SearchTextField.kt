@@ -3,7 +3,6 @@ package com.github.pwoicik.uekschedule.presentation.components
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import com.github.pwoicik.uekschedule.resources.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTextField(
     value: TextFieldValue,
@@ -59,7 +57,6 @@ fun SearchTextField(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldDefaults.searchTextFieldColors(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
@@ -68,10 +65,13 @@ fun TextFieldDefaults.searchTextFieldColors(
     cursorColor: Color = MaterialTheme.colorScheme.primary,
     focusedIndicatorColor: Color = cursorColor,
     unfocusedIndicatorColor: Color = placeholderColor
-) = textFieldColors(
-    textColor = textColor,
-    placeholderColor = placeholderColor,
-    containerColor = backgroundColor,
+) = colors(
+    focusedTextColor = textColor,
+    unfocusedTextColor = textColor,
+    focusedPlaceholderColor = placeholderColor,
+    unfocusedPlaceholderColor = placeholderColor,
+    focusedContainerColor = backgroundColor,
+    unfocusedContainerColor = backgroundColor,
     cursorColor = cursorColor,
     focusedIndicatorColor = focusedIndicatorColor,
     unfocusedIndicatorColor = unfocusedIndicatorColor

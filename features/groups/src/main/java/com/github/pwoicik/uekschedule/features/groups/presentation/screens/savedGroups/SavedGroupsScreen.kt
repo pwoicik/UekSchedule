@@ -2,11 +2,10 @@ package com.github.pwoicik.uekschedule.features.groups.presentation.screens.save
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +28,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -55,9 +53,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.pwoicik.uekschedule.domain.model.Schedulable
 import com.github.pwoicik.uekschedule.domain.model.SchedulableType
-import com.github.pwoicik.uekschedule.features.groups.R
 import com.github.pwoicik.uekschedule.presentation.components.SnackbarVisualsWithUndo
 import com.github.pwoicik.uekschedule.presentation.util.zero
+import com.github.pwoicik.uekschedule.resources.R
 import com.ramcosta.composedestinations.annotation.Destination
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -72,7 +70,6 @@ interface SavedGroupsNavigator {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
 fun SavedGroupsScreen(
@@ -101,6 +98,7 @@ fun SavedGroupsScreen(
                 }
                 viewModel.emit(SavedGroupsEvent.UserMessageSeen)
             }
+
             UserMessage.None -> snackbarHostState.currentSnackbarData?.dismiss()
         }
     }
@@ -121,6 +119,7 @@ fun SavedGroupsScreen(
     ) { innerPadding ->
         Crossfade(
             targetState = state.groups == null,
+            label = "fetching crossfade",
             modifier = Modifier.padding(innerPadding)
         ) { isFetching ->
             when (isFetching) {
@@ -179,11 +178,7 @@ private fun GroupList(
     }
 }
 
-@OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LazyItemScope.ListItem(
     group: Schedulable,
@@ -234,8 +229,9 @@ private fun LazyItemScope.ListItem(
                         scaleIn(
                             initialScale = 0.0f,
                             animationSpec = tween(220, delayMillis = 90)
-                        ) with fadeOut(animationSpec = tween(500))
-                    }
+                        ) togetherWith fadeOut(animationSpec = tween(500))
+                    },
+                    label = "favorite icon transition"
                 ) { isFavorite ->
                     IconButton(onClick = onFavoriteItemClick) {
                         Icon(

@@ -4,7 +4,6 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.github.pwoicik.uekschedule.common"
     compileSdk = libs.versions.sdk.target.get().toInt()

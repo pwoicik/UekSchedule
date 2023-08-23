@@ -13,6 +13,6 @@ internal data class SavedGroupsState(
 
 internal sealed class UserMessage {
 
-    object None : UserMessage()
+    data object None : UserMessage()
     data class GroupDeleted(val gwc: SchedulableWithClasses) : UserMessage()
 }

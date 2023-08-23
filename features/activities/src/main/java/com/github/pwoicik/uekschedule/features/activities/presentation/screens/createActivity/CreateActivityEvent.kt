@@ -13,10 +13,10 @@ internal sealed class CreateActivityEvent {
     data class StartTimeChanged(val value: LocalTime) : CreateActivityEvent()
     data class DurationMinutesChanged(val value: String) : CreateActivityEvent()
     data class StartDateChanged(val value: LocalDate) : CreateActivityEvent()
-    object RepeatActivityChanged : CreateActivityEvent()
+    data object RepeatActivityChanged : CreateActivityEvent()
     data class AddDayOfWeekToRepeat(val value: DayOfWeek) : CreateActivityEvent()
     data class RemoveDayOfWeekToRepeat(val value: DayOfWeek) : CreateActivityEvent()
     data class RepeatOnDaysOfWeekChanged(val value: Set<DayOfWeek>) : CreateActivityEvent()
 
-    object SaveActivity : CreateActivityEvent()
+    data object SaveActivity : CreateActivityEvent()
 }

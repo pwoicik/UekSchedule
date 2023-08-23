@@ -8,7 +8,7 @@ internal sealed interface SearchEvent {
     data class SearchTextChanged(val newValue: TextFieldValue) : SearchEvent
     data class PageChanged(val targetPage: SearchPages) : SearchEvent
     data class SchedulableSaveButtonClicked(val schedulable: Schedulable) : SearchEvent
-    object RetrySchedulablesFetch : SearchEvent
+    data object RetrySchedulablesFetch : SearchEvent
 
-    object UserMessageSeen : SearchEvent
+    data object UserMessageSeen : SearchEvent
 }

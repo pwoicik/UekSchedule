@@ -3,9 +3,9 @@ package com.github.pwoicik.uekschedule.features.search.presentation.screens.sear
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.input.TextFieldValue
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.domain.model.Schedulable
 import com.github.pwoicik.uekschedule.domain.model.SchedulableType
+import com.github.pwoicik.uekschedule.resources.R
 
 internal enum class SearchPages(@StringRes val title: Int) {
     Groups(R.string.groups),

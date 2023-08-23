@@ -12,6 +12,6 @@ internal data class OtherActivitiesState(
 
 internal sealed class UserMessage {
 
-    object None : UserMessage()
+    data object None : UserMessage()
     data class ActivityDeleted(val activity: Activity) : UserMessage()
 }

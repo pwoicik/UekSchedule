@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.VerticalAlignCenter
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -26,12 +25,12 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.github.pwoicik.uekschedule.common.R
 import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearch
 import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSearchColors
 import com.github.pwoicik.uekschedule.presentation.util.zero
+import com.github.pwoicik.uekschedule.resources.R
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ScheduleEntriesListScaffold(
     title: String,

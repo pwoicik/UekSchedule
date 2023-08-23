@@ -34,7 +34,7 @@ class PreferencesManagerImpl(
     override val theme = preferences.data.map { preferences ->
         val themeInt = preferences[Keys.THEME]
         if (themeInt == null) Preferences.Defaults.THEME
-        else Preferences.Theme.values()[themeInt]
+        else Preferences.Theme.entries[themeInt]
     }
 
     private object Keys {

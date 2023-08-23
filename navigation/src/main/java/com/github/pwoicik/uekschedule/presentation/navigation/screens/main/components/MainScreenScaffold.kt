@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -13,7 +12,6 @@ import com.github.pwoicik.uekschedule.presentation.navigation.screens.main.MainS
 import com.github.pwoicik.uekschedule.presentation.util.zero
 import com.ramcosta.composedestinations.spec.DestinationSpec
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MainScreenScaffold(
     currentDestination: DestinationSpec<*>?,

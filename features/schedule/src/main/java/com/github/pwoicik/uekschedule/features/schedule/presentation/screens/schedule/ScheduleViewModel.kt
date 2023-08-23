@@ -8,7 +8,16 @@ import com.github.pwoicik.uekschedule.features.schedule.presentation.components.
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -99,8 +108,8 @@ internal class ScheduleViewModel @Inject constructor(
     }
 
     sealed class UiEvent {
-        object ShowErrorSnackbar : UiEvent()
-        object HideSnackbar : UiEvent()
-        object ScrollToToday : UiEvent()
+        data object ShowErrorSnackbar : UiEvent()
+        data object HideSnackbar : UiEvent()
+        data object ScrollToToday : UiEvent()
     }
 }
