@@ -7,6 +7,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.ktx.AppUpdateResult
 import com.google.android.play.core.ktx.requestUpdateFlow
+import com.google.android.play.core.ktx.totalBytesToDownload
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,31 +36,40 @@ suspend fun Context.updateApp(): Flow<UpdateStatus> {
                     }
                     result.updateInfo.installStatus()
                 }
+
                 is AppUpdateResult.InProgress -> {
                     when (result.installState.installStatus()) {
                         InstallStatus.CANCELED -> {
                             log.d("canceled")
                             emission = UpdateStatus.Canceled
                         }
+
                         InstallStatus.PENDING -> {
                             log.d("pending")
                             emission = UpdateStatus.Pending
                         }
+
                         InstallStatus.DOWNLOADING -> {
                             log.d("downloading")
-                            val progress = (result.installState.bytesDownloaded()
-                                    / result.installState.totalBytesToDownload()
-                                    * 100f)
+                            val totalBytesToDownload = result.installState.totalBytesToDownload
+                            val progress = if (totalBytesToDownload == 0L) {
+                                0f
+                            } else {
+                                result.installState.bytesDownloaded() / totalBytesToDownload * 100f
+                            }
                             downloadProgressFlow.value = progress
                             emission = UpdateStatus.Downloading(downloadProgressFlow)
                         }
+
                         InstallStatus.FAILED -> {
                             log.d("failed error code: ${result.installState.installErrorCode()}")
                             emission = UpdateStatus.Failed
                         }
-                        else -> {}
+
+                        else -> Unit
                     }
                 }
+
                 is AppUpdateResult.Downloaded -> {
                     log.d("downloaded")
                     emission = UpdateStatus.Downloaded { result.completeUpdate() }
