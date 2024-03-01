@@ -18,7 +18,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -30,7 +29,6 @@ import com.github.pwoicik.uekschedule.presentation.components.SmallTopBarWithSea
 import com.github.pwoicik.uekschedule.presentation.util.zero
 import com.github.pwoicik.uekschedule.resources.R
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ScheduleEntriesListScaffold(
     title: String,

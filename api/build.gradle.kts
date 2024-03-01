@@ -2,6 +2,7 @@ plugins {
     id("java-library")
     kotlin("jvm")
     kotlin("kapt")
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
@@ -14,7 +15,7 @@ dependencies {
     kapt(libs.tikxml.kapt)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+    ksp(libs.dagger.compiler)
 }
 
 java {

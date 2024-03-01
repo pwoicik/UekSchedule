@@ -21,7 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -116,9 +116,9 @@ private fun SearchTopBar(
         TabRow(
             selectedTabIndex = currentPage.ordinal,
             indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[currentPage.ordinal])
+                SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[currentPage.ordinal]),
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         ) {

@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     id("com.google.devtools.ksp")
 }
 
@@ -43,7 +42,7 @@ dependencies {
     implementation(libs.timber)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.kapt)
+    ksp(libs.dagger.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junit.android)

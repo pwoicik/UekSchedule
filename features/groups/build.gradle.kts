@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
 }
@@ -48,6 +47,6 @@ dependencies {
     ksp(libs.destinations.ksp)
 
     implementation(libs.hilt)
-    kapt(libs.hilt.kapt)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
 }

@@ -1,31 +1,31 @@
 [versions]
-accompanist = "0.26.5-rc"
-agp = "8.2.0-alpha16"
+accompanist = "0.34.0"
+agp = "8.3.0"
 androidx_test = "1.5.2"
 appcompat = "1.6.1"
-benmanesversion = "0.42.0"
-compose = "1.5.0"
-compose_activity = "1.7.2"
-compose_compiler = "1.5.0"
-compose_material3 = "1.1.1"
-core_ktx = "1.10.1"
-dagger = "2.47"
+benmanesversion = "0.51.0"
+compose = "1.6.2"
+compose_activity = "1.8.2"
+compose_compiler = "1.5.10"
+compose_material3 = "1.2.0"
+core_ktx = "1.12.0"
+dagger = "2.51"
 datastore = "1.0.0"
-destinations = "1.9.51"
+destinations = "1.10.1"
 espresso = "3.5.1"
-hilt_navigation = "1.0.0"
+hilt_navigation = "1.2.0"
 junit = "4.13.2"
 junit_android = "1.1.5"
-kotlin = "1.9.0"
-kotlinx_coroutines = "1.7.2"
-ksp = "1.9.0-1.0.11"
-lifecycle = "2.6.1"
-material = "1.9.0"
-mockito = "4.0.0"
-okhttp = "4.10.0"
+kotlin = "1.9.22"
+kotlinx_coroutines = "1.8.0"
+ksp = "1.9.22-1.0.18"
+lifecycle = "2.7.0"
+material = "1.11.0"
+mockito = "5.2.1"
+okhttp = "4.12.0"
 play_core = "1.8.1"
 retrofit = "2.9.0"
-room = "2.5.2"
+room = "2.6.1"
 sdk_min = "26"
 sdk_target = "34"
 tikxml = "0.8.13"
@@ -38,6 +38,7 @@ androidx_appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 androidx_core_ktx = { module = "androidx.core:core-ktx", version.ref = "core_ktx" }
 androidx_test_runner = { module = "androidx.test:runner", version.ref = "androidx_test" }
 compose_activity = { module = "androidx.activity:activity-compose", version.ref = "compose_activity" }
+compose_compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose_compiler" }
 compose_icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose_material3 = { module = "androidx.compose.material3:material3", version.ref = "compose_material3" }
 compose_preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
@@ -45,13 +46,13 @@ compose_test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "c
 compose_tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose_ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
-dagger_kapt = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+dagger_compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 destinations = { module = "io.github.raamcosta.compose-destinations:animations-core", version.ref = "destinations" }
 destinations_ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "destinations" }
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
-hilt_kapt = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+hilt_compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
 hilt_navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation" }
 hilt_test = { module = "com.google.dagger:hilt-android-testing", version.ref = "dagger" }
 junit = { module = "junit:junit", version.ref = "junit" }

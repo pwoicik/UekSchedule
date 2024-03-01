@@ -2,7 +2,7 @@ package com.github.pwoicik.uekschedule.features.activities.presentation.screens.
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -126,7 +126,7 @@ fun CreateActivityScreen(
                     .padding(horizontal = 16.dp)
             )
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .padding(horizontal = 16.dp)

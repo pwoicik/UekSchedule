@@ -7,6 +7,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,9 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.github.pwoicik.uekschedule.features.activities.presentation.screens.createActivity.CreateActivityState
 import com.github.pwoicik.uekschedule.resources.R
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.flowlayout.SizeMode
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -93,6 +92,7 @@ internal fun RepeatActivityInputColumn(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun DaysOfWeekSelectionRow(
     selectedDays: Set<DayOfWeek>,
@@ -101,7 +101,7 @@ internal fun DaysOfWeekSelectionRow(
 ) {
     val daysOfWeek by remember {
         derivedStateOf {
-            DayOfWeek.values().associateWith {
+            DayOfWeek.entries.associateWith {
                 it.getDisplayName(
                     TextStyle.SHORT_STANDALONE,
                     Locale.getDefault()
@@ -124,10 +124,8 @@ internal fun DaysOfWeekSelectionRow(
             }
     ) {
         FlowRow(
-            mainAxisSize = SizeMode.Expand,
-            mainAxisAlignment = FlowMainAxisAlignment.SpaceEvenly,
-            mainAxisSpacing = 6.dp,
-            crossAxisSpacing = 4.dp,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
                 .selectableGroup()
                 .padding(8.dp)

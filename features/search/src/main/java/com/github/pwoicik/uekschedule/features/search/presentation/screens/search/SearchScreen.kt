@@ -9,7 +9,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,7 +28,6 @@ interface SearchNavigator {
     fun openSchedulePreview(schedulable: Schedulable)
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Destination
 @Composable
 fun SearchScreen(

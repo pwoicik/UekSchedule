@@ -18,8 +18,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.OpenInNew
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -64,7 +64,7 @@ internal fun ScheduleEntriesList(
             scheduleEntriesListStickyHeader(date)
             items(items = entries) { entry ->
                 ScheduleEntriesListItem(scheduleEntry = entry, status = entry.status(timeNow))
-                Divider(thickness = Dp.Hairline, modifier = Modifier.alpha(0.5f))
+                HorizontalDivider(modifier = Modifier.alpha(0.5f), thickness = Dp.Hairline)
             }
         }
     }
@@ -233,7 +233,7 @@ private fun RowScope.ScheduleEntrySummaryColumn(
                                 .clickable { context.openInBrowser(url) }
                         ) {
                             Icon(
-                                imageVector = Icons.Default.OpenInNew,
+                                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                                 contentDescription = stringResource(R.string.open_in_browser),
                                 modifier = Modifier.size(20.dp)
                             )

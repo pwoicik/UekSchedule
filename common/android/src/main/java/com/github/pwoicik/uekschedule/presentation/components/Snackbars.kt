@@ -89,10 +89,10 @@ fun SnackbarWithLoading(
                     label = "snackbar progress animation"
                 )
                 CircularProgressIndicator(
-                    progress = animatedProgress,
-                    strokeWidth = 3.dp,
+                    progress = { animatedProgress },
+                    modifier = Modifier.size(20.dp),
                     color = MaterialTheme.colorScheme.inverseOnSurface,
-                    modifier = Modifier.size(20.dp)
+                    strokeWidth = 3.dp,
                 )
             }
         }

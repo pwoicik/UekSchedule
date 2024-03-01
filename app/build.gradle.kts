@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
     id("dagger.hilt.android.plugin")
 }
 
@@ -81,5 +81,5 @@ dependencies {
     implementation(libs.accompanist.uicontroller)
 
     implementation(libs.hilt)
-    kapt(libs.hilt.kapt)
+    ksp(libs.hilt.compiler)
 }
