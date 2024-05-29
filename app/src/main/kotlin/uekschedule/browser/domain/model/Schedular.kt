@@ -1,12 +1,14 @@
 package uekschedule.browser.domain.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 
 data class Schedular(
     val id: Id,
     val name: String,
 ) {
+    @Immutable
     sealed interface Id : Parcelable {
         val value: String
 
