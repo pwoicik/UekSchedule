@@ -10,4 +10,6 @@ val EnStrings = Strings(
     groupsFilter = "Groups",
     teachersFilter = "Teachers",
     noResults = "No results found",
+    error = "Something went wrong…",
+    retry = "Retry",
 )

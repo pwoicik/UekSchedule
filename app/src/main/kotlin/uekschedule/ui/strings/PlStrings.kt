@@ -10,4 +10,6 @@ val PlStrings = Strings(
     groupsFilter = "Grupy",
     teachersFilter = "Nauczyciele",
     noResults = "Nie znaleziono wyników",
+    error = "Coś poszło nie tak…",
+    retry = "Ponów",
 )

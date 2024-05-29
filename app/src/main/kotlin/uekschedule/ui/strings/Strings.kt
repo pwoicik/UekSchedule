@@ -7,6 +7,8 @@ class Strings(
     val groupsFilter: String,
     val teachersFilter: String,
     val noResults: String,
+    val error: String,
+    val retry: String,
 ) {
     val appName: String = "Uek Schedule"
 }

@@ -46,6 +46,7 @@ android {
         options.optIn.addAll(
             "kotlinx.coroutines.FlowPreview",
             "androidx.compose.foundation.ExperimentalFoundationApi",
+            "androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "androidx.compose.material3.ExperimentalMaterial3Api",
         )
     }
