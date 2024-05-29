@@ -3,10 +3,8 @@
 package com.github.pwoicik.uekschedule
 
 import android.app.Application
-import co.touchlab.kermit.DefaultFormatter
-import co.touchlab.kermit.Logger
-import co.touchlab.kermit.Severity
-import co.touchlab.kermit.platformLogWriter
+import logcat.AndroidLogcatLogger
+import logcat.LogPriority
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -16,14 +14,9 @@ import uekschedule.di.AppModule
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Logger.setLogWriters(platformLogWriter(DefaultFormatter))
-        Logger.setMinSeverity(
-            if (BuildConfig.DEBUG) {
-                Severity.Debug
-            } else {
-                Severity.Error
-            },
-        )
+        if (BuildConfig.DEBUG) {
+            AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
+        }
         startKoin {
             if (BuildConfig.DEBUG) {
                 androidLogger(Level.DEBUG)
