@@ -550,15 +550,15 @@ private fun Search(
             }
         },
     )
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
     val isImeVisible = WindowInsets.isImeVisible
     val focusManager = LocalFocusManager.current
     LaunchedEffect(isImeVisible) {
         if (!isImeVisible) {
             focusManager.clearFocus()
         }
+    }
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
     }
 }
 
