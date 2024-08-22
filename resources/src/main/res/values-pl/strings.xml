@@ -70,10 +70,5 @@
     <string name="theme_dark">Ciemny</string>
     <string name="theme_light">Jasny</string>
     <string name="undo">Przywróć</string>
-    <string name="update_failed">Aktualizacja nie powiodła się!</string>
-    <string name="update_install">Instaluj</string>
-    <string name="update_pending">Oczekiwanie na aktualizację…</string>
-    <string name="update_ready">Aktualizacja gotowa!</string>
-    <string name="updating_app">Pobieranie aktualizacji…</string>
     <string name="your_groups">Twoje grupy</string>
 </resources>

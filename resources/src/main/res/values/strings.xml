@@ -69,10 +69,5 @@
     <string name="theme_dark">Dark</string>
     <string name="theme_light">Light</string>
     <string name="undo">Undo</string>
-    <string name="update_failed">Couldn\'t update the app!</string>
-    <string name="update_install">Install</string>
-    <string name="update_pending">Update pending…</string>
-    <string name="update_ready">Update is ready!</string>
-    <string name="updating_app">Downloading update…</string>
     <string name="your_groups">Your groups</string>
 </resources>

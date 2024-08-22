@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     alias(libs.plugins.ksp)
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -58,9 +59,6 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {

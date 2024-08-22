@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     id("com.google.devtools.ksp")
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -29,9 +30,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
 }
 
 dependencies {
@@ -49,7 +47,7 @@ dependencies {
     implementation(libs.destinations)
     ksp(libs.destinations.ksp)
 
-    implementation(libs.play.core)
+    implementation(libs.play.review)
 
     api(libs.timber)
 }
