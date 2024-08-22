@@ -11,7 +11,6 @@ import com.slack.circuit.runtime.ui.ui
 import org.koin.core.module.Module
 import org.koin.core.qualifier.qualifier
 import org.koin.core.scope.Scope
-import org.koin.dsl.bind
 
 inline fun <reified Sc : Screen> Module.presenterFactory(
     crossinline presenter: Scope.(screen: Sc, navigator: Navigator) -> Presenter<*>,

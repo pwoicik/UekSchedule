@@ -2,10 +2,10 @@ package uekschedule.browser.domain.usecase
 
 import arrow.core.Either
 import kotlinx.collections.immutable.ImmutableList
-import uekschedule.browser.domain.model.Schedular
+import uekschedule.browser.domain.model.Schedulable
 
-interface GetSchedulars {
-    suspend operator fun invoke(type: Schedular.Type): Either<Error, ImmutableList<Schedular>>
+interface GetSchedulables {
+    suspend operator fun invoke(type: Schedulable.Type): Either<Error, ImmutableList<Schedulable>>
 
     enum class Error {
         Unsuccessful,

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 
-data class Schedular(
+data class Schedulable(
     val id: Id,
     val name: String,
 ) {

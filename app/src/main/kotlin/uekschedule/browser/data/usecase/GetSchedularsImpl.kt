@@ -10,17 +10,17 @@ import kotlinx.collections.immutable.adapters.ImmutableListAdapter
 import logcat.asLog
 import logcat.logcat
 import uekschedule.browser.data.dto.GroupsDto
-import uekschedule.browser.domain.model.Schedular
-import uekschedule.browser.domain.usecase.GetSchedulars
+import uekschedule.browser.domain.model.Schedulable
+import uekschedule.browser.domain.usecase.GetSchedulables
 import uekschedule.data.getCacheable
 import javax.net.ssl.SSLProtocolException
 
-class GetSchedularsImpl(
+class GetSchedulablesImpl(
     private val http: HttpClient,
-) : GetSchedulars {
+) : GetSchedulables {
     override suspend fun invoke(
-        type: Schedular.Type,
-    ): Either<GetSchedulars.Error, ImmutableList<Schedular>> = either {
+        type: Schedulable.Type,
+    ): Either<GetSchedulables.Error, ImmutableList<Schedulable>> = either {
         val url = buildUrl(type)
         suspend fun get() = http.getCacheable<GroupsDto>(url)
         val res = get()
@@ -36,15 +36,15 @@ class GetSchedularsImpl(
             )
             .mapLeft {
                 logcat { it.asLog() }
-                GetSchedulars.Error.Unsuccessful
+                GetSchedulables.Error.Unsuccessful
             }
             .bind()
         return res.groups
             .map {
-                Schedular(
+                Schedulable(
                     id = when (it.type) {
-                        "G" -> Schedular.Id.Group(it.id)
-                        "N" -> Schedular.Id.Teacher(it.id)
+                        "G" -> Schedulable.Id.Group(it.id)
+                        "N" -> Schedulable.Id.Teacher(it.id)
                         else -> throw NotImplementedError()
                     },
                     name = it.name,
@@ -54,9 +54,9 @@ class GetSchedularsImpl(
             .right()
     }
 
-    private fun buildUrl(type: Schedular.Type): String =
+    private fun buildUrl(type: Schedulable.Type): String =
         when (type) {
-            Schedular.Type.Group -> "G"
-            Schedular.Type.Teacher -> "N"
+            Schedulable.Type.Group -> "G"
+            Schedulable.Type.Teacher -> "N"
         }.let { "https://planzajec.uek.krakow.pl/index.php?typ=$it&xml" }
 }

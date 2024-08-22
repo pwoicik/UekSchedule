@@ -20,13 +20,13 @@ import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.screen.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.parcelize.Parcelize
-import uekschedule.browser.domain.model.Schedular
+import uekschedule.browser.domain.model.Schedulable
 import uekschedule.schedule.domain.model.Class
 import uekschedule.schedule.domain.usecase.GetSchedule
 
 @Parcelize
 data class ScheduleScreen(
-    val id: Schedular.Id,
+    val id: Schedulable.Id,
 ) : Screen
 
 sealed interface ScheduleState : CircuitUiState {

@@ -12,4 +12,7 @@ val PlStrings = Strings(
     noResults = "Nie znaleziono wyników",
     error = "Coś poszło nie tak…",
     retry = "Ponów",
+    addGroup = "Dodaj grupę",
+    teachers = "Nauczyciele",
+    groups = "Grupy",
 )

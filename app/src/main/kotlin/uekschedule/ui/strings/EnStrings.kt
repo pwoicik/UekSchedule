@@ -12,4 +12,7 @@ val EnStrings = Strings(
     noResults = "No results found",
     error = "Something went wrong…",
     retry = "Retry",
+    addGroup = "Add group",
+    teachers = "Teachers",
+    groups = "Groups",
 )

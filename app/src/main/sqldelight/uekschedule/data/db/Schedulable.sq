@@ -1,0 +1,11 @@
+CREATE TABLE Schedulable (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    type INTEGER NOT NULL
+);
+
+insert:
+INSERT OR IGNORE INTO Schedulable VALUES ?;
+
+selectAll:
+SELECT * FROM Schedulable ORDER BY name;

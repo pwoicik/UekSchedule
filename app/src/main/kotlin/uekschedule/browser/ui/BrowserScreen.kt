@@ -94,6 +94,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -127,8 +128,9 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import uekschedule.browser.domain.model.Schedular
-import uekschedule.browser.domain.usecase.GetSchedulars
+import uekschedule.browser.domain.model.Schedulable
+import uekschedule.browser.domain.usecase.GetSchedulables
+import uekschedule.browser.domain.usecase.SaveSchedule
 import uekschedule.schedule.ui.ScheduleScreen
 import uekschedule.ui.components.Spinner
 import uekschedule.ui.strings.Strings
@@ -166,18 +168,19 @@ private data class LoadedState(
     val isFetching: Boolean,
     val query: TextFieldState,
     val filters: ImmutableList<Filter>,
-    val schedulars: ImmutableList<Schedular>,
+    val schedulables: ImmutableList<Schedulable>,
     val error: Error?,
     val eventSink: (Event) -> Unit,
 ) : BrowserState {
     sealed interface Event : CircuitUiEvent {
         data class FilterSelected(val filter: Filter) : Event
         data object ErrorSeen : Event
+        data class SaveScheduleClicked(val Schedulable: Schedulable) : Event
     }
 }
 
 private data class Filter(
-    val type: Schedular.Type,
+    val type: Schedulable.Type,
     val label: String,
     val selected: Boolean,
 )
@@ -192,7 +195,8 @@ private sealed class Error {
 
 class BrowserPresenter(
     private val navigator: Navigator,
-    private val getSchedulars: GetSchedulars,
+    private val getSchedulables: GetSchedulables,
+    private val saveSchedule: SaveSchedule,
 ) : Presenter<BrowserState> {
     private var isRefreshing by mutableStateOf(false)
 
@@ -202,7 +206,7 @@ class BrowserPresenter(
         val strings = LocalStrings.current
         var filters by remember { mutableStateOf(createFilters(strings)) }
         var trigger by remember { mutableStateOf(Trigger()) }
-        return when (val schedulars = getSchedulars(query.text.toString(), filters, trigger)) {
+        return when (val schedulables = getSchedulables(query.text.toString(), filters, trigger)) {
             null -> LoadingState
 
             is Ior.Left -> ErrorState(
@@ -218,12 +222,13 @@ class BrowserPresenter(
             is Ior.Right,
             is Ior.Both,
             -> {
-                var error by remember(schedulars) { mutableStateOf(schedulars.leftOrNull()) }
+                var error by remember(schedulables) { mutableStateOf(schedulables.leftOrNull()) }
+                val coroutineScope = rememberCoroutineScope()
                 LoadedState(
                     isFetching = isRefreshing,
                     query = query,
                     filters = filters,
-                    schedulars = schedulars.getOrElse { throw NotImplementedError() },
+                    schedulables = schedulables.getOrElse { throw NotImplementedError() },
                     error = error,
                     eventSink = { event ->
                         when (event) {
@@ -238,6 +243,9 @@ class BrowserPresenter(
                                 error = null
                                 trigger = Trigger()
                             }
+
+                            is LoadedState.Event.SaveScheduleClicked,
+                                -> coroutineScope.launch { saveSchedule(event.Schedulable) }
                         }
                     },
                 )
@@ -248,24 +256,24 @@ class BrowserPresenter(
     private fun createFilters(strings: Strings) =
         persistentListOf(
             Filter(
-                type = Schedular.Type.Group,
+                type = Schedulable.Type.Group,
                 label = strings.groupsFilter,
                 selected = true,
             ),
             Filter(
-                type = Schedular.Type.Teacher,
+                type = Schedulable.Type.Teacher,
                 label = strings.teachersFilter,
                 selected = false,
             ),
         )
 
     @Composable
-    private fun getSchedulars(
+    private fun getSchedulables(
         query: String,
         filters: PersistentList<Filter>,
         trigger: Trigger,
-    ): Ior<Error, ImmutableList<Schedular>>? {
-        val schedulars by produceState<Either<Error, ImmutableList<Schedular>>?>(
+    ): Ior<Error, ImmutableList<Schedulable>>? {
+        val schedulables by produceState<Either<Error, ImmutableList<Schedulable>>?>(
             initialValue = null,
             filters, trigger,
         ) {
@@ -274,7 +282,7 @@ class BrowserPresenter(
                 either {
                     val res = filters
                         .filter { it.selected }
-                        .parMap { getSchedulars(it.type).mapLeft { Error.ConnectionError() } }
+                        .parMap { getSchedulables(it.type).mapLeft { Error.ConnectionError() } }
                         .flattenOrAccumulate { it, _ -> it }
                         .bind()
                     res.flatten()
@@ -284,12 +292,12 @@ class BrowserPresenter(
             }
             isRefreshing = false
         }
-        val filteredSchedulars by produceState<Ior<Error, ImmutableList<Schedular>>?>(
+        val filteredSchedulables by produceState<Ior<Error, ImmutableList<Schedulable>>?>(
             initialValue = null,
-            query, schedulars,
+            query, schedulables,
         ) {
             if (query.isEmpty()) {
-                value = when (val s = schedulars) {
+                value = when (val s = schedulables) {
                     null -> null
 
                     is Either.Left -> when (val v = value) {
@@ -306,7 +314,7 @@ class BrowserPresenter(
                 .debounce(400.milliseconds)
             withContext(Dispatchers.Default) {
                 flow.collect { query ->
-                    value = when (val s = schedulars) {
+                    value = when (val s = schedulables) {
                         null -> null
 
                         is Either.Left -> when (val v = value) {
@@ -322,7 +330,7 @@ class BrowserPresenter(
                 }
             }
         }
-        return filteredSchedulars
+        return filteredSchedulables
     }
 }
 
@@ -369,7 +377,7 @@ private fun Loaded(
             onSelect = { state.eventSink(LoadedState.Event.FilterSelected(it)) },
         )
         Box(Modifier.weight(1f)) {
-            if (state.schedulars.isEmpty()) {
+            if (state.schedulables.isEmpty()) {
                 Text(
                     text = strings.noResults,
                     fontWeight = FontWeight.Medium,
@@ -379,15 +387,16 @@ private fun Loaded(
                         .padding(16.dp, 24.dp),
                 )
             } else {
-                var selectedSchedular: Schedular? by remember { mutableStateOf(null) }
-                Schedulars(
-                    schedulars = state.schedulars,
-                    onClick = { selectedSchedular = it },
+                var selectedSchedulable: Schedulable? by remember { mutableStateOf(null) }
+                Schedulables(
+                    schedulables = state.schedulables,
+                    onClick = { selectedSchedulable = it },
                 )
-                selectedSchedular?.let {
-                    SchedularSheet(
-                        schedular = it,
-                        onDismiss = { selectedSchedular = null },
+                selectedSchedulable?.let {
+                    SchedulableSheet(
+                        schedulable = it,
+                        onDismiss = { selectedSchedulable = null },
+                        onSave = { state.eventSink(LoadedState.Event.SaveScheduleClicked(it)) },
                     )
                 }
             }
@@ -596,24 +605,24 @@ private fun Filters(
 }
 
 @Composable
-private fun Schedulars(
-    schedulars: ImmutableList<Schedular>,
-    onClick: (Schedular) -> Unit,
+private fun Schedulables(
+    schedulables: ImmutableList<Schedulable>,
+    onClick: (Schedulable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         contentPadding = WindowInsets.ime.union(WindowInsets.navigationBars).asPaddingValues(),
         modifier = modifier,
     ) {
-        val letter = schedulars.first().name.first()
+        val letter = schedulables.first().name.first()
         stickyHeader(letter) {
             LetterHeader(letter)
         }
-        schedulars.windowed(size = 2, partialWindows = true) {
+        schedulables.windowed(size = 2, partialWindows = true) {
             val first = it.first()
             item(first.id) {
-                Schedular(
-                    schedular = first,
+                Schedulable(
+                    schedulable = first,
                     onClick = { onClick(first) },
                     modifier = Modifier.animateItem(),
                 )
@@ -639,7 +648,7 @@ private fun LetterHeader(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.background)
             .padding(10.dp, 2.dp, 12.dp, 2.dp),
     ) {
         Text(
@@ -664,19 +673,19 @@ private fun LetterHeader(
 }
 
 @Composable
-private fun Schedular(
-    schedular: Schedular,
+private fun Schedulable(
+    schedulable: Schedulable,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
             .clip(CircleShape)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick, role = Role.Button)
             .padding(16.dp, 12.dp),
     ) {
         Text(
-            text = schedular.name,
+            text = schedulable.name,
             modifier = Modifier.weight(1f),
         )
         Spacer(Modifier.width(8.dp))
@@ -689,9 +698,10 @@ private fun Schedular(
 }
 
 @Composable
-private fun SchedularSheet(
-    schedular: Schedular,
+private fun SchedulableSheet(
+    schedulable: Schedulable,
     onDismiss: () -> Unit,
+    onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
@@ -716,14 +726,14 @@ private fun SchedularSheet(
                         )
                         .background(
                             MaterialTheme.colorScheme.onSecondaryContainer,
-                            CircleShape
+                            CircleShape,
                         ),
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = schedular.name,
+                        text = schedulable.name,
                         maxLines = 1,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -731,16 +741,18 @@ private fun SchedularSheet(
                             .weight(1f)
                             .padding(start = 8.dp),
                     )
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onSave) {
                         Icon(
                             imageVector = Icons.Default.SaveAlt,
                             contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                     }
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = { /* TODO */ }) {
                         Icon(
                             imageVector = Icons.Default.OpenInFull,
                             contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
                             modifier = Modifier.size(20.dp),
                         )
                     }
@@ -749,7 +761,7 @@ private fun SchedularSheet(
         },
     ) {
         CircuitContent(
-            screen = ScheduleScreen(schedular.id),
+            screen = ScheduleScreen(schedulable.id),
         )
     }
 }

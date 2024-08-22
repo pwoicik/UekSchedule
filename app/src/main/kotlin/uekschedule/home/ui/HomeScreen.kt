@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -18,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import cafe.adriel.lyricist.LocalStrings
 import com.slack.circuit.foundation.CircuitContent
@@ -105,7 +103,6 @@ fun HomeUi(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier) {
-        val bottomBarScrollBehavior = BottomAppBarDefaults.exitAlwaysScrollBehavior()
         if (state.currentTab != state.tabs.first()) {
             BackHandler {
                 state.eventSink(HomeEvent.TabSelected(state.tabs.first()))
@@ -115,13 +112,9 @@ fun HomeUi(
         CircuitContent(
             screen = state.currentTab.screen,
             onNavEvent = { state.eventSink(HomeEvent.Navigation(it)) },
-            modifier = Modifier
-                .weight(1f)
-                .nestedScroll(bottomBarScrollBehavior.nestedScrollConnection),
+            modifier = Modifier.weight(1f),
         )
-        BottomAppBar(
-            scrollBehavior = bottomBarScrollBehavior,
-        ) {
+        BottomAppBar {
             state.tabs.forEach {
                 NavigationBarItem(
                     selected = state.currentTab == it,

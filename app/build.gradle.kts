@@ -4,11 +4,22 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.sqldelight)
     id("kotlin-parcelize")
 }
 
 ksp {
     arg("lyricist.generateStringsProperty", "true")
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName = "uekschedule.data.db"
+            schemaOutputDirectory = file("src/main/sqldelight/schema")
+            verifyMigrations = true
+        }
+    }
 }
 
 android {
@@ -93,4 +104,6 @@ dependencies {
     ksp(libs.lyricist.processor)
     implementation(libs.arrow.core)
     implementation(libs.arrow.fx)
+    implementation(libs.sqldelight.androidDriver)
+    implementation(libs.sqldelight.coroutines)
 }

@@ -9,6 +9,9 @@ class Strings(
     val noResults: String,
     val error: String,
     val retry: String,
+    val addGroup: String,
+    val teachers: String,
+    val groups: String,
 ) {
     val appName: String = "Uek Schedule"
 }
