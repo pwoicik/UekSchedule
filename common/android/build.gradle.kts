@@ -42,8 +42,6 @@ dependencies {
 
     api(libs.bundles.compose)
 
-    api(libs.accompanist.flowlayout)
-
     implementation(libs.destinations)
     ksp(libs.destinations.ksp)
 

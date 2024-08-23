@@ -1,5 +1,4 @@
 [versions]
-accompanist = "0.34.0"
 agp = "8.5.2"
 androidx_test = "1.6.2"
 appcompat = "1.7.0"
@@ -30,8 +29,6 @@ tikxml = "0.8.13"
 timber = "5.0.1"
 
 [libraries]
-accompanist_flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-accompanist_uicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 androidx_appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx_core_ktx = { module = "androidx.core:core-ktx", version.ref = "core_ktx" }
 androidx_test_runner = { module = "androidx.test:runner", version.ref = "androidx_test" }

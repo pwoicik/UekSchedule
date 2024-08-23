@@ -76,8 +76,6 @@ dependencies {
 
     implementation(libs.lifecycle.runtime)
 
-    implementation(libs.accompanist.uicontroller)
-
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
 }
