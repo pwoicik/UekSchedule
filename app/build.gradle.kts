@@ -15,8 +15,8 @@ android {
         applicationId = "com.github.pwoicik.uekschedule"
         minSdk = libs.versions.sdk.min.get().toInt()
         targetSdk = libs.versions.sdk.target.get().toInt()
-        versionCode = 38
-        versionName = "1.5.1"
+        versionCode = 39
+        versionName = "1.5.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
