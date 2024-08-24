@@ -1,9 +1,8 @@
 plugins {
-    alias(libs.plugins.agp)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.internal.androidApp)
+    alias(libs.plugins.internal.composeLib)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.sqldelight)
     id("kotlin-parcelize")
 }
@@ -24,36 +23,26 @@ sqldelight {
 
 android {
     namespace = "com.github.pwoicik.uekschedule"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.github.pwoicik.uekschedule"
-        minSdk = 26
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
     kotlinOptions {
-        jvmTarget = "17"
         options.optIn.addAll(
             "kotlinx.coroutines.FlowPreview",
             "androidx.compose.foundation.ExperimentalFoundationApi",
@@ -62,13 +51,7 @@ android {
         )
     }
     buildFeatures {
-        compose = true
         buildConfig = true
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
     }
 }
 

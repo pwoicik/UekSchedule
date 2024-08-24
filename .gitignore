@@ -1,8 +1,8 @@
 *.iml
-/.gradle/
-/.kotlin/
-/local.properties
-/.idea/
+.gradle/
+.kotlin/
+local.properties
+.idea/
 .DS_Store
 build/
 captures/

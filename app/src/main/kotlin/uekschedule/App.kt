@@ -1,8 +1,8 @@
-@file:Suppress("PackageDirectoryMismatch")
-
-package com.github.pwoicik.uekschedule
+package uekschedule
 
 import android.app.Application
+import android.os.StrictMode
+import com.github.pwoicik.uekschedule.BuildConfig
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import org.koin.android.ext.koin.androidContext
